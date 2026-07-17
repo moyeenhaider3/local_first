@@ -1,0 +1,74 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper to check if user is authenticated
+    function isAuth() {
+      return request.auth != null;
+    }
+
+    // Helper to check if user owns the resource
+    function isOwner(userId) {
+      return isAuth() && request.auth.uid == userId;
+    }
+
+    // Users collection rules
+    match /users/{userId} {
+      allow read: if isAuth();
+      allow create, update: if isOwner(userId);
+      allow delete: if false; // Only admin can delete (disabled for client)
+    }
+
+    // KYC Records collection rules
+    match /kyc_records/{userId} {
+      allow read: if isOwner(userId) || (isAuth() && request.auth.token.admin == true);
+      allow write: if false; // Only written via KYC webhook functions
+    }
+
+    // Dynamic categories collection
+    match /categories/{categoryId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Listings collection rules
+    match /listings/{listingId} {
+      allow read: if true;
+      allow create: if isAuth();
+      allow update: if isAuth() && resource.data.ownerId == request.auth.uid;
+      allow delete: if false; // Only soft deletes allowed (archive only)
+    }
+
+    // Requests collection rules
+    match /requests/{requestId} {
+      allow read: if isAuth() && (
+        request.auth.uid == resource.data.requesterId || 
+        request.auth.uid == resource.data.receiverId
+      );
+      allow write: if false; // Only via Cloud Function
+    }
+
+    // Agreements collection rules
+    match /agreements/{agreementId} {
+      allow read: if isAuth() && (
+        request.auth.uid == resource.data.initiatorId || 
+        request.auth.uid == resource.data.counterpartyId
+      );
+      allow write: if false; // Only via Cloud Function
+
+      // Agreements version subcollection rules
+      match /versions/{versionId} {
+        allow read: if isAuth() && (
+          request.auth.uid == get(/databases/$(database)/documents/agreements/$(agreementId)).data.initiatorId ||
+          request.auth.uid == get(/databases/$(database)/documents/agreements/$(agreementId)).data.counterpartyId
+        );
+        allow write: if false; // Only via Cloud Function
+      }
+    }
+
+    // Consent records collection rules
+    match /consent_records/{consentId} {
+      allow read: if isAuth() && request.auth.uid == resource.data.userId;
+      allow write: if false; // Only via Cloud Function
+    }
+  }
+}

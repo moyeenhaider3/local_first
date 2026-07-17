@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:local_first/features/admin/data/admin_dependencies.dart';
+import 'package:local_first/features/agreements/data/booking_dependencies.dart';
 import 'package:local_first/features/auth/data/auth_dependencies.dart';
 import 'package:local_first/features/listings/data/discovery_dependencies.dart';
 
@@ -15,6 +17,7 @@ Future<void> initDependencies() async {
   sl.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
   sl.registerLazySingleton<FirebaseFirestore>(() => FirebaseFirestore.instance);
   sl.registerLazySingleton<FirebaseStorage>(() => FirebaseStorage.instance);
+  sl.registerLazySingleton<FirebaseFunctions>(() => FirebaseFunctions.instance);
 
   // Features dependencies
   initAuthDependencies(sl);
@@ -28,7 +31,6 @@ Future<void> initDependencies() async {
 }
 
 // Future features DI stubs (implemented in respective booking, verification, agreement, hire, and profile phases)
-void initBookingDependencies(GetIt sl) {}
 void initVerificationDependencies(GetIt sl) {}
 void initAgreementDependencies(GetIt sl) {}
 void initHireDependencies(GetIt sl) {}

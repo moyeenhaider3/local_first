@@ -13,7 +13,7 @@ class StandardRentalContractTemplate {
     final DateTime endDate = startDate.add(Duration(days: durationDays));
 
     return '''
-NEIGHBORHOOD SHARE & TRADE: STANDARD P2P RENTAL CONTRACT
+LOCAL FIRST: STANDARD P2P RENTAL CONTRACT
 Version: $contractVersion
 
 1. PARTIES

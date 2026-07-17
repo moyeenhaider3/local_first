@@ -20,6 +20,13 @@ import 'package:local_first/features/listings/presentation/pages/create_listing_
 import 'package:local_first/features/listings/presentation/pages/item_detail_page.dart';
 import 'package:local_first/features/listings/presentation/pages/marketplace_home_page.dart';
 import 'package:local_first/features/listings/presentation/widgets/map_preview_overlay.dart';
+import 'package:local_first/features/listings/domain/entities/listing_entity.dart';
+import 'package:local_first/features/agreements/domain/entities/request_entity.dart';
+import 'package:local_first/features/agreements/presentation/cubits/booking_cubit.dart';
+import 'package:local_first/features/agreements/presentation/pages/legal_consent_contract_page.dart';
+import 'package:local_first/features/agreements/presentation/pages/owner_request_review_page.dart';
+import 'package:local_first/features/agreements/presentation/widgets/booking_schedule_bottom_sheet.dart';
+import 'package:local_first/features/agreements/presentation/widgets/whatsapp_redirect_bottom_sheet.dart';
 
 class AppRouter {
   AppRouter._();
@@ -148,6 +155,51 @@ class AppRouter {
                         create: (_) => sl<ListingFormCubit>(),
                         child: const CreateListingPage(),
                       );
+                    },
+                  ),
+                  GoRoute(
+                    path: 'booking-schedule',
+                    name: RouteNames.bookingSchedule,
+                    builder: (BuildContext context, GoRouterState state) {
+                      final listing = state.extra as ListingEntity;
+                      return BlocProvider<BookingCubit>(
+                        create: (_) => sl<BookingCubit>(),
+                        child: BookingScheduleBottomSheet(listing: listing),
+                      );
+                    },
+                  ),
+                  GoRoute(
+                    path: 'legal-consent/:agreementId',
+                    name: RouteNames.legalConsent,
+                    builder: (BuildContext context, GoRouterState state) {
+                      final agreementId = state.pathParameters['agreementId'] ?? '';
+                      return BlocProvider<BookingCubit>(
+                        create: (_) => sl<BookingCubit>(),
+                        child: LegalConsentContractPage(agreementId: agreementId),
+                      );
+                    },
+                  ),
+                  GoRoute(
+                    path: 'request-review/:requestId',
+                    name: RouteNames.ownerRequestReview,
+                    builder: (BuildContext context, GoRouterState state) {
+                      final requestId = state.pathParameters['requestId'] ?? '';
+                      final request = state.extra as RequestEntity?;
+                      return BlocProvider<BookingCubit>(
+                        create: (_) => sl<BookingCubit>(),
+                        child: OwnerRequestReviewPage(
+                          requestId: requestId,
+                          request: request,
+                        ),
+                      );
+                    },
+                  ),
+                  GoRoute(
+                    path: 'whatsapp-redirect/:requestId',
+                    name: RouteNames.whatsappRedirect,
+                    builder: (BuildContext context, GoRouterState state) {
+                      final requestId = state.pathParameters['requestId'] ?? '';
+                      return WhatsAppRedirectBottomSheet(requestId: requestId);
                     },
                   ),
                 ],

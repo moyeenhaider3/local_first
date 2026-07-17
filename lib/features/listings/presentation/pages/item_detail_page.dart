@@ -52,8 +52,8 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
     if (isKycVerified) {
       // Navigate to booking request setup page (BKG-01)
       context.pushNamed(
-        RouteNames.bookingRequest,
-        pathParameters: {'id': listing.id},
+        RouteNames.bookingSchedule,
+        extra: listing,
       );
     } else {
       // Warn and redirect to KYC upload page (AUTH-04)

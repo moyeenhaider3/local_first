@@ -18,6 +18,10 @@ class RouteNames {
   static const String mapPreview = 'map_preview';
   static const String createListing = 'create_listing';
   static const String bookingRequest = 'booking_request';
+  static const String bookingSchedule = 'booking_schedule';
+  static const String legalConsent = 'legal_consent';
+  static const String ownerRequestReview = 'owner_request_review';
+  static const String whatsappRedirect = 'whatsapp_redirect';
 
   static const String adminPanel = 'admin_panel';
   static const String adminKycReview = 'admin_kyc_review';

@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+lib/
+
+# Local configuration files
+.runtimeconfig.json
+.env
+.env.*
+
+# Logs
+npm-debug.log
+yarn-error.log
+yarn-debug.log*
+firebase-debug.log
+firestore-debug.log
+pubsub-debug.log
+ui-debug.log
