@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:geoflutterfire_plus/geoflutterfire_plus.dart';
 import 'package:local_first/features/listings/data/models/category_model.dart';
 import 'package:local_first/features/listings/data/models/listing_model.dart';
@@ -20,12 +21,25 @@ abstract class DiscoveryRemoteDatasource {
 
   /// Read a single listing document from the listings collection by ID.
   Future<ListingModel> fetchListingById(String id);
+
+  /// Generate a unique document ID for a listing.
+  String generateListingId();
+
+  /// Upload images to Firebase Storage under listings/{listingId}/{index}.jpg
+  Future<List<String>> uploadListingImages(String listingId, List<dynamic> imageFiles);
+
+  /// Create a listing document in Firestore under listings collection.
+  Future<String> createListing(ListingModel listing);
 }
 
 class DiscoveryRemoteDatasourceImpl implements DiscoveryRemoteDatasource {
   final FirebaseFirestore firestore;
+  final FirebaseStorage storage;
 
-  DiscoveryRemoteDatasourceImpl({required this.firestore});
+  DiscoveryRemoteDatasourceImpl({
+    required this.firestore,
+    required this.storage,
+  });
 
   @override
   Future<List<CategoryModel>> fetchCategories() async {
@@ -108,5 +122,49 @@ class DiscoveryRemoteDatasourceImpl implements DiscoveryRemoteDatasource {
       );
     }
     return ListingModel.fromJson(doc.data()!, id: doc.id);
+  }
+
+  @override
+  String generateListingId() {
+    return firestore.collection('listings').doc().id;
+  }
+
+  @override
+  Future<List<String>> uploadListingImages(String listingId, List<dynamic> imageFiles) async {
+    try {
+      final List<String> downloadUrls = [];
+      for (int i = 0; i < imageFiles.length; i++) {
+        final file = imageFiles[i];
+        final ref = storage.ref().child('listings/$listingId/$i.jpg');
+        final uploadTask = ref.putData(
+          await file.readAsBytes(),
+          SettableMetadata(contentType: 'image/jpeg'),
+        );
+        final snapshot = await uploadTask;
+        final url = await snapshot.ref.getDownloadURL();
+        downloadUrls.add(url);
+      }
+      return downloadUrls;
+    } catch (e) {
+      throw FirebaseException(
+        plugin: 'firebase_storage',
+        code: 'upload-error',
+        message: e.toString(),
+      );
+    }
+  }
+
+  @override
+  Future<String> createListing(ListingModel listing) async {
+    try {
+      await firestore.collection('listings').doc(listing.id).set(listing.toJson());
+      return listing.id;
+    } catch (e) {
+      throw FirebaseException(
+        plugin: 'cloud_firestore',
+        code: 'write-error',
+        message: e.toString(),
+      );
+    }
   }
 }

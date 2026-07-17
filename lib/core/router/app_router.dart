@@ -1,13 +1,17 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:local_first/app/shell/app_shell.dart';
 import 'package:local_first/app/shell/placeholder_page.dart';
+import 'package:local_first/core/di/service_locator.dart';
 import 'package:local_first/core/router/route_names.dart';
 import 'package:local_first/features/auth/presentation/pages/kyc_upload_page.dart';
 import 'package:local_first/features/auth/presentation/pages/otp_verification_page.dart';
 import 'package:local_first/features/auth/presentation/pages/phone_login_page.dart';
 import 'package:local_first/features/auth/presentation/pages/profile_setup_page.dart';
+import 'package:local_first/features/listings/presentation/cubits/listing_form_cubit.dart';
+import 'package:local_first/features/listings/presentation/pages/create_listing_page.dart';
 import 'package:local_first/features/listings/presentation/pages/item_detail_page.dart';
 import 'package:local_first/features/listings/presentation/pages/marketplace_home_page.dart';
 import 'package:local_first/features/listings/presentation/widgets/map_preview_overlay.dart';
@@ -106,7 +110,10 @@ class AppRouter {
                     path: 'create-listing',
                     name: RouteNames.createListing,
                     builder: (BuildContext context, GoRouterState state) {
-                      return const PlaceholderPage(tabName: 'Create Listing');
+                      return BlocProvider<ListingFormCubit>(
+                        create: (_) => sl<ListingFormCubit>(),
+                        child: const CreateListingPage(),
+                      );
                     },
                   ),
                 ],

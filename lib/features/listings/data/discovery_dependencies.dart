@@ -7,6 +7,7 @@ import 'package:local_first/features/listings/domain/entities/category_entity.da
 import 'package:local_first/features/listings/domain/entities/listing_entity.dart';
 import 'package:local_first/features/listings/domain/repositories/discovery_repository.dart';
 import 'package:local_first/features/listings/presentation/cubits/discovery_cubit.dart';
+import 'package:local_first/features/listings/presentation/cubits/listing_form_cubit.dart';
 
 /// Register all DISCOVERY feature dependencies with the given [sl] GetIt instance.
 void initDiscoveryDependencies(GetIt sl) {
@@ -27,6 +28,7 @@ void initDiscoveryDependencies(GetIt sl) {
   sl.registerLazySingleton<DiscoveryRemoteDatasource>(
     () => DiscoveryRemoteDatasourceImpl(
       firestore: sl(),
+      storage: sl(),
     ),
   );
 
@@ -42,6 +44,11 @@ void initDiscoveryDependencies(GetIt sl) {
   // Cubit
   sl.registerFactory<DiscoveryCubit>(
     () => DiscoveryCubit(
+      repository: sl(),
+    ),
+  );
+  sl.registerFactory<ListingFormCubit>(
+    () => ListingFormCubit(
       repository: sl(),
     ),
   );

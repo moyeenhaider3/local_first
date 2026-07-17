@@ -3,6 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:local_first/core/cache/cache_manager.dart';
 import 'package:local_first/core/error/failures.dart';
 import 'package:local_first/features/listings/data/datasources/discovery_remote_datasource.dart';
+import 'package:local_first/features/listings/data/models/listing_model.dart';
 import 'package:local_first/features/listings/domain/entities/category_entity.dart';
 import 'package:local_first/features/listings/domain/entities/listing_entity.dart';
 import 'package:local_first/features/listings/domain/repositories/discovery_repository.dart';
@@ -87,6 +88,48 @@ class DiscoveryRepositoryImpl implements DiscoveryRepository {
       return Right(model.toEntity());
     } on FirebaseException catch (e) {
       return Left(ServerFailure(e.message ?? 'Failed to read listing.'));
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> createListing(ListingEntity entity, List<dynamic> imageFiles) async {
+    try {
+      final listingId = remoteDatasource.generateListingId();
+      final imageUrls = await remoteDatasource.uploadListingImages(listingId, imageFiles);
+      final thumbnailUrl = imageUrls.isNotEmpty ? imageUrls.first : '';
+
+      final model = ListingModel(
+        id: listingId,
+        ownerId: entity.ownerId,
+        ownerDisplayName: entity.ownerDisplayName,
+        ownerPhotoUrl: entity.ownerPhotoUrl,
+        ownerTrustScore: entity.ownerTrustScore,
+        listingType: entity.listingType,
+        categoryId: entity.categoryId,
+        categoryName: entity.categoryName,
+        title: entity.title,
+        description: entity.description,
+        status: entity.status,
+        images: imageUrls,
+        thumbnailUrl: thumbnailUrl,
+        pricePerDay: entity.pricePerDay,
+        securityDeposit: entity.securityDeposit,
+        startingRate: entity.startingRate,
+        rateUnit: entity.rateUnit,
+        pickupRadiusKm: entity.pickupRadiusKm,
+        location: entity.location,
+        geohash: entity.geohash,
+        tags: entity.tags,
+        createdAt: entity.createdAt,
+        updatedAt: entity.updatedAt,
+      );
+
+      await remoteDatasource.createListing(model);
+      return Right(listingId);
+    } on FirebaseException catch (e) {
+      return Left(ServerFailure(e.message ?? 'Failed to create listing.'));
     } catch (e) {
       return Left(ServerFailure(e.toString()));
     }

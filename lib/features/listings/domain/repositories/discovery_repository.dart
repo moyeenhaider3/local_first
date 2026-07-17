@@ -20,4 +20,7 @@ abstract class DiscoveryRepository {
 
   /// Direct retrieval of a single listing document by ID (no cache).
   Future<Either<Failure, ListingEntity>> getListingById(String id);
+
+  /// Publish/create a new marketplace listing.
+  Future<Either<Failure, String>> createListing(ListingEntity entity, List<dynamic> imageFiles);
 }

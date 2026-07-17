@@ -30,11 +30,12 @@ final class AuthSuccess extends AuthState {
   final String uid;
   final bool hasProfile;
   final bool hasKyc;
+  final UserEntity? userEntity;
 
-  const AuthSuccess(this.uid, {this.hasProfile = false, this.hasKyc = false});
+  const AuthSuccess(this.uid, {this.hasProfile = false, this.hasKyc = false, this.userEntity});
 
   @override
-  List<Object?> get props => [uid, hasProfile, hasKyc];
+  List<Object?> get props => [uid, hasProfile, hasKyc, userEntity];
 }
 
 final class KycSubmitted extends AuthState {

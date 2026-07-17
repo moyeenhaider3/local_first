@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:local_first/core/error/error_handler.dart';
 import 'package:local_first/core/router/route_names.dart';
 import 'package:local_first/core/theme/app_theme.dart';
+import 'package:local_first/features/auth/domain/entities/user_entity.dart';
 import 'package:local_first/features/auth/presentation/cubits/auth_cubit.dart';
 
 /// AUTH feature - Presentation Layer: AUTH-04 KYC Upload
@@ -25,10 +26,45 @@ class _KycUploadPageState extends State<KycUploadPage> {
 
   String _idType = 'Aadhaar';
   File? _idFile;
+  UserEntity? _user;
+  bool _isLoading = true;
+  bool _isExistingCleared = false;
 
   final List<String> _idTypes = const ['Aadhaar', 'Passport', 'Driving License'];
 
   bool get _canSubmit => _idFile != null;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUser();
+  }
+
+  Future<void> _loadUser() async {
+    final authCubit = context.read<AuthCubit>();
+    final state = authCubit.state;
+    if (state is AuthSuccess) {
+      final result = await authCubit.repository.getUser(state.uid);
+      if (!mounted) return;
+      result.fold(
+        (failure) {
+          setState(() {
+            _isLoading = false;
+          });
+        },
+        (user) {
+          setState(() {
+            _user = user;
+            _isLoading = false;
+          });
+        },
+      );
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   Future<void> _pickId() async {
     final picker = ImagePicker();
@@ -38,7 +74,15 @@ class _KycUploadPageState extends State<KycUploadPage> {
     }
   }
 
-  void _removeId() => setState(() => _idFile = null);
+  void _removeId() {
+    setState(() {
+      if (_idFile != null) {
+        _idFile = null;
+      } else {
+        _isExistingCleared = true;
+      }
+    });
+  }
 
   void _onSubmit() {
     if (!_canSubmit) return;
@@ -49,18 +93,69 @@ class _KycUploadPageState extends State<KycUploadPage> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final spacing = context.spacing;
-    final mutedColor = theme.textTheme.bodySmall?.color ?? Colors.grey;
+
+    if (_isLoading) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    String statusText = 'Status: Unverified';
+    String messageText = 'Please upload your identity document to start listing items or services.';
+    Color statusColor = Colors.grey;
+
+    if (_user != null) {
+      final status = _user!.verificationStatus;
+      if (status == 'pending') {
+        statusText = 'Status: Pending Review';
+        messageText = 'Your status is currently pending. Please wait while we review your request. You will be able to list once your identity is verified.';
+        statusColor = Colors.orange;
+      } else if (status == 'verified') {
+        statusText = 'Status: Verified';
+        messageText = 'Your identity is verified. You can list items and offer services!';
+        statusColor = Colors.green;
+      } else if (status == 'rejected') {
+        statusText = 'Status: Rejected';
+        messageText = 'Your verification request was rejected. Please upload a clear photo of your ID and submit again.';
+        statusColor = Colors.red;
+      }
+    }
+
+    final remoteUrlToShow = _isExistingCleared ? null : _user?.kycDocumentUrl;
 
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is KycSubmitted) {
-          context.goNamed(RouteNames.home);
+          _isExistingCleared = false;
+          _idFile = null;
+          _loadUser();
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('KYC details submitted successfully.')),
+          );
+          if (GoRouter.of(context).canPop()) {
+            context.pop();
+          } else {
+            context.goNamed(RouteNames.home);
+          }
         } else if (state is AuthError) {
           ErrorHandler.showSnackBar(context, state.failure);
         }
       },
       child: Scaffold(
         backgroundColor: theme.scaffoldBackgroundColor,
+        appBar: AppBar(
+          title: const Text('Identity Verification'),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              if (GoRouter.of(context).canPop()) {
+                context.pop();
+              } else {
+                context.goNamed(RouteNames.home);
+              }
+            },
+          ),
+        ),
         body: SafeArea(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: spacing.edgeMargin),
@@ -68,21 +163,30 @@ class _KycUploadPageState extends State<KycUploadPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 SizedBox(height: spacing.space16),
-                Text('Identity Verification', style: theme.textTheme.headlineMedium),
-                SizedBox(height: spacing.space8),
                 Container(
                   padding: EdgeInsets.symmetric(
                     horizontal: spacing.space8,
                     vertical: spacing.space4,
                   ),
                   decoration: BoxDecoration(
-                    color: mutedColor.withValues(alpha: 0.15),
+                    color: statusColor.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  child: Text(
-                    'Status: Unverified',
-                    style: theme.textTheme.labelSmall,
+                  child: Center(
+                    child: Text(
+                      statusText,
+                      style: theme.textTheme.labelSmall?.copyWith(color: statusColor, fontWeight: FontWeight.bold),
+                    ),
                   ),
+                ),
+                SizedBox(height: spacing.space16),
+                Text(
+                  messageText,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.textTheme.bodyLarge?.color?.withValues(alpha: 0.8),
+                    height: 1.5,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
                 SizedBox(height: spacing.space24),
                 _IdTypeDropdown(
@@ -93,6 +197,7 @@ class _KycUploadPageState extends State<KycUploadPage> {
                 SizedBox(height: spacing.space24),
                 _IdUploadCard(
                   file: _idFile,
+                  remoteUrl: remoteUrlToShow,
                   width: _cardWidth,
                   height: _cardHeight,
                   onTap: _pickId,
@@ -153,6 +258,7 @@ class _IdTypeDropdown extends StatelessWidget {
 
 class _IdUploadCard extends StatelessWidget {
   final File? file;
+  final String? remoteUrl;
   final double width;
   final double height;
   final VoidCallback onTap;
@@ -160,6 +266,7 @@ class _IdUploadCard extends StatelessWidget {
 
   const _IdUploadCard({
     this.file,
+    this.remoteUrl,
     required this.width,
     required this.height,
     required this.onTap,
@@ -170,11 +277,12 @@ class _IdUploadCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final spacing = context.spacing;
+    final hasPreview = file != null || (remoteUrl != null && remoteUrl!.isNotEmpty);
 
     return Center(
       child: GestureDetector(
-        key: file == null ? const Key('kyc_dashed_card') : const Key('kyc_preview'),
-        onTap: file == null ? onTap : null,
+        key: !hasPreview ? const Key('kyc_dashed_card') : const Key('kyc_preview'),
+        onTap: !hasPreview ? onTap : null,
         child: Container(
           width: width,
           height: height,
@@ -184,10 +292,10 @@ class _IdUploadCard extends StatelessWidget {
             border: Border.all(
               color: theme.colorScheme.primary,
               style: BorderStyle.solid,
-              width: file == null ? 2 : 1,
+              width: !hasPreview ? 2 : 1,
             ),
           ),
-          child: file == null
+          child: !hasPreview
               ? Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -203,7 +311,17 @@ class _IdUploadCard extends StatelessWidget {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(12),
-                      child: Image.file(file!, fit: BoxFit.cover, width: width, height: height),
+                      child: file != null
+                          ? Image.file(file!, fit: BoxFit.cover, width: width, height: height)
+                          : Image.network(
+                              remoteUrl!,
+                              fit: BoxFit.cover,
+                              width: width,
+                              height: height,
+                              errorBuilder: (context, error, stackTrace) => const Center(
+                                child: Icon(Icons.broken_image, size: 48),
+                              ),
+                            ),
                     ),
                     Positioned(
                       top: spacing.space8,

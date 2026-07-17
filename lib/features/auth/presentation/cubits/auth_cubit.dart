@@ -55,7 +55,7 @@ class AuthCubit extends Cubit<AuthState> {
                   userEntity.displayName != null && userEntity.displayName!.isNotEmpty;
               final hasKyc =
                   userEntity.kycDocumentUrl != null && userEntity.kycDocumentUrl!.isNotEmpty;
-              emit(AuthSuccess(uid, hasProfile: hasProfile, hasKyc: hasKyc));
+              emit(AuthSuccess(uid, hasProfile: hasProfile, hasKyc: hasKyc, userEntity: userEntity));
             }
           },
         );
@@ -76,7 +76,7 @@ class AuthCubit extends Cubit<AuthState> {
     final result = await repository.upsertProfile(uid, complete);
     result.fold(
       (failure) => emit(AuthError(failure)),
-      (_) => emit(AuthSuccess(uid, hasProfile: true, hasKyc: false)),
+      (_) => emit(AuthSuccess(uid, hasProfile: true, hasKyc: false, userEntity: complete)),
     );
   }
 
@@ -98,5 +98,22 @@ class AuthCubit extends Cubit<AuthState> {
   void setAuthenticatedUser(String uid) {
     _uid = uid;
     emit(AuthSuccess(uid, hasProfile: true, hasKyc: true));
+    _loadUserProfile(uid);
+  }
+
+  Future<void> _loadUserProfile(String uid) async {
+    final result = await repository.getUser(uid);
+    result.fold(
+      (failure) {},
+      (userEntity) {
+        if (userEntity != null) {
+          final hasProfile =
+              userEntity.displayName != null && userEntity.displayName!.isNotEmpty;
+          final hasKyc =
+              userEntity.kycDocumentUrl != null && userEntity.kycDocumentUrl!.isNotEmpty;
+          emit(AuthSuccess(uid, hasProfile: hasProfile, hasKyc: hasKyc, userEntity: userEntity));
+        }
+      },
+    );
   }
 }
