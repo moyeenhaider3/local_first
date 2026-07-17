@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:local_first/features/auth/data/auth_dependencies.dart';
+import 'package:local_first/features/listings/data/discovery_dependencies.dart';
 
 /// Global service locator instance.
 final sl = GetIt.instance;
@@ -16,4 +17,17 @@ Future<void> initDependencies() async {
 
   // Features dependencies
   initAuthDependencies(sl);
+  initDiscoveryDependencies(sl);
+  initBookingDependencies(sl);
+  initVerificationDependencies(sl);
+  initAgreementDependencies(sl);
+  initHireDependencies(sl);
+  initProfileDependencies(sl);
 }
+
+// Future features DI stubs (implemented in respective booking, verification, agreement, hire, and profile phases)
+void initBookingDependencies(GetIt sl) {}
+void initVerificationDependencies(GetIt sl) {}
+void initAgreementDependencies(GetIt sl) {}
+void initHireDependencies(GetIt sl) {}
+void initProfileDependencies(GetIt sl) {}

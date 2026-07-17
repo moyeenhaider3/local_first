@@ -7,4 +7,10 @@ class RouteNames {
   static const String profileSetup = 'profile_setup';
   static const String kycUpload = 'kyc_upload';
   static const String home = 'home';
+
+  static const String shell = 'shell';
+  static const String marketplace = 'marketplace';
+  static const String services = 'services';
+  static const String activity = 'activity';
+  static const String profile = 'profile';
 }

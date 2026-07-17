@@ -49,3 +49,4 @@ app.*.map.json
 .kilocodemodes
 .gsd/
 docs/
+.agents/

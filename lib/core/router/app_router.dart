@@ -1,12 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:local_first/app/shell/app_shell.dart';
+import 'package:local_first/app/shell/placeholder_page.dart';
 import 'package:local_first/core/router/route_names.dart';
-import 'package:local_first/features/auth/presentation/pages/home_page.dart';
 import 'package:local_first/features/auth/presentation/pages/kyc_upload_page.dart';
 import 'package:local_first/features/auth/presentation/pages/otp_verification_page.dart';
 import 'package:local_first/features/auth/presentation/pages/phone_login_page.dart';
 import 'package:local_first/features/auth/presentation/pages/profile_setup_page.dart';
+import 'package:local_first/features/discovery/presentation/pages/marketplace_home_page.dart';
 
 class AppRouter {
   AppRouter._();
@@ -60,12 +62,60 @@ class AppRouter {
           return const KycUploadPage();
         },
       ),
-      GoRoute(
-        path: '/home',
-        name: RouteNames.home,
-        builder: (BuildContext context, GoRouterState state) {
-          return const HomePage();
+      StatefulShellRoute.indexedStack(
+        builder: (BuildContext context, GoRouterState state, StatefulNavigationShell navigationShell) {
+          return AppShell(navigationShell: navigationShell);
         },
+        branches: <StatefulShellBranch>[
+          StatefulShellBranch(
+            navigatorKey: GlobalKey<NavigatorState>(debugLabel: 'homeBranchKey'),
+            routes: <RouteBase>[
+              GoRoute(
+                path: '/home',
+                name: RouteNames.home,
+                builder: (BuildContext context, GoRouterState state) {
+                  return const MarketplaceHomePage();
+                },
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            navigatorKey: GlobalKey<NavigatorState>(debugLabel: 'servicesBranchKey'),
+            routes: <RouteBase>[
+              GoRoute(
+                path: '/home/services',
+                name: RouteNames.services,
+                builder: (BuildContext context, GoRouterState state) {
+                  return const PlaceholderPage(tabName: 'Services');
+                },
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            navigatorKey: GlobalKey<NavigatorState>(debugLabel: 'activityBranchKey'),
+            routes: <RouteBase>[
+              GoRoute(
+                path: '/home/activity',
+                name: RouteNames.activity,
+                builder: (BuildContext context, GoRouterState state) {
+                  return const PlaceholderPage(tabName: 'Activity');
+                },
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            navigatorKey: GlobalKey<NavigatorState>(debugLabel: 'profileBranchKey'),
+            routes: <RouteBase>[
+              GoRoute(
+                path: '/home/profile',
+                name: RouteNames.profile,
+                builder: (BuildContext context, GoRouterState state) {
+                  return const PlaceholderPage(tabName: 'Profile');
+                },
+              ),
+            ],
+          ),
+        ],
       ),
     ],
   );
