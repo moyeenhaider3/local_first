@@ -11,6 +11,7 @@ import 'package:local_first/features/auth/data/repositories/auth_repository_impl
 import 'package:local_first/features/auth/domain/repositories/auth_repository.dart';
 import 'package:local_first/features/auth/domain/usecases/submit_kyc_usecase.dart';
 import 'package:local_first/features/auth/presentation/cubits/auth_cubit.dart';
+import 'package:local_first/features/auth/presentation/pages/phone_login_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,29 +47,7 @@ class AppRoot extends StatelessWidget {
             ),
             useMaterial3: true,
           ),
-          home: const AuthBootstrap(),
-        ),
-      ),
-    );
-  }
-}
-
-/// Placeholder home — replaced by AUTH UI screens in plan 01-02.
-class AuthBootstrap extends StatelessWidget {
-  const AuthBootstrap({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: DesignTokens.colorBgDark,
-      body: Center(
-        child: BlocBuilder<AuthCubit, AuthState>(
-          builder: (context, state) {
-            return Text(
-              'Local First',
-              style: DesignTokens.h1.copyWith(color: DesignTokens.colorPrimary),
-            );
-          },
+          home: const PhoneLoginPage(),
         ),
       ),
     );
