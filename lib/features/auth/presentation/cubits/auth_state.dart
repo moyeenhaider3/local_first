@@ -28,11 +28,13 @@ final class OtpSentSuccess extends AuthState {
 
 final class AuthSuccess extends AuthState {
   final String uid;
+  final bool hasProfile;
+  final bool hasKyc;
 
-  const AuthSuccess(this.uid);
+  const AuthSuccess(this.uid, {this.hasProfile = false, this.hasKyc = false});
 
   @override
-  List<Object?> get props => [uid];
+  List<Object?> get props => [uid, hasProfile, hasKyc];
 }
 
 final class KycSubmitted extends AuthState {
@@ -45,10 +47,10 @@ final class KycSubmitted extends AuthState {
 }
 
 final class AuthError extends AuthState {
-  final String message;
+  final Failure failure;
 
-  const AuthError(this.message);
+  const AuthError(this.failure);
 
   @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [failure];
 }

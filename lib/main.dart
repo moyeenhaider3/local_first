@@ -1,54 +1,50 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'package:local_first/core/theme/design_tokens.dart';
-import 'package:local_first/features/auth/data/datasources/auth_remote_datasource.dart';
-import 'package:local_first/features/auth/data/repositories/auth_repository_impl.dart';
-import 'package:local_first/features/auth/domain/repositories/auth_repository.dart';
-import 'package:local_first/features/auth/domain/usecases/submit_kyc_usecase.dart';
+import 'package:local_first/core/di/service_locator.dart';
+import 'package:local_first/core/error/error_handler.dart';
+import 'package:local_first/core/router/app_router.dart';
+import 'package:local_first/core/theme/app_theme.dart';
 import 'package:local_first/features/auth/presentation/cubits/auth_cubit.dart';
-import 'package:local_first/features/auth/presentation/pages/phone_login_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  // Initialize dependency injection service locator
+  await initDependencies();
+
+  // Initialize global error handling hooks
+  ErrorHandler.init();
+  if (kDebugMode) {
+    await FirebaseAuth.instance.setSettings(appVerificationDisabledForTesting: true);
+  }
+
   runApp(const AppRoot());
 }
 
-/// App root that wires the AUTH dependency graph via provider composition.
+/// App root that wires the AUTH dependency graph via GoRouter and service locator.
 class AppRoot extends StatelessWidget {
   const AppRoot({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final datasource = AuthRemoteDatasource(
-      firebaseAuth: FirebaseAuth.instance,
-      firestore: FirebaseFirestore.instance,
-      storage: FirebaseStorage.instance,
-    );
-    final repository = AuthRepositoryImpl(datasource);
-    final submitKyc = SubmitKycUsecase(repository);
+    // Resolve AuthCubit from DI and synchronize initial state if user is already logged in
+    final authCubit = sl<AuthCubit>();
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      authCubit.setAuthenticatedUser(currentUser.uid);
+    }
 
-    return RepositoryProvider<AuthRepository>.value(
-      value: repository,
-      child: BlocProvider<AuthCubit>(
-        create: (_) => AuthCubit(repository, submitKyc),
-        child: MaterialApp(
-          title: 'Local First',
-          theme: ThemeData(
-            scaffoldBackgroundColor: DesignTokens.colorBgDark,
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: DesignTokens.colorPrimary,
-              primary: DesignTokens.colorPrimary,
-            ),
-            useMaterial3: true,
-          ),
-          home: const PhoneLoginPage(),
-        ),
+    return BlocProvider<AuthCubit>(
+      create: (_) => authCubit,
+      child: MaterialApp.router(
+        title: 'Local First',
+        theme: AppTheme.lightTheme,
+        routerConfig: AppRouter.router,
+        debugShowCheckedModeBanner: false,
       ),
     );
   }

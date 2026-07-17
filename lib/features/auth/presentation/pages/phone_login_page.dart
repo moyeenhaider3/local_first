@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
-import 'package:local_first/core/theme/design_tokens.dart';
+import 'package:local_first/core/error/error_handler.dart';
+import 'package:local_first/core/router/route_names.dart';
+import 'package:local_first/core/theme/app_theme.dart';
 import 'package:local_first/features/auth/presentation/cubits/auth_cubit.dart';
-import 'package:local_first/features/auth/presentation/pages/otp_verification_page.dart';
 
 /// AUTH feature - Presentation Layer: AUTH-01 Welcome & Phone
 /// Brand logo, horizontal carousel, mobile field with country code, [ GET OTP ].
@@ -23,7 +25,7 @@ class _PhoneLoginPageState extends State<PhoneLoginPage> {
     'Hire local workers',
     'Verify identity and trust',
   ];
-  final   int _carouselIndex = 0;
+  final int _carouselIndex = 0;
   bool _consentChecked = false;
   final PageController _carouselController = PageController(viewportFraction: 0.9);
   Timer? _carouselTimer;
@@ -72,44 +74,44 @@ class _PhoneLoginPageState extends State<PhoneLoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final spacing = context.spacing;
+
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is OtpSentSuccess) {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (_) => OtpVerificationPage(phone: _phoneController.text.trim()),
-            ),
+          context.pushNamed(
+            RouteNames.otp,
+            extra: _phoneController.text.trim(),
           );
         } else if (state is AuthError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message)),
-          );
+          ErrorHandler.showSnackBar(context, state.failure);
         }
       },
       child: Scaffold(
-        backgroundColor: DesignTokens.colorBgDark,
+        backgroundColor: theme.scaffoldBackgroundColor,
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.only(top: DesignTokens.kSpace24),
+            padding: EdgeInsets.only(top: spacing.space24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: DesignTokens.kEdgeMargin),
+                  padding: EdgeInsets.symmetric(horizontal: spacing.edgeMargin),
                   child: _BrandLogo(),
                 ),
-                const SizedBox(height: DesignTokens.kSpace24),
+                SizedBox(height: spacing.space24),
                 _Carousel(
                   valueProps: _valueProps,
                   index: _carouselIndex,
                   controller: _carouselController,
                 ),
-                const SizedBox(height: DesignTokens.kSpace24),
+                SizedBox(height: spacing.space24),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: DesignTokens.kEdgeMargin),
+                  padding: EdgeInsets.symmetric(horizontal: spacing.edgeMargin),
                   child: _PhoneField(controller: _phoneController),
                 ),
-                const SizedBox(height: DesignTokens.kSpace16),
+                SizedBox(height: spacing.space16),
                 _ConsentCheckbox(
                   checked: _consentChecked,
                   onChanged: (v) => setState(() => _consentChecked = v),
@@ -132,19 +134,22 @@ class _PhoneLoginPageState extends State<PhoneLoginPage> {
 class _BrandLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final spacing = context.spacing;
+
     return Row(
       children: [
         Container(
           width: 32,
           height: 32,
           decoration: BoxDecoration(
-            color: DesignTokens.colorPrimary,
+            color: theme.colorScheme.primary,
             borderRadius: BorderRadius.circular(8),
           ),
-          child: const Icon(Icons.shield_outlined, color: DesignTokens.colorSurface, size: 20),
+          child: Icon(Icons.shield_outlined, color: theme.colorScheme.surface, size: 20),
         ),
-        const SizedBox(width: DesignTokens.kSpace8),
-        Text('Local First', style: DesignTokens.titleMedium),
+        SizedBox(width: spacing.space8),
+        Text('Local First', style: theme.textTheme.titleMedium),
       ],
     );
   }
@@ -163,6 +168,9 @@ class _Carousel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final spacing = context.spacing;
+
     return SizedBox(
       height: 120,
       child: PageView.builder(
@@ -170,16 +178,16 @@ class _Carousel extends StatelessWidget {
         itemCount: valueProps.length,
         itemBuilder: (context, i) {
           return Container(
-            margin: const EdgeInsets.symmetric(horizontal: DesignTokens.kSpace8),
+            margin: EdgeInsets.symmetric(horizontal: spacing.space8),
             decoration: BoxDecoration(
-              color: DesignTokens.colorSurface,
+              color: theme.colorScheme.surface,
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: DesignTokens.colorPrimary.withValues(alpha: 0.25)),
+              border: Border.all(color: theme.colorScheme.primary.withValues(alpha: 0.25)),
             ),
             child: Center(
               child: Text(
                 valueProps[i],
-                style: DesignTokens.h2.copyWith(color: DesignTokens.colorPrimary),
+                style: theme.textTheme.headlineMedium?.copyWith(color: theme.colorScheme.primary),
               ),
             ),
           );
@@ -196,18 +204,21 @@ class _PhoneField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final spacing = context.spacing;
+
     return Container(
-      height: DesignTokens.kTouchMin,
+      height: 48.0,
       decoration: BoxDecoration(
-        color: DesignTokens.colorSurface,
+        color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: DesignTokens.colorPrimary),
+        border: Border.all(color: theme.colorScheme.primary),
       ),
       child: Row(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: DesignTokens.kSpace16),
-            child: Text('+91', style: DesignTokens.bodyLarge),
+            padding: EdgeInsets.symmetric(horizontal: spacing.space16),
+            child: Text('+91', style: theme.textTheme.bodyLarge),
           ),
           const VerticalDivider(width: 1, thickness: 1, indent: 8, endIndent: 8),
           Expanded(
@@ -215,11 +226,13 @@ class _PhoneField extends StatelessWidget {
               controller: controller,
               keyboardType: TextInputType.phone,
               maxLength: 10,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 border: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
                 counterText: '',
                 hintText: '10-digit mobile number',
-                contentPadding: EdgeInsets.symmetric(horizontal: DesignTokens.kSpace16),
+                contentPadding: EdgeInsets.symmetric(horizontal: spacing.space16),
               ),
             ),
           ),
@@ -237,28 +250,31 @@ class _ConsentCheckbox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final spacing = context.spacing;
+
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: DesignTokens.kEdgeMargin,
-        vertical: DesignTokens.kSpace16,
+      padding: EdgeInsets.symmetric(
+        horizontal: spacing.edgeMargin,
+        vertical: spacing.space16,
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            width: DesignTokens.kTouchMin,
-            height: DesignTokens.kTouchMin,
+            width: 48.0,
+            height: 48.0,
             child: Checkbox(
               value: checked,
-              activeColor: DesignTokens.colorPrimary,
+              activeColor: theme.colorScheme.primary,
               onChanged: (v) => onChanged(v ?? false),
             ),
           ),
-          const SizedBox(width: DesignTokens.kSpace8),
+          SizedBox(width: spacing.space8),
           Expanded(
             child: Text(
               'I accept the terms of service, rental liabilities, and safety guidelines.',
-              style: DesignTokens.bodySmall,
+              style: theme.textTheme.bodySmall,
             ),
           ),
         ],
@@ -280,21 +296,41 @@ class _StickyButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final spacing = context.spacing;
+
     return Container(
-      padding: const EdgeInsets.all(DesignTokens.kEdgeMargin),
+      padding: EdgeInsets.all(spacing.edgeMargin),
       child: SizedBox(
         height: 52,
-        child: ElevatedButton(
-          key: const Key('GET OTP'),
-          onPressed: enabled ? onPressed : null,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: DesignTokens.colorPrimary,
-            disabledBackgroundColor: DesignTokens.colorPrimary.withValues(alpha: 0.4),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-          ),
-          child: Text(label, style: DesignTokens.labelBold.copyWith(color: DesignTokens.colorSurface)),
+        child: BlocBuilder<AuthCubit, AuthState>(
+          builder: (context, state) {
+            final isLoading = state is AuthLoading;
+            return ElevatedButton(
+              key: const Key('GET OTP'),
+              onPressed: (enabled && !isLoading) ? onPressed : null,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: theme.colorScheme.primary,
+                disabledBackgroundColor: theme.colorScheme.primary.withValues(alpha: 0.4),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: isLoading
+                  ? SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: CircularProgressIndicator(
+                        color: theme.colorScheme.surface,
+                        strokeWidth: 2.5,
+                      ),
+                    )
+                  : Text(
+                      label,
+                      style: theme.textTheme.labelLarge?.copyWith(color: theme.colorScheme.surface),
+                    ),
+            );
+          },
         ),
       ),
     );
