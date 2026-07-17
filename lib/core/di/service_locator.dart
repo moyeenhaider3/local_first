@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get_it/get_it.dart';
+import 'package:local_first/features/admin/data/admin_dependencies.dart';
 import 'package:local_first/features/auth/data/auth_dependencies.dart';
 import 'package:local_first/features/listings/data/discovery_dependencies.dart';
 
@@ -18,6 +19,7 @@ Future<void> initDependencies() async {
   // Features dependencies
   initAuthDependencies(sl);
   initDiscoveryDependencies(sl);
+  initAdminDependencies(sl);
   initBookingDependencies(sl);
   initVerificationDependencies(sl);
   initAgreementDependencies(sl);

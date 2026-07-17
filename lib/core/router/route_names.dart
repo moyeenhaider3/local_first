@@ -18,4 +18,8 @@ class RouteNames {
   static const String mapPreview = 'map_preview';
   static const String createListing = 'create_listing';
   static const String bookingRequest = 'booking_request';
+
+  static const String adminPanel = 'admin_panel';
+  static const String adminKycReview = 'admin_kyc_review';
+  static const String adminUserManagement = 'admin_user_management';
 }

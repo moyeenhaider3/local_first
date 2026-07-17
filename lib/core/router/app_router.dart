@@ -6,6 +6,11 @@ import 'package:local_first/app/shell/app_shell.dart';
 import 'package:local_first/app/shell/placeholder_page.dart';
 import 'package:local_first/core/di/service_locator.dart';
 import 'package:local_first/core/router/route_names.dart';
+import 'package:local_first/features/admin/presentation/cubits/admin_kyc_cubit.dart';
+import 'package:local_first/features/admin/presentation/cubits/admin_users_cubit.dart';
+import 'package:local_first/features/admin/presentation/pages/admin_dashboard_page.dart';
+import 'package:local_first/features/admin/presentation/pages/admin_kyc_review_page.dart';
+import 'package:local_first/features/admin/presentation/pages/admin_user_management_page.dart';
 import 'package:local_first/features/auth/presentation/pages/kyc_upload_page.dart';
 import 'package:local_first/features/auth/presentation/pages/otp_verification_page.dart';
 import 'package:local_first/features/auth/presentation/pages/phone_login_page.dart';
@@ -75,6 +80,35 @@ class AppRouter {
           final id = state.pathParameters['id'] ?? '';
           return PlaceholderPage(tabName: 'Booking Request for Item: $id');
         },
+      ),
+      GoRoute(
+        path: '/admin-panel',
+        name: RouteNames.adminPanel,
+        builder: (BuildContext context, GoRouterState state) {
+          return const AdminDashboardPage();
+        },
+        routes: <RouteBase>[
+          GoRoute(
+            path: 'kyc-review',
+            name: RouteNames.adminKycReview,
+            builder: (BuildContext context, GoRouterState state) {
+              return BlocProvider<AdminKycCubit>(
+                create: (_) => sl<AdminKycCubit>(),
+                child: const AdminKycReviewPage(),
+              );
+            },
+          ),
+          GoRoute(
+            path: 'user-management',
+            name: RouteNames.adminUserManagement,
+            builder: (BuildContext context, GoRouterState state) {
+              return BlocProvider<AdminUsersCubit>(
+                create: (_) => sl<AdminUsersCubit>(),
+                child: const AdminUserManagementPage(),
+              );
+            },
+          ),
+        ],
       ),
       StatefulShellRoute.indexedStack(
         builder: (BuildContext context, GoRouterState state, StatefulNavigationShell navigationShell) {

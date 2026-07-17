@@ -10,6 +10,8 @@ class UserEntity extends Equatable {
   final Map<String, bool> roles;
   final String verificationStatus;
   final String? kycDocumentUrl;
+  final String? adminRole;
+  final String? kycRemarks;
 
   const UserEntity({
     required this.userId,
@@ -24,7 +26,13 @@ class UserEntity extends Equatable {
     },
     this.verificationStatus = 'unverified',
     this.kycDocumentUrl,
+    this.adminRole,
+    this.kycRemarks,
   });
+
+  bool get isAdmin => adminRole == 'admin' || adminRole == 'superadmin';
+  bool get isSuperAdmin => adminRole == 'superadmin';
+  bool get hasAdminAccess => isAdmin;
 
   UserEntity copyWith({
     String? userId,
@@ -34,6 +42,8 @@ class UserEntity extends Equatable {
     Map<String, bool>? roles,
     String? verificationStatus,
     String? kycDocumentUrl,
+    String? adminRole,
+    String? kycRemarks,
   }) {
     return UserEntity(
       userId: userId ?? this.userId,
@@ -43,6 +53,8 @@ class UserEntity extends Equatable {
       roles: roles ?? this.roles,
       verificationStatus: verificationStatus ?? this.verificationStatus,
       kycDocumentUrl: kycDocumentUrl ?? this.kycDocumentUrl,
+      adminRole: adminRole ?? this.adminRole,
+      kycRemarks: kycRemarks ?? this.kycRemarks,
     );
   }
 
@@ -55,5 +67,7 @@ class UserEntity extends Equatable {
         roles,
         verificationStatus,
         kycDocumentUrl,
+        adminRole,
+        kycRemarks,
       ];
 }

@@ -12,6 +12,8 @@ class UserModel extends Equatable {
   final Map<String, bool> roles;
   final String verificationStatus;
   final String? kycDocumentUrl;
+  final String? adminRole;
+  final String? kycRemarks;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
@@ -28,6 +30,8 @@ class UserModel extends Equatable {
     },
     this.verificationStatus = 'unverified',
     this.kycDocumentUrl,
+    this.adminRole,
+    this.kycRemarks,
     this.createdAt,
     this.updatedAt,
   });
@@ -41,6 +45,8 @@ class UserModel extends Equatable {
       roles: entity.roles,
       verificationStatus: entity.verificationStatus,
       kycDocumentUrl: entity.kycDocumentUrl,
+      adminRole: entity.adminRole,
+      kycRemarks: entity.kycRemarks,
     );
   }
 
@@ -71,6 +77,8 @@ class UserModel extends Equatable {
       roles: roles,
       verificationStatus: json['verificationStatus'] as String? ?? 'unverified',
       kycDocumentUrl: json['kycDocumentUrl'] as String?,
+      adminRole: json['adminRole'] as String?,
+      kycRemarks: json['kycRemarks'] as String?,
       createdAt: created is Timestamp ? created.toDate() : null,
       updatedAt: updated is Timestamp ? updated.toDate() : null,
     );
@@ -85,6 +93,8 @@ class UserModel extends Equatable {
       roles: roles,
       verificationStatus: verificationStatus,
       kycDocumentUrl: kycDocumentUrl,
+      adminRole: adminRole,
+      kycRemarks: kycRemarks,
     );
   }
 
@@ -96,6 +106,8 @@ class UserModel extends Equatable {
       'roles': roles,
       'verificationStatus': verificationStatus,
       'kycDocumentUrl': kycDocumentUrl,
+      'adminRole': adminRole,
+      'kycRemarks': kycRemarks,
     };
   }
 
@@ -125,6 +137,8 @@ class UserModel extends Equatable {
         roles,
         verificationStatus,
         kycDocumentUrl,
+        adminRole,
+        kycRemarks,
         createdAt,
         updatedAt,
       ];
