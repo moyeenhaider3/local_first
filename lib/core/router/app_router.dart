@@ -8,7 +8,9 @@ import 'package:local_first/features/auth/presentation/pages/kyc_upload_page.dar
 import 'package:local_first/features/auth/presentation/pages/otp_verification_page.dart';
 import 'package:local_first/features/auth/presentation/pages/phone_login_page.dart';
 import 'package:local_first/features/auth/presentation/pages/profile_setup_page.dart';
-import 'package:local_first/features/discovery/presentation/pages/marketplace_home_page.dart';
+import 'package:local_first/features/listings/presentation/pages/item_detail_page.dart';
+import 'package:local_first/features/listings/presentation/pages/marketplace_home_page.dart';
+import 'package:local_first/features/listings/presentation/widgets/map_preview_overlay.dart';
 
 class AppRouter {
   AppRouter._();
@@ -62,6 +64,14 @@ class AppRouter {
           return const KycUploadPage();
         },
       ),
+      GoRoute(
+        path: '/booking_request/:id',
+        name: RouteNames.bookingRequest,
+        builder: (BuildContext context, GoRouterState state) {
+          final id = state.pathParameters['id'] ?? '';
+          return PlaceholderPage(tabName: 'Booking Request for Item: $id');
+        },
+      ),
       StatefulShellRoute.indexedStack(
         builder: (BuildContext context, GoRouterState state, StatefulNavigationShell navigationShell) {
           return AppShell(navigationShell: navigationShell);
@@ -76,6 +86,30 @@ class AppRouter {
                 builder: (BuildContext context, GoRouterState state) {
                   return const MarketplaceHomePage();
                 },
+                routes: <RouteBase>[
+                  GoRoute(
+                    path: 'item/:id',
+                    name: RouteNames.itemDetail,
+                    builder: (BuildContext context, GoRouterState state) {
+                      final id = state.pathParameters['id'] ?? '';
+                      return ItemDetailPage(listingId: id);
+                    },
+                  ),
+                  GoRoute(
+                    path: 'map',
+                    name: RouteNames.mapPreview,
+                    builder: (BuildContext context, GoRouterState state) {
+                      return const MapPreviewOverlay();
+                    },
+                  ),
+                  GoRoute(
+                    path: 'create-listing',
+                    name: RouteNames.createListing,
+                    builder: (BuildContext context, GoRouterState state) {
+                      return const PlaceholderPage(tabName: 'Create Listing');
+                    },
+                  ),
+                ],
               ),
             ],
           ),

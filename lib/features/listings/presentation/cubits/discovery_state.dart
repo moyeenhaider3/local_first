@@ -74,14 +74,16 @@ final class DiscoveryLoaded extends DiscoveryState {
 }
 
 final class DiscoveryEmpty extends DiscoveryState {
+  final List<CategoryEntity> categories;
   final DiscoveryFilters activeFilters;
 
   const DiscoveryEmpty({
+    required this.categories,
     required this.activeFilters,
   });
 
   @override
-  List<Object?> get props => [activeFilters];
+  List<Object?> get props => [categories, activeFilters];
 }
 
 final class DiscoveryError extends DiscoveryState {

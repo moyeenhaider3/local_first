@@ -13,4 +13,9 @@ class RouteNames {
   static const String services = 'services';
   static const String activity = 'activity';
   static const String profile = 'profile';
+
+  static const String itemDetail = 'item_detail';
+  static const String mapPreview = 'map_preview';
+  static const String createListing = 'create_listing';
+  static const String bookingRequest = 'booking_request';
 }

@@ -22,6 +22,9 @@ class DiscoveryCubit extends Cubit<DiscoveryState> {
   /// Returns the current active filters.
   DiscoveryFilters get filters => _filters;
 
+  /// Returns the last query center point.
+  GeoPoint? get lastCenter => _lastCenter;
+
   /// Loads listings and categories based on active filters and location.
   /// Standard coordinates fallback to a default location if Geolocator is disabled/denied.
   Future<void> loadDiscovery({
@@ -77,7 +80,10 @@ class DiscoveryCubit extends Cubit<DiscoveryState> {
             }
 
             if (filteredListings.isEmpty) {
-              emit(DiscoveryEmpty(activeFilters: _filters));
+              emit(DiscoveryEmpty(
+                categories: categories,
+                activeFilters: _filters,
+              ));
             } else {
               emit(DiscoveryLoaded(
                 listings: filteredListings,

@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:local_first/core/cache/cache_manager.dart';
 import 'package:local_first/features/listings/data/datasources/discovery_remote_datasource.dart';
+import 'package:local_first/features/listings/data/datasources/mock_data_service.dart';
 import 'package:local_first/features/listings/data/repositories/discovery_repository_impl.dart';
 import 'package:local_first/features/listings/domain/entities/category_entity.dart';
 import 'package:local_first/features/listings/domain/entities/listing_entity.dart';
@@ -15,6 +16,11 @@ void initDiscoveryDependencies(GetIt sl) {
   );
   sl.registerLazySingleton<CacheManager<List<ListingEntity>>>(
     () => CacheManager<List<ListingEntity>>(),
+  );
+
+  // Mock Data Service
+  sl.registerLazySingleton<MockDataService>(
+    () => MockDataService(firestore: sl()),
   );
 
   // Remote Datasource
