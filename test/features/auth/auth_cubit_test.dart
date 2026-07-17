@@ -88,4 +88,24 @@ void main() {
         'https://storage/kyc/uid-abc/front.jpg');
     await cubit.close();
   });
+
+  test('createProfile without verified phone emits AuthError (no empty path)', () async {
+    final cubit = AuthCubit(repository, submitKyc);
+    final states = <AuthState>[];
+    final sub = cubit.stream.listen(states.add);
+
+    // Never call verifyOtp, so _uid stays null. The entity carries empty ids.
+    await cubit.createProfile(
+      UserEntity(userId: '', phone: '', displayName: 'Amit'),
+    );
+    await Future.delayed(Duration.zero);
+    await sub.cancel();
+
+    expect(states.any((s) => s is AuthError), isTrue);
+    final error = states.lastWhere((s) => s is AuthError) as AuthError;
+    expect(error.message, contains('before phone verification'));
+    // The fake repository must NOT have been asked to write an empty path.
+    expect(repository.lastUid, isNull);
+    await cubit.close();
+  });
 }

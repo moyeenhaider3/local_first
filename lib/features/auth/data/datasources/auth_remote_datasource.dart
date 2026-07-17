@@ -67,6 +67,7 @@ class AuthRemoteDatasource {
   /// Creates or merges the user document (users/{uid}) and a public profile
   /// document (profiles/{uid}).
   Future<void> upsertUserProfile(String uid, UserEntity entity) async {
+    _assertNonEmptyUid(uid);
     final batch = firestore.batch();
     final userDoc = firestore.collection('users').doc(uid);
     final profileDoc = firestore.collection('profiles').doc(uid);
@@ -101,6 +102,7 @@ class AuthRemoteDatasource {
 
   /// Uploads the KYC document image to Storage and returns its download URL.
   Future<String> setKycDocument(String uid, dynamic imageFile) async {
+    _assertNonEmptyUid(uid);
     final ref = storage.ref().child('kyc/$uid/front.jpg');
     final uploadTask = ref.putData(
       await imageFile.readAsBytes(),
@@ -114,9 +116,19 @@ class AuthRemoteDatasource {
   /// Only 'unverified', 'pending', 'rejected' are client-writable; 'verified'
   /// is reserved for admin/Cloud Functions.
   Future<void> updateVerificationStatus(String uid, String status) async {
+    _assertNonEmptyUid(uid);
     await firestore.collection('users').doc(uid).update({
       'verificationStatus': status,
       'updatedAt': FieldValue.serverTimestamp(),
     });
+  }
+
+  /// Guards every Firestore/Storage document path against empty UIDs so we
+  /// surface a clear, actionable error instead of the generic
+  /// "document path must be a non-empty string" from cloud_firestore.
+  void _assertNonEmptyUid(String uid) {
+    if (uid.isEmpty) {
+      throw ArgumentError('Cannot write to Firestore with an empty UID.');
+    }
   }
 }
