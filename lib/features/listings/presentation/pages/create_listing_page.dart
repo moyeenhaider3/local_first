@@ -17,6 +17,7 @@ import 'package:local_first/features/listings/domain/entities/listing_entity.dar
 import 'package:local_first/features/listings/presentation/cubits/discovery_cubit.dart';
 import 'package:local_first/features/listings/presentation/cubits/listing_form_cubit.dart';
 import 'package:local_first/features/listings/presentation/cubits/listing_form_state.dart';
+import 'package:local_first/features/listings/presentation/pages/location_selector_page.dart';
 
 class CreateListingPage extends StatefulWidget {
   const CreateListingPage({super.key});
@@ -47,6 +48,7 @@ class _CreateListingPageState extends State<CreateListingPage> {
   final List<String> _tags = [];
 
   GeoPoint _currentLocation = const GeoPoint(28.6139, 77.2090); // Default New Delhi
+  String _locationAddress = 'Connaught Place, New Delhi';
   bool _isLoadingLocation = true;
   GoogleMapController? _mapController;
 
@@ -158,6 +160,7 @@ class _CreateListingPageState extends State<CreateListingPage> {
           setState(() {
             _currentLocation = point;
             _isLoadingLocation = false;
+            _locationAddress = 'Auto-detected Location';
           });
           _mapController?.animateCamera(
             CameraUpdate.newLatLng(LatLng(pos.latitude, pos.longitude)),
@@ -172,6 +175,26 @@ class _CreateListingPageState extends State<CreateListingPage> {
           _isLoadingLocation = false;
         });
       }
+    }
+  }
+
+  Future<void> _openLocationSelector() async {
+    final result = await Navigator.push<Map<String, dynamic>>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => LocationSelectorPage(initialLocation: _currentLocation),
+      ),
+    );
+    if (result != null) {
+      final point = result['location'] as GeoPoint;
+      final address = result['address'] as String;
+      setState(() {
+        _currentLocation = point;
+        _locationAddress = address;
+      });
+      _mapController?.animateCamera(
+        CameraUpdate.newLatLng(LatLng(point.latitude, point.longitude)),
+      );
     }
   }
 
@@ -230,6 +253,154 @@ class _CreateListingPageState extends State<CreateListingPage> {
         }
       }
       _tagsController.clear();
+    }
+  }
+
+  void _onTabChanged(ListingType newType) async {
+    if (_selectedType == newType) return;
+
+    final hasData = _titleController.text.trim().isNotEmpty ||
+        _descriptionController.text.trim().isNotEmpty ||
+        _priceController.text.trim().isNotEmpty ||
+        _depositController.text.trim().isNotEmpty ||
+        _rateController.text.trim().isNotEmpty ||
+        _images.isNotEmpty ||
+        _tags.isNotEmpty;
+
+    if (hasData) {
+      final proceed = await showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Discard changes?'),
+          content: const Text('Switching directory will clear your current form progress. Do you want to proceed?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('CANCEL'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('PROCEED'),
+            ),
+          ],
+        ),
+      );
+
+      if (proceed != true) return;
+    }
+
+    setState(() {
+      _selectedType = newType;
+      _titleController.clear();
+      _descriptionController.clear();
+      _priceController.clear();
+      _depositController.clear();
+      _rateController.clear();
+      _tagsController.clear();
+      _selectedCategoryId = null;
+      _images.clear();
+      _tags.clear();
+    });
+  }
+
+  IconData _getCategoryIcon(String name) {
+    switch (name) {
+      case 'construction':
+        return Icons.construction;
+      case 'devices':
+        return Icons.devices;
+      case 'directions_car':
+        return Icons.directions_car;
+      case 'terrain':
+        return Icons.terrain;
+      case 'plumbing':
+        return Icons.plumbing;
+      case 'bolt':
+        return Icons.bolt;
+      case 'cleaning_services':
+        return Icons.cleaning_services;
+      default:
+        return Icons.category;
+    }
+  }
+
+  void _showCategorySelector(List<CategoryEntity> categories) async {
+    final spacing = context.spacing;
+    final theme = Theme.of(context);
+
+    final selected = await showModalBottomSheet<CategoryEntity>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return Container(
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surface,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+          ),
+          padding: EdgeInsets.all(spacing.edgeMargin),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Center(
+                child: Container(
+                  width: 40,
+                  height: 4,
+                  margin: const EdgeInsets.only(bottom: 16),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              ),
+              Text(
+                'Select Category',
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: theme.colorScheme.primary,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Flexible(
+                child: ListView.separated(
+                  shrinkWrap: true,
+                  itemCount: categories.length,
+                  separatorBuilder: (context, _) => const Divider(height: 1),
+                  itemBuilder: (context, idx) {
+                    final cat = categories[idx];
+                    final isSelected = cat.id == _selectedCategoryId;
+                    return ListTile(
+                      leading: Icon(
+                        _getCategoryIcon(cat.iconName),
+                        color: isSelected ? theme.colorScheme.primary : Colors.grey,
+                      ),
+                      title: Text(
+                        cat.name,
+                        style: TextStyle(
+                          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                          color: isSelected ? theme.colorScheme.primary : theme.textTheme.bodyLarge?.color,
+                        ),
+                      ),
+                      trailing: isSelected
+                          ? Icon(Icons.check_circle, color: theme.colorScheme.primary)
+                          : null,
+                      onTap: () => Navigator.pop(context, cat),
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(height: 24),
+            ],
+          ),
+        );
+      },
+    );
+
+    if (selected != null) {
+      setState(() {
+        _selectedCategoryId = selected.id;
+      });
     }
   }
 
@@ -351,29 +522,82 @@ class _CreateListingPageState extends State<CreateListingPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // Segmented Type Button
-                  SizedBox(
-                    height: 48,
-                    width: double.infinity,
-                    child: SegmentedButton<ListingType>(
-                      segments: const [
-                        ButtonSegment<ListingType>(
-                          value: ListingType.rental,
-                          label: Text('Rent Item'),
-                          icon: Icon(Icons.shopping_bag_outlined),
+                  // Tab switcher matching Marketplace slate design
+                  Container(
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF1F5F9),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    padding: const EdgeInsets.all(4),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () => _onTabChanged(ListingType.rental),
+                            child: Container(
+                              alignment: Alignment.center,
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              decoration: BoxDecoration(
+                                color: _selectedType == ListingType.rental
+                                    ? theme.colorScheme.surface
+                                    : Colors.transparent,
+                                borderRadius: BorderRadius.circular(6),
+                                boxShadow: _selectedType == ListingType.rental
+                                    ? [
+                                        BoxShadow(
+                                          color: Colors.black.withValues(alpha: 0.05),
+                                          blurRadius: 4,
+                                          offset: const Offset(0, 2),
+                                        )
+                                      ]
+                                    : null,
+                              ),
+                              child: Text(
+                                'RENT ITEMS',
+                                style: theme.textTheme.labelLarge?.copyWith(
+                                  color: _selectedType == ListingType.rental
+                                      ? theme.colorScheme.primary
+                                      : theme.textTheme.bodySmall?.color,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
-                        ButtonSegment<ListingType>(
-                          value: ListingType.service,
-                          label: Text('Offer Service'),
-                          icon: Icon(Icons.work_outline),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () => _onTabChanged(ListingType.service),
+                            child: Container(
+                              alignment: Alignment.center,
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              decoration: BoxDecoration(
+                                color: _selectedType == ListingType.service
+                                    ? theme.colorScheme.surface
+                                    : Colors.transparent,
+                                borderRadius: BorderRadius.circular(6),
+                                boxShadow: _selectedType == ListingType.service
+                                    ? [
+                                        BoxShadow(
+                                          color: Colors.black.withValues(alpha: 0.05),
+                                          blurRadius: 4,
+                                          offset: const Offset(0, 2),
+                                        )
+                                      ]
+                                    : null,
+                              ),
+                              child: Text(
+                                'HIRE SERVICES',
+                                style: theme.textTheme.labelLarge?.copyWith(
+                                  color: _selectedType == ListingType.service
+                                      ? theme.colorScheme.primary
+                                      : theme.textTheme.bodySmall?.color,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
                       ],
-                      selected: {_selectedType},
-                      onSelectionChanged: (Set<ListingType> selection) {
-                        setState(() {
-                          _selectedType = selection.first;
-                        });
-                      },
                     ),
                   ),
                   SizedBox(height: spacing.space16),
@@ -406,20 +630,23 @@ class _CreateListingPageState extends State<CreateListingPage> {
                   ),
                   SizedBox(height: spacing.space16),
 
-                  // Category Dropdown
-                  DropdownButtonFormField<String>(
-                    initialValue: _selectedCategoryId,
-                    decoration: const InputDecoration(
-                      labelText: 'Category',
+                  // Custom Dropdown / Bottom Sheet Category Selector
+                  GestureDetector(
+                    onTap: () => _showCategorySelector(categories),
+                    child: InputDecorator(
+                      decoration: const InputDecoration(
+                        labelText: 'Category',
+                        suffixIcon: Icon(Icons.keyboard_arrow_down),
+                      ),
+                      child: Text(
+                        _selectedCategoryId == null
+                            ? 'Select Category'
+                            : (categories.firstWhere((c) => c.id == _selectedCategoryId, orElse: () => const CategoryEntity(id: '', name: '', iconName: '', listingType: CategoryListingType.both, sortOrder: 0)).name),
+                        style: TextStyle(
+                          color: _selectedCategoryId == null ? Colors.grey.shade600 : theme.textTheme.bodyLarge?.color,
+                        ),
+                      ),
                     ),
-                    items: categories
-                        .map((c) => DropdownMenuItem(value: c.id, child: Text(c.name)))
-                        .toList(),
-                    onChanged: (val) {
-                      setState(() {
-                        _selectedCategoryId = val;
-                      });
-                    },
                   ),
                   SizedBox(height: spacing.space16),
 
@@ -503,49 +730,63 @@ class _CreateListingPageState extends State<CreateListingPage> {
                   ),
                   SizedBox(height: spacing.space16),
 
-                  // Google Map location selector
+                  // Google Map location selector (Tapping map launches LocationSelectorPage)
                   Text(
-                    'Item / Service Location (Tap to change pin)',
+                    'Item / Service Location (Tap map to select address)',
                     style: theme.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
-                  Container(
-                    height: 140,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Colors.grey.shade300),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: _isLoadingLocation
-                          ? const Center(child: CircularProgressIndicator())
-                          : GoogleMap(
-                              onMapCreated: (controller) => _mapController = controller,
-                              initialCameraPosition: CameraPosition(
-                                target: LatLng(_currentLocation.latitude, _currentLocation.longitude),
-                                zoom: 14.0,
+                  GestureDetector(
+                    onTap: _openLocationSelector,
+                    child: Container(
+                      height: 140,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: Colors.grey.shade300),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: _isLoadingLocation
+                            ? const Center(child: CircularProgressIndicator())
+                            : Stack(
+                                children: [
+                                  GoogleMap(
+                                    onMapCreated: (controller) => _mapController = controller,
+                                    initialCameraPosition: CameraPosition(
+                                      target: LatLng(_currentLocation.latitude, _currentLocation.longitude),
+                                      zoom: 14.0,
+                                    ),
+                                    markers: {
+                                      Marker(
+                                        markerId: const MarkerId('selected_pin'),
+                                        position: LatLng(_currentLocation.latitude, _currentLocation.longitude),
+                                        draggable: false,
+                                      ),
+                                    },
+                                    zoomControlsEnabled: false,
+                                    myLocationEnabled: false,
+                                    myLocationButtonEnabled: false,
+                                    scrollGesturesEnabled: false,
+                                    zoomGesturesEnabled: false,
+                                    tiltGesturesEnabled: false,
+                                    rotateGesturesEnabled: false,
+                                    onTap: (_) => _openLocationSelector(),
+                                  ),
+                                  // Intercept all map events
+                                  Positioned.fill(
+                                    child: Container(color: Colors.transparent),
+                                  ),
+                                ],
                               ),
-                              markers: {
-                                Marker(
-                                  markerId: const MarkerId('selected_pin'),
-                                  position: LatLng(_currentLocation.latitude, _currentLocation.longitude),
-                                  draggable: true,
-                                  onDragEnd: (LatLng newLatLng) {
-                                    setState(() {
-                                      _currentLocation = GeoPoint(newLatLng.latitude, newLatLng.longitude);
-                                    });
-                                  },
-                                ),
-                              },
-                              onTap: (LatLng latLng) {
-                                setState(() {
-                                  _currentLocation = GeoPoint(latLng.latitude, latLng.longitude);
-                                });
-                              },
-                              zoomControlsEnabled: false,
-                              myLocationEnabled: true,
-                              myLocationButtonEnabled: false,
-                            ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    'Selected Address: $_locationAddress',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: theme.colorScheme.primary,
                     ),
                   ),
                   SizedBox(height: spacing.space16),
@@ -642,6 +883,8 @@ class _CreateListingPageState extends State<CreateListingPage> {
   Widget _buildImagesSection() {
     final spacing = context.spacing;
     final theme = Theme.of(context);
+    final showAddSlot = _images.length < 5;
+    final totalCount = _images.length + (showAddSlot ? 1 : 0);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -655,52 +898,12 @@ class _CreateListingPageState extends State<CreateListingPage> {
           height: 90,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
-            itemCount: 5,
+            itemCount: totalCount,
             separatorBuilder: (context, _) => SizedBox(width: spacing.space8),
             itemBuilder: (context, index) {
-              if (index < _images.length) {
-                final file = _images[index];
-                return Stack(
-                  children: [
-                    Container(
-                      width: 90,
-                      height: 90,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: Colors.grey.shade300),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: Image.file(
-                          File(file.path),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      top: 4,
-                      right: 4,
-                      child: GestureDetector(
-                        onTap: () => _removeImage(index),
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            color: Colors.red,
-                            shape: BoxShape.circle,
-                          ),
-                          padding: const EdgeInsets.all(4),
-                          child: const Icon(
-                            Icons.close,
-                            color: Colors.white,
-                            size: 14,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                );
-              } else if (index == _images.length) {
+              if (showAddSlot && index == 0) {
                 return GestureDetector(
-                  onTap: () => _pickImage(index),
+                  onTap: () => _pickImage(_images.length),
                   child: Container(
                     width: 90,
                     height: 90,
@@ -730,22 +933,49 @@ class _CreateListingPageState extends State<CreateListingPage> {
                     ),
                   ),
                 );
-              } else {
-                return Container(
-                  width: 90,
-                  height: 90,
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade50,
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                      color: Colors.grey.shade300,
+              }
+
+              final imageIdx = showAddSlot ? index - 1 : index;
+              final file = _images[imageIdx];
+
+              return Stack(
+                children: [
+                  Container(
+                    width: 90,
+                    height: 90,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: Colors.grey.shade300),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.file(
+                        File(file.path),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
-                  child: const Center(
-                    child: Icon(Icons.image, color: Colors.grey),
+                  Positioned(
+                    top: 4,
+                    right: 4,
+                    child: GestureDetector(
+                      onTap: () => _removeImage(imageIdx),
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.red,
+                          shape: BoxShape.circle,
+                        ),
+                        padding: const EdgeInsets.all(4),
+                        child: const Icon(
+                          Icons.close,
+                          color: Colors.white,
+                          size: 14,
+                        ),
+                      ),
+                    ),
                   ),
-                );
-              }
+                ],
+              );
             },
           ),
         ),
