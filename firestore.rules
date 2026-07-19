@@ -116,5 +116,25 @@ service cloud.firestore {
       allow read: if isAgreementParticipant(resource.data.agreementId);
       allow write: if false; // Cloud Function only
     }
+
+    // Payments collection rules
+    match /payments/{paymentId} {
+      allow read: if isAuth() && (
+        request.auth.uid == resource.data.renterId || 
+        request.auth.uid == resource.data.ownerId
+      );
+      allow write: if false; // Server-authoritative Cloud Functions only
+    }
+
+    // Escrows collection rules
+    match /escrows/{escrowId} {
+      allow read: if isAuth() && (
+        request.auth.uid == resource.data.renterId || 
+        request.auth.uid == resource.data.ownerId ||
+        isAgreementParticipant(resource.data.agreementId)
+      );
+      allow write: if false; // Server-authoritative Cloud Functions only
+    }
   }
 }
+

@@ -170,7 +170,7 @@ export const generateEvidencePackage = functions.https.onCall(async (data, conte
   const signedDisputes = await signAllUrlsInObject(disputes);
   const signedRenterKyc = renterKycData ? await signAllUrlsInObject(renterKycData) : null;
 
-  // Return the complete structured package
+  // Return the complete structured package along with legal recourse guidance certificate
   return {
     agreement: signedAgreement,
     versions: signedVersions,
@@ -178,5 +178,20 @@ export const generateEvidencePackage = functions.https.onCall(async (data, conte
     timelineEvents: signedTimelineEvents,
     disputes: signedDisputes,
     renterKyc: signedRenterKyc,
+    legalNoticeGuidance: {
+      platform: "Local First",
+      certificateTitle: "Local First Digital Evidence Package & Statutory Legal Recourse Certificate",
+      statutoryProvisions: {
+        digitalEvidenceAdmissibility: "Bharatiya Sakshya Adhiniyam (BSA), 2023 - Section 63 & Information Technology Act, 2000 - Section 10A",
+        civilRecoveryOfProperty: "Specific Relief Act, 1963 - Section 7 (Recovery of specific movable property) & CPC Order 37",
+        criminalBreachOfTrust: "Bharatiya Nyaya Sanhita (BNS), 2023 - Section 316 & Section 318 (Criminal Breach of Trust & Misappropriation)",
+      },
+      recommendedAvenues: [
+        "1. Pre-Litigation Legal Notice: Send a formal advocate notice demanding item return or monetary settlement within 7-15 days.",
+        "2. Civil Suit for Recovery: File a recovery suit under Section 7 of the Specific Relief Act, 1963 in Civil Court for item recovery or financial damages.",
+        "3. Police FIR / Complaint: File an FIR under BNS Sections 316/318 (Criminal Breach of Trust) at the local police station attaching this evidence package.",
+      ],
+    },
   };
 });
+

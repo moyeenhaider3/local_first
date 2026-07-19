@@ -13,5 +13,9 @@ export { issueMilestoneCode } from "./verification/issueMilestoneCode";
 export { consumeMilestoneCode } from "./verification/consumeMilestoneCode";
 export { createDamageDispute } from "./verification/createDamageDispute";
 export { generateEvidencePackage } from "./verification/generateEvidencePackage";
+export { holdPaymentEscrow } from "./payments/holdPaymentEscrow";
+export { releasePaymentPayout } from "./payments/releasePaymentPayout";
+export { processRefundOrDisputePayout } from "./payments/processRefundOrDisputePayout";
+
 
 

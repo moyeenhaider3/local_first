@@ -11,6 +11,10 @@ import 'package:local_first/features/agreements/presentation/cubits/agreement_ti
 import 'package:local_first/features/agreements/presentation/widgets/status_badge_widget.dart';
 import 'package:local_first/features/agreements/presentation/widgets/timeline_node_widget.dart';
 import 'package:local_first/features/auth/domain/repositories/auth_repository.dart';
+import 'package:local_first/features/payments/presentation/cubits/payment_cubit.dart';
+import 'package:local_first/features/payments/presentation/cubits/payment_state.dart';
+import 'package:local_first/features/payments/presentation/widgets/escrow_deposit_sheet.dart';
+import 'package:local_first/features/payments/presentation/widgets/payout_split_summary_widget.dart';
 import 'package:local_first/features/verification/presentation/widgets/damage_dispute_bottom_sheet.dart';
 import 'package:local_first/features/verification/presentation/widgets/payment_code_bottom_sheet.dart';
 import 'package:local_first/features/verification/presentation/widgets/pickup_code_bottom_sheet.dart';
@@ -19,7 +23,7 @@ import 'package:local_first/features/verification/presentation/widgets/return_co
 /// AGR-01 Active Agreement Timeline Console Page.
 ///
 /// Functions as the central transaction hub showing real-time chronological progress
-/// of an agreement with dynamic action buttons linking to verification sheets.
+/// of an agreement with dynamic action buttons linking to verification sheets and live payment escrow tracking.
 class ActiveAgreementConsolePage extends StatelessWidget {
   /// The agreement ID to load and track in real-time.
   final String agreementId;
@@ -32,119 +36,137 @@ class ActiveAgreementConsolePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: DesignTokens.colorBackground,
-      appBar: AppBar(
-        backgroundColor: DesignTokens.colorSurface,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: DesignTokens.colorTextMain),
-          onPressed: () => context.pop(),
-        ),
-        title: Text(
-          'Rental Agreement Details',
-          style: DesignTokens.h2,
-        ),
-        actions: [
-          BlocBuilder<AgreementTimelineCubit, AgreementTimelineState>(
-            builder: (context, state) {
-              if (state is TimelineUpdated) {
-                return Padding(
-                  padding: const EdgeInsets.only(right: DesignTokens.kEdgeMargin),
-                  child: Center(
-                    child: StatusBadgeWidget(status: state.agreement.status),
-                  ),
-                );
-              }
-              return const SizedBox.shrink();
-            },
+    return BlocProvider<PaymentCubit>(
+      create: (context) => sl<PaymentCubit>()..watchPayment(agreementId),
+      child: Scaffold(
+        backgroundColor: DesignTokens.colorBackground,
+        appBar: AppBar(
+          backgroundColor: DesignTokens.colorSurface,
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: DesignTokens.colorTextMain),
+            onPressed: () => context.pop(),
           ),
-        ],
-      ),
-      body: BlocBuilder<AgreementTimelineCubit, AgreementTimelineState>(
-        builder: (context, state) {
-          if (state is TimelineLoading || state is TimelineInitial) {
-            return const Center(
-              child: CircularProgressIndicator(color: DesignTokens.colorPrimary),
-            );
-          }
-
-          if (state is TimelineError) {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(DesignTokens.kEdgeMargin),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.error_outline, size: 48, color: DesignTokens.colorDanger),
-                    const SizedBox(height: DesignTokens.kSpace16),
-                    Text(
-                      'Failed to load agreement console',
-                      style: DesignTokens.titleMedium.copyWith(fontWeight: FontWeight.bold),
+          title: Text(
+            'Rental Agreement Details',
+            style: DesignTokens.h2,
+          ),
+          actions: [
+            BlocBuilder<AgreementTimelineCubit, AgreementTimelineState>(
+              builder: (context, state) {
+                if (state is TimelineUpdated) {
+                  return Padding(
+                    padding: const EdgeInsets.only(right: DesignTokens.kEdgeMargin),
+                    child: Center(
+                      child: StatusBadgeWidget(status: state.agreement.status),
                     ),
-                    const SizedBox(height: DesignTokens.kSpace8),
-                    Text(
-                      state.message,
-                      style: DesignTokens.bodyMedium.copyWith(color: DesignTokens.colorTextMuted),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-            );
-          }
+                  );
+                }
+                return const SizedBox.shrink();
+              },
+            ),
+          ],
+        ),
+        body: BlocBuilder<AgreementTimelineCubit, AgreementTimelineState>(
+          builder: (context, state) {
+            if (state is TimelineLoading || state is TimelineInitial) {
+              return const Center(
+                child: CircularProgressIndicator(color: DesignTokens.colorPrimary),
+              );
+            }
 
-          if (state is TimelineUpdated) {
-            final agreement = state.agreement;
-            final events = state.events;
-
-            return Column(
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.all(DesignTokens.kEdgeMargin),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        // Agreement Summary Card
-                        _buildSummaryCard(agreement),
-                        const SizedBox(height: DesignTokens.kSpace24),
-                        // Timeline Header
-                        Text(
-                          'TRANSACTION TIMELINE',
-                          style: DesignTokens.bodySmall.copyWith(
-                            color: DesignTokens.colorTextMuted,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 1.2,
-                          ),
-                        ),
-                        const SizedBox(height: DesignTokens.kSpace16),
-                        // Vertical Timeline Tracker
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: events.length,
-                          itemBuilder: (context, index) {
-                            final event = events[index];
-                            return TimelineNodeWidget(
-                              event: event,
-                              isLast: index == events.length - 1,
-                              onActionTap: (evt) => _handleActionTap(context, evt, state),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
+            if (state is TimelineError) {
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(DesignTokens.kEdgeMargin),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.error_outline, size: 48, color: DesignTokens.colorDanger),
+                      const SizedBox(height: DesignTokens.kSpace16),
+                      Text(
+                        'Failed to load agreement console',
+                        style: DesignTokens.titleMedium.copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: DesignTokens.kSpace8),
+                      Text(
+                        state.message,
+                        style: DesignTokens.bodyMedium.copyWith(color: DesignTokens.colorTextMuted),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
                   ),
                 ),
-                // Sticky Bottom WhatsApp Action Button
-                _buildWhatsAppButton(context, agreement),
-              ],
-            );
-          }
+              );
+            }
 
-          return const SizedBox.shrink();
-        },
+            if (state is TimelineUpdated) {
+              final agreement = state.agreement;
+              final events = state.events;
+
+              return Column(
+                children: [
+                  Expanded(
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.all(DesignTokens.kEdgeMargin),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          // Agreement Summary Card
+                          _buildSummaryCard(agreement),
+                          const SizedBox(height: DesignTokens.kSpace16),
+
+                          // Real-time Payment & Escrow Payout Split Summary Widget
+                          BlocBuilder<PaymentCubit, PaymentState>(
+                            builder: (context, paymentState) {
+                              if (paymentState is PaymentLoaded && paymentState.payment != null) {
+                                return PayoutSplitSummaryWidget(payment: paymentState.payment!);
+                              } else if (paymentState is PaymentEscrowHeld) {
+                                return PayoutSplitSummaryWidget(payment: paymentState.payment);
+                              }
+                              return const SizedBox.shrink();
+                            },
+                          ),
+                          const SizedBox(height: DesignTokens.kSpace16),
+
+                          // Timeline Header
+                          Text(
+                            'TRANSACTION TIMELINE',
+                            style: DesignTokens.bodySmall.copyWith(
+                              color: DesignTokens.colorTextMuted,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 1.2,
+                            ),
+                          ),
+                          const SizedBox(height: DesignTokens.kSpace16),
+
+                          // Vertical Timeline Tracker
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: events.length,
+                            itemBuilder: (context, index) {
+                              final event = events[index];
+                              return TimelineNodeWidget(
+                                event: event,
+                                isLast: index == events.length - 1,
+                                onActionTap: (evt) => _handleActionTap(context, evt, state),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  // Sticky Bottom WhatsApp Action Button
+                  _buildWhatsAppButton(context, agreement),
+                ],
+              );
+            }
+
+            return const SizedBox.shrink();
+          },
+        ),
       ),
     );
   }
@@ -315,6 +337,13 @@ class ActiveAgreementConsolePage extends StatelessWidget {
 
     if (route.contains('/home/legal-consent/')) {
       context.push(route);
+    } else if (route.contains('/home/vfy/escrow/')) {
+      EscrowDepositSheet.show(
+        context,
+        agreementId: state.agreement.id,
+        rentalFee: state.agreement.totalAmount,
+        depositAmount: state.agreement.depositAmount,
+      );
     } else if (route.contains('/home/vfy/payment/')) {
       final taskId = route.split('/').last;
       PaymentCodeBottomSheet.show(
@@ -322,6 +351,7 @@ class ActiveAgreementConsolePage extends StatelessWidget {
         taskId: taskId,
         declaredAmount: state.agreement.totalAmount,
         counterpartyName: 'Counterparty',
+        agreementId: state.agreement.id,
       );
     } else if (route.contains('/home/vfy/pickup/')) {
       final taskId = route.split('/').last;
