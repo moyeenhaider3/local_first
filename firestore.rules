@@ -16,6 +16,10 @@ service cloud.firestore {
       allow read: if isAuth();
       allow create, update: if isOwner(userId);
       allow delete: if false; // Only admin can delete (disabled for client)
+
+      match /tokens/{tokenId} {
+        allow read, write: if isOwner(userId);
+      }
     }
 
     // Profiles collection rules
@@ -76,6 +80,41 @@ service cloud.firestore {
     match /consent_records/{consentId} {
       allow read: if isAuth() && request.auth.uid == resource.data.userId;
       allow write: if false; // Only via Cloud Function
+    }
+
+    // Helper to check if user is agreement participant
+    function isAgreementParticipant(agreementId) {
+      return isAuth() && (
+        request.auth.uid == get(/databases/$(database)/documents/agreements/$(agreementId)).data.initiatorId ||
+        request.auth.uid == get(/databases/$(database)/documents/agreements/$(agreementId)).data.counterpartyId
+      );
+    }
+
+    // Verification Tasks collection rules
+    match /verification_tasks/{taskId} {
+      allow read: if isAuth() && (
+        request.auth.uid == resource.data.initiatedById || 
+        request.auth.uid == resource.data.verifierId
+      );
+      allow write: if false; // Cloud Function only
+    }
+
+    // Milestone Codes collection rules (code-read isolation)
+    match /milestone_codes/{taskId} {
+      allow read: if isAuth() && request.auth.uid == resource.data.issuedToUserId;
+      allow write: if false; // Cloud Function only
+    }
+
+    // Disputes collection rules
+    match /disputes/{disputeId} {
+      allow read: if isAgreementParticipant(resource.data.agreementId);
+      allow write: if false; // Cloud Function only
+    }
+
+    // Timeline Events collection rules
+    match /timeline_events/{eventId} {
+      allow read: if isAgreementParticipant(resource.data.agreementId);
+      allow write: if false; // Cloud Function only
     }
   }
 }

@@ -8,3 +8,8 @@ export { createRequest } from "./booking/createRequest";
 export { acceptRequest } from "./booking/acceptRequest";
 export { generateAgreementVersion } from "./booking/generateAgreementVersion";
 export { recordAgreementConsent } from "./booking/recordAgreementConsent";
+export { issueMilestoneCode } from "./verification/issueMilestoneCode";
+export { consumeMilestoneCode } from "./verification/consumeMilestoneCode";
+export { createDamageDispute } from "./verification/createDamageDispute";
+export { generateEvidencePackage } from "./verification/generateEvidencePackage";
+
