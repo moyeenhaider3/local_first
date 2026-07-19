@@ -134,4 +134,20 @@ class AuthCubit extends Cubit<AuthState> {
       }
     });
   }
+
+  /// Signs out current active user session and resets auth state to initial.
+  Future<void> signOut() async {
+    emit(const AuthLoading());
+    final result = await repository.signOut();
+    result.fold(
+      (failure) => emit(AuthError(failure)),
+      (_) {
+        _uid = null;
+        _verificationId = null;
+        _phone = null;
+        emit(const AuthInitial());
+      },
+    );
+  }
 }
+

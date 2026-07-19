@@ -16,6 +16,11 @@ export { generateEvidencePackage } from "./verification/generateEvidencePackage"
 export { holdPaymentEscrow } from "./payments/holdPaymentEscrow";
 export { releasePaymentPayout } from "./payments/releasePaymentPayout";
 export { processRefundOrDisputePayout } from "./payments/processRefundOrDisputePayout";
+export { bookServiceWorker } from "./hire/bookServiceWorker";
+export { completeService } from "./hire/completeService";
+export { calculateTrustScore } from "./trust/calculateTrustScore";
+
+
 
 
 

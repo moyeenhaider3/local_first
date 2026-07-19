@@ -13,6 +13,8 @@ import 'package:local_first/features/listings/data/discovery_dependencies.dart';
 import 'package:local_first/features/verification/data/verification_dependencies.dart';
 
 import 'package:local_first/features/payments/data/payment_dependencies.dart';
+import 'package:local_first/features/profile/data/profile_dependencies.dart';
+import 'package:local_first/features/services/data/services_dependencies.dart';
 
 /// Global service locator instance.
 final sl = GetIt.instance;
@@ -49,5 +51,8 @@ Future<void> initDependencies() async {
 void initAgreementDependencies(GetIt sl) {
   initAgreementTimelineDependencies(sl);
 }
-void initHireDependencies(GetIt sl) {}
-void initProfileDependencies(GetIt sl) {}
+void initHireDependencies(GetIt sl) {
+  initServicesDependencies(sl);
+}
+
+

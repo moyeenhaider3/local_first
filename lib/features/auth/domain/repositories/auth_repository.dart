@@ -19,4 +19,8 @@ abstract class AuthRepository {
 
   /// Fetches a user document from Firestore (users/{uid}), returning the entity.
   Future<Either<Failure, UserEntity?>> getUser(String uid);
+
+  /// Signs out the active user authentication session.
+  Future<Either<Failure, void>> signOut();
 }
+

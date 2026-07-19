@@ -27,4 +27,23 @@ class RouteNames {
   static const String adminPanel = 'admin_panel';
   static const String adminKycReview = 'admin_kyc_review';
   static const String adminUserManagement = 'admin_user_management';
+
+  /// Service worker public profile page route name.
+  static const String workerProfile = 'worker_profile';
+
+  /// Service request booking bottom sheet / modal route name.
+  static const String serviceBooking = 'service_booking';
+
+  /// Service worker incoming job management dashboard route name.
+  static const String workerDashboard = 'worker_dashboard';
+
+  /// User profile settings hub route name.
+  static const String settings = 'settings';
+
+  /// Trust score & peer review profile route name.
+  static const String trustProfile = 'trust_profile';
+
+  /// Support ticket creation modal route name.
+  static const String supportTicket = 'support_ticket';
 }
+

@@ -31,6 +31,13 @@ import 'package:local_first/features/agreements/presentation/cubits/agreement_ti
 import 'package:local_first/features/agreements/presentation/cubits/transactions_cubit.dart';
 import 'package:local_first/features/agreements/presentation/pages/active_agreement_console_page.dart';
 import 'package:local_first/features/agreements/presentation/pages/transactions_history_page.dart';
+import 'package:local_first/features/services/presentation/cubits/services_cubit.dart';
+import 'package:local_first/features/services/presentation/pages/worker_dashboard_page.dart';
+import 'package:local_first/features/services/presentation/pages/worker_profile_page.dart';
+import 'package:local_first/features/profile/presentation/cubits/profile_hub_cubit.dart';
+import 'package:local_first/features/profile/presentation/pages/settings_hub_page.dart';
+import 'package:local_first/features/profile/presentation/pages/trust_score_profile_page.dart';
+
 
 class AppRouter {
   AppRouter._();
@@ -217,6 +224,17 @@ class AppRouter {
                       );
                     },
                   ),
+                  GoRoute(
+                    path: 'worker/:id',
+                    name: RouteNames.workerProfile,
+                    builder: (BuildContext context, GoRouterState state) {
+                      final id = state.pathParameters['id'] ?? '';
+                      return BlocProvider<ServicesCubit>(
+                        create: (_) => sl<ServicesCubit>(),
+                        child: WorkerProfilePage(workerId: id),
+                      );
+                    },
+                  ),
                 ],
               ),
             ],
@@ -228,7 +246,10 @@ class AppRouter {
                 path: '/home/services',
                 name: RouteNames.services,
                 builder: (BuildContext context, GoRouterState state) {
-                  return const PlaceholderPage(tabName: 'Services');
+                  return BlocProvider<ServicesCubit>(
+                    create: (_) => sl<ServicesCubit>(),
+                    child: const WorkerDashboardPage(),
+                  );
                 },
               ),
             ],
@@ -255,8 +276,23 @@ class AppRouter {
                 path: '/home/profile',
                 name: RouteNames.profile,
                 builder: (BuildContext context, GoRouterState state) {
-                  return const PlaceholderPage(tabName: 'Profile');
+                  return BlocProvider<ProfileHubCubit>(
+                    create: (_) => sl<ProfileHubCubit>(),
+                    child: const SettingsHubPage(),
+                  );
                 },
+                routes: <RouteBase>[
+                  GoRoute(
+                    path: 'trust',
+                    name: RouteNames.trustProfile,
+                    builder: (BuildContext context, GoRouterState state) {
+                      return BlocProvider<ProfileHubCubit>(
+                        create: (_) => sl<ProfileHubCubit>(),
+                        child: const TrustScoreProfilePage(),
+                      );
+                    },
+                  ),
+                ],
               ),
             ],
           ),
@@ -265,3 +301,4 @@ class AppRouter {
     ],
   );
 }
+

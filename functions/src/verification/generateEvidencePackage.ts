@@ -170,6 +170,46 @@ export const generateEvidencePackage = functions.https.onCall(async (data, conte
   const signedDisputes = await signAllUrlsInObject(disputes);
   const signedRenterKyc = renterKycData ? await signAllUrlsInObject(renterKycData) : null;
 
+  // Determine agreement category (Item Rental vs Hire Service)
+  const isServiceAgreement =
+    agreementData.agreementType === "service" ||
+    agreementData.requestType === "hire" ||
+    !!agreementData.workerId ||
+    !agreementData.listingId;
+
+  const legalNoticeGuidance = isServiceAgreement
+    ? {
+        platform: "Local First",
+        agreementType: "Hire Service Agreement",
+        certificateTitle: "Local First Service Contract Evidence & Statutory Legal Recourse Certificate",
+        statutoryProvisions: {
+          digitalEvidenceAdmissibility: "Bharatiya Sakshya Adhiniyam (BSA), 2023 - Section 63 & Information Technology Act, 2000 - Section 10A",
+          serviceContractBreach: "Indian Contract Act, 1872 - Section 73 (Compensation for loss or damage caused by breach of service contract)",
+          deficiencyOfService: "Consumer Protection Act, 2019 - Section 2(11) & Section 35 (Deficiency of Service in District Consumer Forum)",
+          cheatingAndMisrepresentation: "Bharatiya Nyaya Sanhita (BNS), 2023 - Section 318 (Cheating) & Section 316 (Criminal Breach of Trust)",
+        },
+        recommendedAvenues: [
+          "1. Pre-Litigation Legal Notice: Send a formal advocate notice demanding monetary compensation or refund for breach of service contract within 7-15 days.",
+          "2. Consumer Forum Complaint: File a complaint under Section 35 of the Consumer Protection Act, 2019 in the District Consumer Disputes Redressal Commission for deficiency of service.",
+          "3. Civil Suit for Compensation: File a summary civil suit under Section 73 of the Indian Contract Act, 1872 in Civil Court for financial damages.",
+        ],
+      }
+    : {
+        platform: "Local First",
+        agreementType: "Item Rental Agreement",
+        certificateTitle: "Local First Digital Evidence Package & Statutory Legal Recourse Certificate",
+        statutoryProvisions: {
+          digitalEvidenceAdmissibility: "Bharatiya Sakshya Adhiniyam (BSA), 2023 - Section 63 & Information Technology Act, 2000 - Section 10A",
+          civilRecoveryOfProperty: "Specific Relief Act, 1963 - Section 7 (Recovery of specific movable property) & CPC Order 37",
+          criminalBreachOfTrust: "Bharatiya Nyaya Sanhita (BNS), 2023 - Section 316 & Section 318 (Criminal Breach of Trust & Misappropriation)",
+        },
+        recommendedAvenues: [
+          "1. Pre-Litigation Legal Notice: Send a formal advocate notice demanding item return or monetary settlement within 7-15 days.",
+          "2. Civil Suit for Recovery: File a recovery suit under Section 7 of the Specific Relief Act, 1963 in Civil Court for item recovery or financial damages.",
+          "3. Police FIR / Complaint: File an FIR under BNS Sections 316/318 (Criminal Breach of Trust) at the local police station attaching this evidence package.",
+        ],
+      };
+
   // Return the complete structured package along with legal recourse guidance certificate
   return {
     agreement: signedAgreement,
@@ -178,20 +218,7 @@ export const generateEvidencePackage = functions.https.onCall(async (data, conte
     timelineEvents: signedTimelineEvents,
     disputes: signedDisputes,
     renterKyc: signedRenterKyc,
-    legalNoticeGuidance: {
-      platform: "Local First",
-      certificateTitle: "Local First Digital Evidence Package & Statutory Legal Recourse Certificate",
-      statutoryProvisions: {
-        digitalEvidenceAdmissibility: "Bharatiya Sakshya Adhiniyam (BSA), 2023 - Section 63 & Information Technology Act, 2000 - Section 10A",
-        civilRecoveryOfProperty: "Specific Relief Act, 1963 - Section 7 (Recovery of specific movable property) & CPC Order 37",
-        criminalBreachOfTrust: "Bharatiya Nyaya Sanhita (BNS), 2023 - Section 316 & Section 318 (Criminal Breach of Trust & Misappropriation)",
-      },
-      recommendedAvenues: [
-        "1. Pre-Litigation Legal Notice: Send a formal advocate notice demanding item return or monetary settlement within 7-15 days.",
-        "2. Civil Suit for Recovery: File a recovery suit under Section 7 of the Specific Relief Act, 1963 in Civil Court for item recovery or financial damages.",
-        "3. Police FIR / Complaint: File an FIR under BNS Sections 316/318 (Criminal Breach of Trust) at the local police station attaching this evidence package.",
-      ],
-    },
+    legalNoticeGuidance,
   };
 });
 

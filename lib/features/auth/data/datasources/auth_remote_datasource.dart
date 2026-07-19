@@ -173,6 +173,16 @@ class AuthRemoteDatasource {
     }
   }
 
+  /// Signs out the active user session from Firebase Auth.
+  Future<void> signOut() async {
+    try {
+      await firebaseAuth.signOut();
+    } catch (e) {
+      throw ServerException(e.toString());
+    }
+  }
+
+
   /// Guards every Firestore/Storage document path against empty UIDs so we
   /// surface a clear, actionable error instead of the generic
   /// "document path must be a non-empty string" from cloud_firestore.

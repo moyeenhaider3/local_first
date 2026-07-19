@@ -8,7 +8,7 @@ export const createDamageDispute = functions.https.onCall(async (data, context) 
     throw new functions.https.HttpsError("unauthenticated", "User must be authenticated.");
   }
 
-  const { agreementId, disputeType, description, photoUrls } = data;
+  const { agreementId, disputeType, description, photoUrls, compensationRequestedAmount } = data;
   if (!agreementId || !disputeType || !description || !Array.isArray(photoUrls)) {
     throw new functions.https.HttpsError(
       "invalid-argument",
@@ -43,8 +43,8 @@ export const createDamageDispute = functions.https.onCall(async (data, context) 
     );
   }
 
-  // 4. Validation: Status check
-  const allowedStatuses = ["active", "returnPending", "itemReturned"];
+  // 4. Validation: Status check (supports item rental and hire service lifecycle states)
+  const allowedStatuses = ["active", "returnPending", "itemReturned", "inProgress", "accepted", "completed"];
   if (!allowedStatuses.includes(agreementData.status)) {
     throw new functions.https.HttpsError(
       "failed-precondition",
@@ -73,6 +73,7 @@ export const createDamageDispute = functions.https.onCall(async (data, context) 
     disputeType,
     description,
     photoUrls,
+    compensationRequestedAmount: typeof compensationRequestedAmount === "number" ? compensationRequestedAmount : null,
     status: "open",
     createdAt: admin.firestore.FieldValue.serverTimestamp(),
   });
