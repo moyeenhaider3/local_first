@@ -57,6 +57,7 @@ class AvailabilityToggle extends StatelessWidget {
               'Available',
               style: theme.textTheme.labelMedium?.copyWith(
                 fontWeight: FontWeight.bold,
+                color: _getBadgeColor(WorkerAvailability.availableNow, theme),
               ),
             ),
             icon: Icon(
@@ -71,6 +72,7 @@ class AvailabilityToggle extends StatelessWidget {
               'Busy',
               style: theme.textTheme.labelMedium?.copyWith(
                 fontWeight: FontWeight.bold,
+                color: _getBadgeColor(WorkerAvailability.busy, theme),
               ),
             ),
             icon: Icon(
@@ -85,6 +87,7 @@ class AvailabilityToggle extends StatelessWidget {
               'Offline',
               style: theme.textTheme.labelMedium?.copyWith(
                 fontWeight: FontWeight.bold,
+                color: _getBadgeColor(WorkerAvailability.inactive, theme),
               ),
             ),
             icon: Icon(
