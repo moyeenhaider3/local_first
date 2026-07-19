@@ -27,6 +27,10 @@ import 'package:local_first/features/agreements/presentation/pages/legal_consent
 import 'package:local_first/features/agreements/presentation/pages/owner_request_review_page.dart';
 import 'package:local_first/features/agreements/presentation/widgets/booking_schedule_bottom_sheet.dart';
 import 'package:local_first/features/agreements/presentation/widgets/whatsapp_redirect_bottom_sheet.dart';
+import 'package:local_first/features/agreements/presentation/cubits/agreement_timeline_cubit.dart';
+import 'package:local_first/features/agreements/presentation/cubits/transactions_cubit.dart';
+import 'package:local_first/features/agreements/presentation/pages/active_agreement_console_page.dart';
+import 'package:local_first/features/agreements/presentation/pages/transactions_history_page.dart';
 
 class AppRouter {
   AppRouter._();
@@ -202,6 +206,17 @@ class AppRouter {
                       return WhatsAppRedirectBottomSheet(requestId: requestId);
                     },
                   ),
+                  GoRoute(
+                    path: 'agreement/:id',
+                    name: RouteNames.agreementConsole,
+                    builder: (BuildContext context, GoRouterState state) {
+                      final agreementId = state.pathParameters['id'] ?? '';
+                      return BlocProvider<AgreementTimelineCubit>(
+                        create: (_) => sl<AgreementTimelineCubit>()..listenAgreement(agreementId),
+                        child: ActiveAgreementConsolePage(agreementId: agreementId),
+                      );
+                    },
+                  ),
                 ],
               ),
             ],
@@ -225,7 +240,10 @@ class AppRouter {
                 path: '/home/activity',
                 name: RouteNames.activity,
                 builder: (BuildContext context, GoRouterState state) {
-                  return const PlaceholderPage(tabName: 'Activity');
+                  return BlocProvider<TransactionsCubit>(
+                    create: (_) => sl<TransactionsCubit>()..loadAgreements(),
+                    child: const TransactionsHistoryPage(),
+                  );
                 },
               ),
             ],

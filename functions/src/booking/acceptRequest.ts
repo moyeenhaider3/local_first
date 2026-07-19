@@ -109,7 +109,61 @@ export const acceptRequest = functions.https.onCall(async (data, context) => {
     transaction.set(agreementRef, agreementPayload);
   });
 
-  // 9. Send FCM to requester (renter) — placeholder
+  // 9. Auto-decline conflicting pending requests for the same listing
+  try {
+    const pendingRequestsSnapshot = await db
+      .collection("requests")
+      .where("listingId", "==", requestData.listingId)
+      .where("status", "in", ["sent", "viewed"])
+      .get();
+
+    const batch = db.batch();
+    const autoDeclinedRequesters: { requesterId: string; requestId: string }[] = [];
+
+    for (const doc of pendingRequestsSnapshot.docs) {
+      if (doc.id !== requestId) {
+        batch.update(doc.ref, {
+          status: "rejected",
+          rejectionReason: "Listing booked for requested dates",
+          updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+        });
+        const reqData = doc.data();
+        if (reqData.requesterId) {
+          autoDeclinedRequesters.push({
+            requesterId: reqData.requesterId,
+            requestId: doc.id,
+          });
+        }
+      }
+    }
+
+    if (autoDeclinedRequesters.length > 0) {
+      await batch.commit();
+
+      // Send FCM notification to auto-declined requesters
+      for (const item of autoDeclinedRequesters) {
+        try {
+          const userDoc = await db.collection("users").doc(item.requesterId).get();
+          const userData = userDoc.data();
+          if (userData && userData.fcmToken) {
+            await admin.messaging().send({
+              notification: {
+                title: "Request Declined",
+                body: `Your request for ${requestData.listingTitle} was declined as the item was booked for requested dates.`,
+              },
+              token: userData.fcmToken,
+            });
+          }
+        } catch (fcmError) {
+          console.error(`Failed to send FCM to auto-declined user ${item.requesterId}:`, fcmError);
+        }
+      }
+    }
+  } catch (autoDeclineError) {
+    console.error("Error auto-declining conflicting requests:", autoDeclineError);
+  }
+
+  // 10. Send FCM to requester (renter) of accepted request
   try {
     const renterDoc = await db.collection("users").doc(requestData.requesterId).get();
     const renterData = renterDoc.data();

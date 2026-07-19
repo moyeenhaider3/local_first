@@ -15,10 +15,12 @@ class DesignTokens {
   static const Color colorSuccess = Color(0xFF16A34A); // Green 600
   static const Color colorWarning = Color(0xFFD97706); // Amber 600
   static const Color colorDanger = Color(0xFFDC2626); // Red 600
+  static const Color colorBackground = colorBgDark;
 
   // ── Spacing (8dp grid, design.md §1.2) ─────────────────────────
   static const double kSpace4 = 4.0;
   static const double kSpace8 = 8.0;
+  static const double kSpace12 = 12.0;
   static const double kSpace16 = 16.0;
   static const double kSpace24 = 24.0;
   static const double kSpace32 = 32.0;
@@ -61,6 +63,14 @@ class DesignTokens {
     fontSize: 16,
     fontWeight: FontWeight.w400,
     height: 24 / 16,
+    color: colorTextMain,
+    fontFamily: fontFamily,
+  );
+
+  static const TextStyle bodyMedium = TextStyle(
+    fontSize: 15,
+    fontWeight: FontWeight.w400,
+    height: 22 / 15,
     color: colorTextMain,
     fontFamily: fontFamily,
   );

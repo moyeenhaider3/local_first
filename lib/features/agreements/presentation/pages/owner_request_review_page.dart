@@ -62,6 +62,7 @@ class _OwnerRequestReviewPageState extends State<OwnerRequestReviewPage> {
     };
   }
 
+  /// Displays a confirmation dialog for accepting a booking request.
   void _showAcceptDialog(BuildContext context, String renterName) {
     showDialog(
       context: context,
@@ -89,6 +90,7 @@ class _OwnerRequestReviewPageState extends State<OwnerRequestReviewPage> {
     );
   }
 
+  /// Displays a modal dialog allowing the owner to specify an optional rejection reason.
   void _showRejectDialog(BuildContext context) {
     final TextEditingController reasonController = TextEditingController();
     showDialog(

@@ -1,7 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:local_first/features/agreements/domain/entities/request_entity.dart';
 
+/// Data Model: Request Model
+///
+/// Handles Firestore serialization, JSON conversion, and domain entity mapping for [RequestEntity].
 class RequestModel extends RequestEntity {
+  /// Creates a [RequestModel] instance.
   const RequestModel({
     required super.id,
     required super.listingId,
@@ -16,6 +20,7 @@ class RequestModel extends RequestEntity {
     required super.estimatedTotal,
     super.estimatedDeposit,
     super.message,
+    super.rejectionReason,
     required super.expiresAt,
     required super.createdAt,
     required super.updatedAt,
@@ -37,6 +42,7 @@ class RequestModel extends RequestEntity {
       estimatedTotal: entity.estimatedTotal,
       estimatedDeposit: entity.estimatedDeposit,
       message: entity.message,
+      rejectionReason: entity.rejectionReason,
       expiresAt: entity.expiresAt,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
@@ -71,6 +77,7 @@ class RequestModel extends RequestEntity {
       estimatedTotal: (json['estimatedTotal'] as num?)?.toDouble() ?? 0.0,
       estimatedDeposit: (json['estimatedDeposit'] as num?)?.toDouble(),
       message: json['message'] as String?,
+      rejectionReason: json['rejectionReason'] as String?,
       expiresAt: expires is Timestamp
           ? expires.toDate()
           : (expires is String ? DateTime.parse(expires) : DateTime.now()),
@@ -83,6 +90,7 @@ class RequestModel extends RequestEntity {
     );
   }
 
+  /// Helper method to parse request status string into [RequestStatus] enum.
   static RequestStatus _parseStatus(String? statusStr) {
     switch (statusStr) {
       case 'viewed':
@@ -121,6 +129,7 @@ class RequestModel extends RequestEntity {
       estimatedTotal: estimatedTotal,
       estimatedDeposit: estimatedDeposit,
       message: message,
+      rejectionReason: rejectionReason,
       expiresAt: expiresAt,
       createdAt: createdAt,
       updatedAt: updatedAt,
@@ -142,6 +151,7 @@ class RequestModel extends RequestEntity {
       'estimatedTotal': estimatedTotal,
       'estimatedDeposit': estimatedDeposit,
       'message': message,
+      'rejectionReason': rejectionReason,
       'expiresAt': expiresAt.toUtc().toIso8601String(),
       'createdAt': createdAt.toUtc().toIso8601String(),
       'updatedAt': updatedAt.toUtc().toIso8601String(),

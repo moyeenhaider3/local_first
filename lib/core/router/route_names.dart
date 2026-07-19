@@ -22,6 +22,7 @@ class RouteNames {
   static const String legalConsent = 'legal_consent';
   static const String ownerRequestReview = 'owner_request_review';
   static const String whatsappRedirect = 'whatsapp_redirect';
+  static const String agreementConsole = 'agreement_console';
 
   static const String adminPanel = 'admin_panel';
   static const String adminKycReview = 'admin_kyc_review';

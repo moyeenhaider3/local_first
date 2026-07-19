@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:local_first/core/notifications/fcm_service.dart';
 import 'package:local_first/features/admin/data/admin_dependencies.dart';
+import 'package:local_first/features/agreements/data/agreement_timeline_dependencies.dart';
 import 'package:local_first/features/agreements/data/booking_dependencies.dart';
 import 'package:local_first/features/auth/data/auth_dependencies.dart';
 import 'package:local_first/features/listings/data/discovery_dependencies.dart';
@@ -42,6 +43,8 @@ Future<void> initDependencies() async {
 }
 
 // Future features DI stubs (implemented in respective booking, verification, agreement, hire, and profile phases)
-void initAgreementDependencies(GetIt sl) {}
+void initAgreementDependencies(GetIt sl) {
+  initAgreementTimelineDependencies(sl);
+}
 void initHireDependencies(GetIt sl) {}
 void initProfileDependencies(GetIt sl) {}
