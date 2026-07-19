@@ -24,3 +24,8 @@ class AuthFailure extends Failure {
 class CacheFailure extends Failure {
   const CacheFailure([super.message = 'Cache operation failed.']);
 }
+
+/// Failure resulting from validation or business rule violations.
+class ValidationFailure extends Failure {
+  const ValidationFailure([super.message = 'Validation failed.']);
+}
