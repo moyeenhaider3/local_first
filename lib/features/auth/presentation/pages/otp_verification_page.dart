@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-
 import 'package:local_first/core/router/route_names.dart';
 import 'package:local_first/core/theme/app_theme.dart';
 import 'package:local_first/features/auth/presentation/cubits/auth_cubit.dart';
@@ -23,9 +22,14 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
   static const int _codeLength = 6;
   static const int _resendSeconds = 45;
 
-  final List<TextEditingController> _controllers =
-      List.generate(_codeLength, (_) => TextEditingController());
-  final List<FocusNode> _focusNodes = List.generate(_codeLength, (_) => FocusNode());
+  final List<TextEditingController> _controllers = List.generate(
+    _codeLength,
+    (_) => TextEditingController(),
+  );
+  final List<FocusNode> _focusNodes = List.generate(
+    _codeLength,
+    (_) => FocusNode(),
+  );
   int _secondsLeft = _resendSeconds;
   bool _showError = false;
   Timer? _resendTimer;
@@ -69,7 +73,9 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
 
   String get _maskedPhone {
     final digits = widget.phone;
-    final visible = digits.length >= 4 ? digits.substring(digits.length - 4) : digits;
+    final visible = digits.length >= 4
+        ? digits.substring(digits.length - 4)
+        : digits;
     return '+91 XXXX$visible';
   }
 
@@ -95,6 +101,8 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
         if (state is AuthSuccess) {
           if (!state.hasProfile) {
             context.goNamed(RouteNames.profileSetup);
+          } else if (!state.hasKyc) {
+            context.goNamed(RouteNames.kycUpload);
           } else {
             context.goNamed(RouteNames.home);
           }
@@ -112,13 +120,19 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
               children: [
                 SizedBox(height: spacing.space16),
                 IconButton(
-                  icon: Icon(Icons.arrow_back, color: theme.colorScheme.secondary),
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: theme.colorScheme.secondary,
+                  ),
                   onPressed: () => context.pop(),
                   alignment: Alignment.centerLeft,
                   padding: EdgeInsets.zero,
                 ),
                 SizedBox(height: spacing.space8),
-                Text('Verification Code', style: theme.textTheme.headlineMedium),
+                Text(
+                  'Verification Code',
+                  style: theme.textTheme.headlineMedium,
+                ),
                 SizedBox(height: spacing.space8),
                 Text(
                   'We sent a verification code to $_maskedPhone',
@@ -127,13 +141,18 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
                 SizedBox(height: spacing.space32),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: List.generate(_codeLength, (i) => _otpBox(index: i)),
+                  children: List.generate(
+                    _codeLength,
+                    (i) => _otpBox(index: i),
+                  ),
                 ),
                 if (_showError) ...[
                   SizedBox(height: spacing.space8),
                   Text(
                     'Invalid code. Please try again.',
-                    style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.error),
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color: theme.colorScheme.error,
+                    ),
                   ),
                 ],
                 SizedBox(height: spacing.space8),
@@ -144,7 +163,10 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
                   style: theme.textTheme.labelSmall,
                 ),
                 const Spacer(),
-                _StickyVerifyButton(onPressed: _maybeVerify, showError: _showError),
+                _StickyVerifyButton(
+                  onPressed: _maybeVerify,
+                  showError: _showError,
+                ),
               ],
             ),
           ),
@@ -173,19 +195,25 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
             borderSide: BorderSide(
-              color: _showError ? theme.colorScheme.error : theme.colorScheme.primary,
+              color: _showError
+                  ? theme.colorScheme.error
+                  : theme.colorScheme.primary,
             ),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
             borderSide: BorderSide(
-              color: _showError ? theme.colorScheme.error : (theme.textTheme.bodySmall?.color ?? Colors.grey),
+              color: _showError
+                  ? theme.colorScheme.error
+                  : (theme.textTheme.bodySmall?.color ?? Colors.grey),
             ),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
             borderSide: BorderSide(
-              color: _showError ? theme.colorScheme.error : theme.colorScheme.primary,
+              color: _showError
+                  ? theme.colorScheme.error
+                  : theme.colorScheme.primary,
             ),
           ),
         ),
@@ -221,10 +249,15 @@ class _StickyVerifyButton extends StatelessWidget {
               key: const Key('VERIFY CODE'),
               onPressed: !isLoading ? onPressed : null,
               style: ElevatedButton.styleFrom(
-                backgroundColor:
-                    showError ? theme.colorScheme.error : theme.colorScheme.primary,
-                disabledBackgroundColor: theme.colorScheme.primary.withValues(alpha: 0.4),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                backgroundColor: showError
+                    ? theme.colorScheme.error
+                    : theme.colorScheme.primary,
+                disabledBackgroundColor: theme.colorScheme.primary.withValues(
+                  alpha: 0.4,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
               child: isLoading
                   ? SizedBox(
@@ -237,7 +270,9 @@ class _StickyVerifyButton extends StatelessWidget {
                     )
                   : Text(
                       'VERIFY CODE',
-                      style: theme.textTheme.labelLarge?.copyWith(color: theme.colorScheme.surface),
+                      style: theme.textTheme.labelLarge?.copyWith(
+                        color: theme.colorScheme.surface,
+                      ),
                     ),
             );
           },

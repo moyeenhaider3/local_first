@@ -15,6 +15,16 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
+  // Point to local Firebase Emulators in debug/development mode
+  // if (kDebugMode) {
+  //   final host = defaultTargetPlatform == TargetPlatform.android
+  //       ? '10.0.2.2'
+  //       : 'localhost';
+  //   FirebaseFirestore.instance.useFirestoreEmulator(host, 8080);
+  //   FirebaseFunctions.instance.useFunctionsEmulator(host, 5001);
+  //   debugPrint('Connecting to Firebase Emulators on host: $host');
+  // }
+
   // Initialize dependency injection service locator
   await initDependencies();
 
@@ -24,8 +34,19 @@ Future<void> main() async {
   // Initialize global error handling hooks
   ErrorHandler.init();
   if (kDebugMode) {
-    await FirebaseAuth.instance.setSettings(appVerificationDisabledForTesting: true);
+    await FirebaseAuth.instance.setSettings(
+      appVerificationDisabledForTesting: true,
+    );
   }
+  // if (kDebugMode) {
+  //   // Use '10.0.2.2' for Android Emulator to connect to host computer's localhost, otherwise 'localhost'
+  //   final host = defaultTargetPlatform == TargetPlatform.android
+  //       ? '10.0.2.2'
+  //       : 'localhost';
+
+  //   FirebaseFirestore.instance.useFirestoreEmulator(host, 8080);
+  //   FirebaseFunctions.instance.useFunctionsEmulator(host, 5001);
+  // }
 
   runApp(const AppRoot());
 }
@@ -45,12 +66,8 @@ class AppRoot extends StatelessWidget {
 
     return MultiBlocProvider(
       providers: [
-        BlocProvider<AuthCubit>(
-          create: (_) => authCubit,
-        ),
-        BlocProvider<DiscoveryCubit>(
-          create: (_) => sl<DiscoveryCubit>(),
-        ),
+        BlocProvider<AuthCubit>(create: (_) => authCubit),
+        BlocProvider<DiscoveryCubit>(create: (_) => sl<DiscoveryCubit>()),
       ],
       child: MaterialApp.router(
         title: 'Local First',

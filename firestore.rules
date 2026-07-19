@@ -18,6 +18,13 @@ service cloud.firestore {
       allow delete: if false; // Only admin can delete (disabled for client)
     }
 
+    // Profiles collection rules
+    match /profiles/{userId} {
+      allow read: if isAuth();
+      allow create, update: if isOwner(userId);
+      allow delete: if false;
+    }
+
     // KYC Records collection rules
     match /kyc_records/{userId} {
       allow read: if isOwner(userId) || (isAuth() && request.auth.token.admin == true);
@@ -27,7 +34,7 @@ service cloud.firestore {
     // Dynamic categories collection
     match /categories/{categoryId} {
       allow read: if true;
-      allow write: if false;
+      allow write: if isAuth();
     }
 
     // Listings collection rules

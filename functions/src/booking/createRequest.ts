@@ -1,13 +1,12 @@
-import { onCall, HttpsError } from "firebase-functions/v2/https";
+import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
-export const createRequest = onCall(async (request) => {
+export const createRequest = functions.https.onCall(async (data, context) => {
   // 1. Auth check
-  if (!request.auth) {
-    throw new HttpsError("unauthenticated", "User must be authenticated.");
+  if (!context.auth) {
+    throw new functions.https.HttpsError("unauthenticated", "User must be authenticated.");
   }
 
-  const data = request.data;
   const {
     listingId,
     requesterId,
@@ -21,11 +20,11 @@ export const createRequest = onCall(async (request) => {
   } = data;
 
   if (!listingId || !requesterId || !requestType || !proposedStartDate || estimatedTotal === undefined) {
-    throw new HttpsError("invalid-argument", "Missing required arguments.");
+    throw new functions.https.HttpsError("invalid-argument", "Missing required arguments.");
   }
 
-  if (request.auth.uid !== requesterId) {
-    throw new HttpsError("permission-denied", "Requester ID does not match auth context.");
+  if (context.auth.uid !== requesterId) {
+    throw new functions.https.HttpsError("permission-denied", "Requester ID does not match auth context.");
   }
 
   const db = admin.firestore();
@@ -35,22 +34,22 @@ export const createRequest = onCall(async (request) => {
   const listingDoc = await listingRef.get();
 
   if (!listingDoc.exists) {
-    throw new HttpsError("not-found", `Listing not found: ${listingId}`);
+    throw new functions.https.HttpsError("not-found", `Listing not found: ${listingId}`);
   }
 
   const listingData = listingDoc.data();
   if (!listingData) {
-    throw new HttpsError("not-found", "Listing data is empty.");
+    throw new functions.https.HttpsError("not-found", "Listing data is empty.");
   }
 
   // 3. Validation: status must be 'available'
   if (listingData.status !== "available") {
-    throw new HttpsError("failed-precondition", "Listing is not available.");
+    throw new functions.https.HttpsError("failed-precondition", "Listing is not available.");
   }
 
   // 4. Validation: no self-request
   if (listingData.ownerId === requesterId) {
-    throw new HttpsError("invalid-argument", "Users cannot request their own listing.");
+    throw new functions.https.HttpsError("invalid-argument", "Users cannot request their own listing.");
   }
 
   // 5. Validation: check duplicate pending request
@@ -61,7 +60,7 @@ export const createRequest = onCall(async (request) => {
     .get();
 
   if (!existingRequests.empty) {
-    throw new HttpsError("already-exists", "A pending request already exists for this listing.");
+    throw new functions.https.HttpsError("already-exists", "A pending request already exists for this listing.");
   }
 
   // 6. Create request document
@@ -90,7 +89,7 @@ export const createRequest = onCall(async (request) => {
 
   await newRequestRef.set(requestPayload);
 
-  // 7. Send FCM to receiver (owner)
+  // 7. Send FCM to receiver (owner) — placeholder, no-op if no token
   try {
     const receiverId = listingData.ownerId;
     const userDoc = await db.collection("users").doc(receiverId).get();

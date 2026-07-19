@@ -1,17 +1,16 @@
-import { onCall, HttpsError } from "firebase-functions/v2/https";
+import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
-export const acceptRequest = onCall(async (request) => {
+export const acceptRequest = functions.https.onCall(async (data, context) => {
   // 1. Auth check
-  if (!request.auth) {
-    throw new HttpsError("unauthenticated", "User must be authenticated.");
+  if (!context.auth) {
+    throw new functions.https.HttpsError("unauthenticated", "User must be authenticated.");
   }
 
-  const data = request.data;
   const { requestId } = data;
 
   if (!requestId) {
-    throw new HttpsError("invalid-argument", "Missing required arguments: requestId.");
+    throw new functions.https.HttpsError("invalid-argument", "Missing required arguments: requestId.");
   }
 
   const db = admin.firestore();
@@ -21,29 +20,29 @@ export const acceptRequest = onCall(async (request) => {
   const requestDoc = await requestRef.get();
 
   if (!requestDoc.exists) {
-    throw new HttpsError("not-found", `Request not found: ${requestId}`);
+    throw new functions.https.HttpsError("not-found", `Request not found: ${requestId}`);
   }
 
   const requestData = requestDoc.data();
   if (!requestData) {
-    throw new HttpsError("not-found", "Request data is empty.");
+    throw new functions.https.HttpsError("not-found", "Request data is empty.");
   }
 
   // 3. Validation: Caller must be receiver of the request
-  if (request.auth.uid !== requestData.receiverId) {
-    throw new HttpsError("permission-denied", "Only the receiver of the request can accept it.");
+  if (context.auth.uid !== requestData.receiverId) {
+    throw new functions.https.HttpsError("permission-denied", "Only the receiver of the request can accept it.");
   }
 
   // 4. Validation: Status must be 'sent' or 'viewed'
   if (requestData.status !== "sent" && requestData.status !== "viewed") {
-    throw new HttpsError("failed-precondition", `Request cannot be accepted in status: ${requestData.status}`);
+    throw new functions.https.HttpsError("failed-precondition", `Request cannot be accepted in status: ${requestData.status}`);
   }
 
   // 5. Validation: Request not expired
   const now = admin.firestore.Timestamp.now();
   const expiresAt = requestData.expiresAt as admin.firestore.Timestamp;
   if (expiresAt && expiresAt.toMillis() < now.toMillis()) {
-    throw new HttpsError("failed-precondition", "Cannot accept an expired request.");
+    throw new functions.https.HttpsError("failed-precondition", "Cannot accept an expired request.");
   }
 
   // 6. Fetch and validate listing
@@ -51,16 +50,16 @@ export const acceptRequest = onCall(async (request) => {
   const listingDoc = await listingRef.get();
 
   if (!listingDoc.exists) {
-    throw new HttpsError("not-found", `Listing not found: ${requestData.listingId}`);
+    throw new functions.https.HttpsError("not-found", `Listing not found: ${requestData.listingId}`);
   }
 
   const listingData = listingDoc.data();
   if (!listingData) {
-    throw new HttpsError("not-found", "Listing data is empty.");
+    throw new functions.https.HttpsError("not-found", "Listing data is empty.");
   }
 
   if (listingData.status !== "available") {
-    throw new HttpsError("failed-precondition", "Listing is no longer available.");
+    throw new functions.https.HttpsError("failed-precondition", "Listing is no longer available.");
   }
 
   // 7. Calculate rate
@@ -88,8 +87,8 @@ export const acceptRequest = onCall(async (request) => {
       listingId: requestData.listingId,
       listingTitle: requestData.listingTitle,
       listingThumbnailUrl: listingData.thumbnailUrl || null,
-      initiatorId: requestData.requesterId, // Renter/Requester is initiator
-      counterpartyId: requestData.receiverId, // Owner/Receiver is counterparty
+      initiatorId: requestData.requesterId,
+      counterpartyId: requestData.receiverId,
       agreementType: requestData.requestType,
       status: "draft",
       templateVersion: "rent-in-v1.0",
@@ -110,7 +109,7 @@ export const acceptRequest = onCall(async (request) => {
     transaction.set(agreementRef, agreementPayload);
   });
 
-  // 9. Send FCM to requester (renter)
+  // 9. Send FCM to requester (renter) — placeholder
   try {
     const renterDoc = await db.collection("users").doc(requestData.requesterId).get();
     const renterData = renterDoc.data();

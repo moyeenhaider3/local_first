@@ -83,7 +83,11 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthSuccess) {
-          context.goNamed(RouteNames.home);
+          if (!state.hasKyc) {
+            context.goNamed(RouteNames.kycUpload);
+          } else {
+            context.goNamed(RouteNames.home);
+          }
         } else if (state is AuthError) {
           ErrorHandler.showSnackBar(context, state.failure);
         }

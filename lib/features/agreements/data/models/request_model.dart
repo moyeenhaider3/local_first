@@ -136,15 +136,15 @@ class RequestModel extends RequestEntity {
       'receiverId': receiverId,
       'requestType': requestType.name,
       'status': status.name,
-      'proposedStartDate': Timestamp.fromDate(proposedStartDate),
-      'proposedEndDate': proposedEndDate != null ? Timestamp.fromDate(proposedEndDate!) : null,
+      'proposedStartDate': proposedStartDate.toUtc().toIso8601String(),
+      'proposedEndDate': proposedEndDate?.toUtc().toIso8601String(),
       'proposedDurationDays': proposedDurationDays,
       'estimatedTotal': estimatedTotal,
       'estimatedDeposit': estimatedDeposit,
       'message': message,
-      'expiresAt': Timestamp.fromDate(expiresAt),
-      'createdAt': Timestamp.fromDate(createdAt),
-      'updatedAt': Timestamp.fromDate(updatedAt),
+      'expiresAt': expiresAt.toUtc().toIso8601String(),
+      'createdAt': createdAt.toUtc().toIso8601String(),
+      'updatedAt': updatedAt.toUtc().toIso8601String(),
     };
   }
 }
