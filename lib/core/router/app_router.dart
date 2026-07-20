@@ -11,42 +11,46 @@ import 'package:local_first/features/admin/presentation/cubits/admin_users_cubit
 import 'package:local_first/features/admin/presentation/pages/admin_dashboard_page.dart';
 import 'package:local_first/features/admin/presentation/pages/admin_kyc_review_page.dart';
 import 'package:local_first/features/admin/presentation/pages/admin_user_management_page.dart';
+import 'package:local_first/features/agreements/domain/entities/request_entity.dart';
+import 'package:local_first/features/agreements/presentation/cubits/agreement_timeline_cubit.dart';
+import 'package:local_first/features/agreements/presentation/cubits/booking_cubit.dart';
+import 'package:local_first/features/agreements/presentation/cubits/transactions_cubit.dart';
+import 'package:local_first/features/agreements/presentation/pages/active_agreement_console_page.dart';
+import 'package:local_first/features/agreements/presentation/pages/legal_consent_contract_page.dart';
+import 'package:local_first/features/agreements/presentation/pages/owner_request_review_page.dart';
+import 'package:local_first/features/agreements/presentation/pages/transactions_history_page.dart';
+import 'package:local_first/features/agreements/presentation/widgets/booking_schedule_bottom_sheet.dart';
+import 'package:local_first/features/agreements/presentation/widgets/whatsapp_redirect_bottom_sheet.dart';
 import 'package:local_first/features/auth/presentation/pages/kyc_upload_page.dart';
 import 'package:local_first/features/auth/presentation/pages/otp_verification_page.dart';
 import 'package:local_first/features/auth/presentation/pages/phone_login_page.dart';
 import 'package:local_first/features/auth/presentation/pages/profile_setup_page.dart';
+import 'package:local_first/features/listings/domain/entities/listing_entity.dart';
 import 'package:local_first/features/listings/presentation/cubits/listing_form_cubit.dart';
 import 'package:local_first/features/listings/presentation/pages/create_listing_page.dart';
 import 'package:local_first/features/listings/presentation/pages/item_detail_page.dart';
 import 'package:local_first/features/listings/presentation/pages/marketplace_home_page.dart';
 import 'package:local_first/features/listings/presentation/widgets/map_preview_overlay.dart';
-import 'package:local_first/features/listings/domain/entities/listing_entity.dart';
-import 'package:local_first/features/agreements/domain/entities/request_entity.dart';
-import 'package:local_first/features/agreements/presentation/cubits/booking_cubit.dart';
-import 'package:local_first/features/agreements/presentation/pages/legal_consent_contract_page.dart';
-import 'package:local_first/features/agreements/presentation/pages/owner_request_review_page.dart';
-import 'package:local_first/features/agreements/presentation/widgets/booking_schedule_bottom_sheet.dart';
-import 'package:local_first/features/agreements/presentation/widgets/whatsapp_redirect_bottom_sheet.dart';
-import 'package:local_first/features/agreements/presentation/cubits/agreement_timeline_cubit.dart';
-import 'package:local_first/features/agreements/presentation/cubits/transactions_cubit.dart';
-import 'package:local_first/features/agreements/presentation/pages/active_agreement_console_page.dart';
-import 'package:local_first/features/agreements/presentation/pages/transactions_history_page.dart';
-import 'package:local_first/features/services/presentation/cubits/services_cubit.dart';
-import 'package:local_first/features/services/presentation/pages/worker_dashboard_page.dart';
-import 'package:local_first/features/services/presentation/pages/worker_profile_page.dart';
 import 'package:local_first/features/profile/presentation/cubits/profile_hub_cubit.dart';
 import 'package:local_first/features/profile/presentation/pages/settings_hub_page.dart';
 import 'package:local_first/features/profile/presentation/pages/trust_score_profile_page.dart';
-
+import 'package:local_first/features/services/presentation/cubits/services_cubit.dart';
+import 'package:local_first/features/services/presentation/pages/worker_dashboard_page.dart';
+import 'package:local_first/features/services/presentation/pages/worker_profile_page.dart';
+import 'package:local_first/presentation/pages/splash/splash_page.dart';
 
 class AppRouter {
   AppRouter._();
 
   static final GoRouter router = GoRouter(
-    initialLocation: '/',
+    initialLocation: '/splash',
     redirect: (BuildContext context, GoRouterState state) {
       final user = FirebaseAuth.instance.currentUser;
-      final loggingIn = state.matchedLocation == '/' || state.matchedLocation == '/otp';
+      if (state.matchedLocation == '/splash') {
+        return null;
+      }
+      final loggingIn =
+          state.matchedLocation == '/' || state.matchedLocation == '/otp';
 
       if (user == null) {
         // Force login if trying to access protected screens
@@ -62,6 +66,13 @@ class AppRouter {
       return null;
     },
     routes: <RouteBase>[
+      GoRoute(
+        path: '/splash',
+        name: RouteNames.splash,
+        builder: (BuildContext context, GoRouterState state) {
+          return const SplashPage();
+        },
+      ),
       GoRoute(
         path: '/',
         name: RouteNames.phoneLogin,
@@ -129,12 +140,19 @@ class AppRouter {
         ],
       ),
       StatefulShellRoute.indexedStack(
-        builder: (BuildContext context, GoRouterState state, StatefulNavigationShell navigationShell) {
-          return AppShell(navigationShell: navigationShell);
-        },
+        builder:
+            (
+              BuildContext context,
+              GoRouterState state,
+              StatefulNavigationShell navigationShell,
+            ) {
+              return AppShell(navigationShell: navigationShell);
+            },
         branches: <StatefulShellBranch>[
           StatefulShellBranch(
-            navigatorKey: GlobalKey<NavigatorState>(debugLabel: 'homeBranchKey'),
+            navigatorKey: GlobalKey<NavigatorState>(
+              debugLabel: 'homeBranchKey',
+            ),
             routes: <RouteBase>[
               GoRoute(
                 path: '/home',
@@ -183,10 +201,13 @@ class AppRouter {
                     path: 'legal-consent/:agreementId',
                     name: RouteNames.legalConsent,
                     builder: (BuildContext context, GoRouterState state) {
-                      final agreementId = state.pathParameters['agreementId'] ?? '';
+                      final agreementId =
+                          state.pathParameters['agreementId'] ?? '';
                       return BlocProvider<BookingCubit>(
                         create: (_) => sl<BookingCubit>(),
-                        child: LegalConsentContractPage(agreementId: agreementId),
+                        child: LegalConsentContractPage(
+                          agreementId: agreementId,
+                        ),
                       );
                     },
                   ),
@@ -219,8 +240,12 @@ class AppRouter {
                     builder: (BuildContext context, GoRouterState state) {
                       final agreementId = state.pathParameters['id'] ?? '';
                       return BlocProvider<AgreementTimelineCubit>(
-                        create: (_) => sl<AgreementTimelineCubit>()..listenAgreement(agreementId),
-                        child: ActiveAgreementConsolePage(agreementId: agreementId),
+                        create: (_) =>
+                            sl<AgreementTimelineCubit>()
+                              ..listenAgreement(agreementId),
+                        child: ActiveAgreementConsolePage(
+                          agreementId: agreementId,
+                        ),
                       );
                     },
                   ),
@@ -240,7 +265,9 @@ class AppRouter {
             ],
           ),
           StatefulShellBranch(
-            navigatorKey: GlobalKey<NavigatorState>(debugLabel: 'servicesBranchKey'),
+            navigatorKey: GlobalKey<NavigatorState>(
+              debugLabel: 'servicesBranchKey',
+            ),
             routes: <RouteBase>[
               GoRoute(
                 path: '/home/services',
@@ -255,7 +282,9 @@ class AppRouter {
             ],
           ),
           StatefulShellBranch(
-            navigatorKey: GlobalKey<NavigatorState>(debugLabel: 'activityBranchKey'),
+            navigatorKey: GlobalKey<NavigatorState>(
+              debugLabel: 'activityBranchKey',
+            ),
             routes: <RouteBase>[
               GoRoute(
                 path: '/home/activity',
@@ -270,7 +299,9 @@ class AppRouter {
             ],
           ),
           StatefulShellBranch(
-            navigatorKey: GlobalKey<NavigatorState>(debugLabel: 'profileBranchKey'),
+            navigatorKey: GlobalKey<NavigatorState>(
+              debugLabel: 'profileBranchKey',
+            ),
             routes: <RouteBase>[
               GoRoute(
                 path: '/home/profile',
@@ -301,4 +332,3 @@ class AppRouter {
     ],
   );
 }
-

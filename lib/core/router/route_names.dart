@@ -3,6 +3,7 @@ class RouteNames {
   RouteNames._();
 
   static const String phoneLogin = 'phone_login';
+  static const String splash = 'splash';
   static const String otp = 'otp_verification';
   static const String profileSetup = 'profile_setup';
   static const String kycUpload = 'kyc_upload';
@@ -46,4 +47,3 @@ class RouteNames {
   /// Support ticket creation modal route name.
   static const String supportTicket = 'support_ticket';
 }
-

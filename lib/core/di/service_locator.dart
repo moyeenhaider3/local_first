@@ -5,16 +5,16 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:local_first/core/notifications/fcm_service.dart';
+import 'package:local_first/data/repositories/settings_repository.dart';
 import 'package:local_first/features/admin/data/admin_dependencies.dart';
 import 'package:local_first/features/agreements/data/agreement_timeline_dependencies.dart';
 import 'package:local_first/features/agreements/data/booking_dependencies.dart';
 import 'package:local_first/features/auth/data/auth_dependencies.dart';
 import 'package:local_first/features/listings/data/discovery_dependencies.dart';
-import 'package:local_first/features/verification/data/verification_dependencies.dart';
-
 import 'package:local_first/features/payments/data/payment_dependencies.dart';
 import 'package:local_first/features/profile/data/profile_dependencies.dart';
 import 'package:local_first/features/services/data/services_dependencies.dart';
+import 'package:local_first/features/verification/data/verification_dependencies.dart';
 
 /// Global service locator instance.
 final sl = GetIt.instance;
@@ -27,13 +27,14 @@ Future<void> initDependencies() async {
   sl.registerLazySingleton<FirebaseStorage>(() => FirebaseStorage.instance);
   sl.registerLazySingleton<FirebaseFunctions>(() => FirebaseFunctions.instance);
   sl.registerLazySingleton<FirebaseMessaging>(() => FirebaseMessaging.instance);
+  sl.registerLazySingleton<SettingsRepository>(
+    () => SettingsRepository(firestore: sl()),
+  );
 
   // Notifications
-  sl.registerLazySingleton<FcmService>(() => FcmService(
-        messaging: sl(),
-        firestore: sl(),
-        auth: sl(),
-      ));
+  sl.registerLazySingleton<FcmService>(
+    () => FcmService(messaging: sl(), firestore: sl(), auth: sl()),
+  );
 
   // Features dependencies
   initAuthDependencies(sl);
@@ -51,8 +52,7 @@ Future<void> initDependencies() async {
 void initAgreementDependencies(GetIt sl) {
   initAgreementTimelineDependencies(sl);
 }
+
 void initHireDependencies(GetIt sl) {
   initServicesDependencies(sl);
 }
-
-
