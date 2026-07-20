@@ -1,0 +1,265 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">try{
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-variant": "#d8e3fb",
+                        "secondary": "#565e74",
+                        "outline-variant": "#bcc9c6",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "on-primary-container": "#f4fffc",
+                        "inverse-on-surface": "#ecf1ff",
+                        "warning": "#D97706",
+                        "on-surface-variant": "#3d4947",
+                        "text-muted": "#64748B",
+                        "surface-container-low": "#f0f3ff",
+                        "secondary-fixed": "#dae2fd",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "surface-tint": "#006a61",
+                        "error": "#ba1a1a",
+                        "app-bg": "#F8FAFC",
+                        "surface-container-highest": "#d8e3fb",
+                        "surface-bright": "#f9f9ff",
+                        "primary-fixed-dim": "#6bd8cb",
+                        "surface-container-high": "#dee8ff",
+                        "on-primary-fixed": "#00201d",
+                        "background": "#f9f9ff",
+                        "primary": "#00685f",
+                        "on-secondary-container": "#5c647a",
+                        "surface-dim": "#cfdaf2",
+                        "primary-container": "#008378",
+                        "tertiary-fixed": "#7ffc97",
+                        "on-tertiary-fixed": "#002109",
+                        "on-tertiary-fixed-variant": "#005320",
+                        "outline": "#6d7a77",
+                        "secondary-container": "#dae2fd",
+                        "on-error-container": "#93000a",
+                        "inverse-primary": "#6bd8cb",
+                        "on-primary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "danger": "#DC2626",
+                        "tertiary-fixed-dim": "#62df7d",
+                        "primary-fixed": "#89f5e7",
+                        "tertiary": "#006b2c",
+                        "surface-container": "#e7eeff",
+                        "on-surface": "#111c2d",
+                        "surface": "#FFFFFF",
+                        "tertiary-container": "#00873a",
+                        "on-primary-fixed-variant": "#005049",
+                        "on-secondary-fixed": "#131b2e",
+                        "inverse-surface": "#263143",
+                        "on-background": "#111c2d",
+                        "on-tertiary-container": "#f7fff2"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gap-sm": "8px",
+                        "base": "8px",
+                        "gap-xl": "24px",
+                        "gap-md": "12px",
+                        "gap-lg": "16px",
+                        "touch-target": "48px",
+                        "margin-mobile": "16px",
+                        "safe-area-top": "24px"
+                    },
+                    "fontFamily": {
+                        "title-md": ["Manrope", "sans-serif"],
+                        "caption": ["Inter", "sans-serif"],
+                        "body-sm": ["Inter", "sans-serif"],
+                        "headline-md": ["Manrope", "sans-serif"],
+                        "headline-lg": ["Manrope", "sans-serif"],
+                        "label-bold": ["Inter", "sans-serif"],
+                        "body-lg": ["Inter", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "title-md": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+                        "caption": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "label-bold": ["14px", { "lineHeight": "16px", "fontWeight": "700" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    }catch(_e){}</script></head><body class="bg-app-bg text-on-background min-h-screen flex flex-col antialiased selection:bg-surface-variant selection:text-primary">
+<!-- Top Navigation (Contextual Suppression implies hiding bottom nav, but keeping a simple back header) -->
+<header class="flex items-center justify-between px-margin-mobile h-touch-target w-full bg-app-bg pt-safe-area-top shrink-0">
+<button class="w-touch-target h-touch-target flex items-center justify-start text-primary active:scale-95 transition-transform" aria-label="Go back">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="font-title-md text-title-md text-on-surface">Verification Code</h1>
+<div class="w-touch-target h-touch-target"></div> <!-- Spacer for centering -->
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow flex flex-col px-margin-mobile pt-gap-xl pb-[100px] overflow-y-auto">
+<div class="mb-gap-xl text-center">
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-gap-sm">
+                Enter the 6-digit code sent to your registered phone number.
+            </p>
+</div>
+<!-- OTP Input Group -->
+<div class="flex flex-col items-center gap-gap-md w-full max-w-md mx-auto">
+<div class="flex justify-between w-full gap-gap-sm" id="otp-container">
+<input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="otp-input" id="otp-1" autocomplete="one-time-code" autofocus="">
+<input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="otp-input" id="otp-2">
+<input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="otp-input" id="otp-3">
+<input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="otp-input" id="otp-4">
+<input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="otp-input" id="otp-5">
+<input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="otp-input" id="otp-6">
+</div>
+<!-- Error Message (Hidden by default) -->
+<p id="error-message" class="font-caption text-caption text-danger hidden text-center w-full mt-base">
+                Invalid verification code. Please try again.
+            </p>
+</div>
+<!-- Resend Timer -->
+<div class="mt-gap-xl text-center">
+<p class="font-body-sm text-body-sm text-text-muted">
+                Didn't receive a code? <br>
+<span id="timer-text" class="font-label-bold text-label-bold text-on-surface-variant inline-block mt-base">Resend code in <span id="countdown">00:30</span></span>
+<button id="resend-btn" class="font-label-bold text-label-bold text-primary hidden mt-base active:scale-95 transition-transform" type="button">Resend Code</button>
+</p>
+</div>
+</main>
+<!-- Bottom Sticky Action -->
+<div class="fixed bottom-0 left-0 w-full bg-app-bg px-margin-mobile pb-margin-mobile pt-gap-md border-t border-outline-variant/30">
+<button id="verify-btn" class="w-full h-[52px] bg-primary text-on-primary font-label-bold text-label-bold rounded-lg flex items-center justify-center active:scale-[0.98] transition-transform shadow-sm disabled:bg-surface-variant disabled:text-text-muted disabled:cursor-not-allowed" disabled="">
+            VERIFY CODE
+        </button>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const inputs = document.querySelectorAll('.otp-input');
+            const verifyBtn = document.getElementById('verify-btn');
+            const errorMessage = document.getElementById('error-message');
+            
+            // OTP Input Logic
+            inputs.forEach((input, index) => {
+                // Handle Input
+                input.addEventListener('input', (e) => {
+                    // Remove non-numeric characters immediately
+                    input.value = input.value.replace(/[^0-9]/g, '');
+                    
+                    // Clear error state on any input
+                    inputs.forEach(inp => inp.classList.remove('error'));
+                    errorMessage.classList.add('hidden');
+
+                    if (input.value.length === 1) {
+                        if (index < inputs.length - 1) {
+                            inputs[index + 1].focus();
+                        }
+                    }
+                    checkCompletion();
+                });
+
+                // Handle Keydown (Backspace navigation)
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Backspace' && input.value === '') {
+                        if (index > 0) {
+                            inputs[index - 1].focus();
+                        }
+                    }
+                });
+
+                // Handle Paste
+                input.addEventListener('paste', (e) => {
+                    e.preventDefault();
+                    const pastedData = e.clipboardData.getData('text').replace(/[^0-9]/g, '').slice(0, 6);
+                    if (pastedData) {
+                        pastedData.split('').forEach((char, i) => {
+                            if (i < inputs.length) {
+                                inputs[i].value = char;
+                            }
+                        });
+                        
+                        const focusIndex = Math.min(pastedData.length, inputs.length - 1);
+                        inputs[focusIndex].focus();
+                        checkCompletion();
+                    }
+                });
+            });
+
+            function checkCompletion() {
+                const allFilled = Array.from(inputs).every(input => input.value.length === 1);
+                verifyBtn.disabled = !allFilled;
+            }
+
+            // Simulate Verification Process
+            verifyBtn.addEventListener('click', () => {
+                const code = Array.from(inputs).map(i => i.value).join('');
+                verifyBtn.innerHTML = '<span class="material-symbols-outlined animate-spin" data-icon="progress_activity">progress_activity</span>';
+                verifyBtn.disabled = true;
+
+                // Simulate network request
+                setTimeout(() => {
+                    // Simulate error for demonstration if code is '000000'
+                    if (code === '000000') {
+                        inputs.forEach(input => input.classList.add('error'));
+                        errorMessage.classList.remove('hidden');
+                        verifyBtn.innerHTML = 'VERIFY CODE';
+                        verifyBtn.disabled = false;
+                        
+                        // Shake animation
+                        const container = document.getElementById('otp-container');
+                        container.animate([
+                            { transform: 'translateX(0)' },
+                            { transform: 'translateX(-5px)' },
+                            { transform: 'translateX(5px)' },
+                            { transform: 'translateX(-5px)' },
+                            { transform: 'translateX(5px)' },
+                            { transform: 'translateX(0)' }
+                        ], { duration: 400 });
+                    } else {
+                        // Success state (would normally redirect)
+                        verifyBtn.innerHTML = '<span class="material-symbols-outlined" data-icon="check">check</span>';
+                        verifyBtn.classList.add('bg-tertiary-container');
+                        setTimeout(() => {
+                             verifyBtn.innerHTML = 'VERIFY CODE';
+                             verifyBtn.classList.remove('bg-tertiary-container');
+                             verifyBtn.disabled = false;
+                        }, 2000);
+                    }
+                }, 1000);
+            });
+
+            // Timer Logic
+            let timeLeft = 30;
+            const countdownEl = document.getElementById('countdown');
+            const timerText = document.getElementById('timer-text');
+            const resendBtn = document.getElementById('resend-btn');
+
+            const timer = setInterval(() => {
+                timeLeft--;
+                const seconds = timeLeft < 10 ? `0${timeLeft}` : timeLeft;
+                countdownEl.textContent = `00:${seconds}`;
+
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    timerText.classList.add('hidden');
+                    resendBtn.classList.remove('hidden');
+                }
+            }, 1000);
+
+            // Resend Logic
+            resendBtn.addEventListener('click', () => {
+                 resendBtn.classList.add('hidden');
+                 timerText.classList.remove('hidden');
+                 timeLeft = 30;
+                 countdownEl.textContent = `00:30`;
+                 // Note: Would need to restart the interval here in a real implementation
+            });
+        });
+    </script>
+</body></html>

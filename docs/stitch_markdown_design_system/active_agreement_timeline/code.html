@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Active Agreement Timeline &amp; Status Console</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error": "#ffffff",
+                        "outline": "#6d7a77",
+                        "primary-container": "#008378",
+                        "tertiary": "#006b2c",
+                        "surface": "#FFFFFF",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#002109",
+                        "surface-container-highest": "#d8e3fb",
+                        "secondary-fixed": "#dae2fd",
+                        "surface-variant": "#d8e3fb",
+                        "on-secondary-fixed": "#131b2e",
+                        "surface-tint": "#006a61",
+                        "tertiary-fixed-dim": "#62df7d",
+                        "secondary": "#565e74",
+                        "surface-container": "#e7eeff",
+                        "tertiary-fixed": "#7ffc97",
+                        "inverse-surface": "#263143",
+                        "on-surface-variant": "#3d4947",
+                        "on-tertiary-container": "#f7fff2",
+                        "danger": "#DC2626",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#111c2d",
+                        "on-primary-fixed": "#00201d",
+                        "on-secondary": "#ffffff",
+                        "warning": "#D97706",
+                        "on-tertiary-fixed-variant": "#005320",
+                        "on-secondary-container": "#5c647a",
+                        "secondary-container": "#dae2fd",
+                        "on-primary-container": "#f4fffc",
+                        "background": "#f9f9ff",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "on-surface": "#111c2d",
+                        "surface-container-high": "#dee8ff",
+                        "on-primary-fixed-variant": "#005049",
+                        "inverse-on-surface": "#ecf1ff",
+                        "error": "#ba1a1a",
+                        "primary-fixed": "#89f5e7",
+                        "outline-variant": "#bcc9c6",
+                        "tertiary-container": "#00873a",
+                        "on-tertiary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "inverse-primary": "#6bd8cb",
+                        "app-bg": "#F8FAFC",
+                        "primary-fixed-dim": "#6bd8cb",
+                        "surface-dim": "#cfdaf2",
+                        "text-muted": "#64748B",
+                        "surface-bright": "#f9f9ff",
+                        "primary": "#00685f",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "on-primary": "#ffffff",
+                        "surface-container-low": "#f0f3ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "safe-area-top": "24px",
+                        "gap-lg": "16px",
+                        "touch-target": "48px",
+                        "base": "8px",
+                        "gap-md": "12px",
+                        "margin-mobile": "16px",
+                        "gap-sm": "8px",
+                        "gap-xl": "24px"
+                    },
+                    "fontFamily": {
+                        "title-md": ["manrope"],
+                        "caption": ["inter"],
+                        "body-sm": ["inter"],
+                        "label-bold": ["inter"],
+                        "headline-md": ["manrope"],
+                        "headline-lg": ["manrope"],
+                        "body-lg": ["inter"]
+                    },
+                    "fontSize": {
+                        "title-md": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+                        "caption": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "label-bold": ["14px", { "lineHeight": "16px", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .material-symbols-outlined[data-weight="fill"] { font-variation-settings: 'FILL' 1; }
+        
+        /* Custom timeline line */
+        .timeline-line::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 24px;
+            bottom: -24px;
+            width: 2px;
+            background-color: #e2e8f0; /* slate-200 */
+            z-index: 0;
+        }
+        .timeline-item:last-child .timeline-line::before {
+            display: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-app-bg text-on-surface font-body-sm min-h-screen flex flex-col md:hidden selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-on-background fixed top-0 w-full z-50 border-b border-outline-variant dark:border-outline flat no shadows flex flex-col justify-center px-margin-mobile h-[64px]">
+<div class="flex items-center justify-between w-full h-full">
+<div class="flex items-center gap-gap-md">
+<button aria-label="Close" class="flex items-center justify-center w-[40px] h-[40px] rounded-full hover:bg-surface-container transition-colors duration-200 ease-in-out text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+<h1 class="font-title-md text-title-md text-on-surface">Rental Agreement Details</h1>
+</div>
+<div class="bg-surface-container-high px-gap-sm py-1 rounded text-primary-fixed-dim font-label-bold text-caption">
+                #9902
+            </div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow pt-[88px] pb-[100px] px-margin-mobile flex flex-col gap-gap-xl overflow-y-auto">
+<!-- Summary Card -->
+<section class="bg-surface rounded-xl p-gap-lg shadow-sm flex flex-col gap-gap-md border border-outline-variant/30">
+<div class="flex gap-gap-md items-start">
+<div class="w-16 h-16 rounded-lg bg-surface-container flex-shrink-0 overflow-hidden border border-outline-variant/20">
+<img class="w-full h-full object-cover" data-alt="A professional product shot of a rugged Bosch hammer drill resting on a clean, modern workshop table. The lighting is crisp and cool, highlighting the industrial design of the tool against a light, neutral background, embodying a reliable and sturdy aesthetic suitable for a service platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuALfNioXcOAGBKZHCGlJ3NF6HWmorMuwOxqZwqADBwZwhQvZ8qX_Zm2y5UNonTZAnh9jImwJe1Vnx8dVbIasDOHjXMhy8L8uJw6MSQfTFG4ctEIqNVLRSWlQ5ZAqzdypUQowQlD_iFGY56xTShpueriCLBF4xguKjPPZMQHhL-nWRTp9aiEs_if2riRzTwXeWwR0L8CR6ibOxGeOjKAtTl-gMKoMay9Ydy4vdjIIlQ1bwUEAMzU88HwzU5UbOJ0B3sYyPQ_zch-QzBH"/>
+</div>
+<div class="flex flex-col flex-grow">
+<h2 class="font-title-md text-title-md text-on-surface line-clamp-1">Bosch Hammer Drill</h2>
+<p class="font-body-sm text-body-sm text-secondary line-clamp-1">Professional Grade - 800W</p>
+<div class="mt-base flex items-center justify-between">
+<span class="font-caption text-caption text-secondary">Daily Rate</span>
+<span class="font-label-bold text-label-bold text-primary">₹300</span>
+</div>
+</div>
+</div>
+<hr class="border-outline-variant/30"/>
+<div class="flex flex-col gap-gap-sm">
+<div class="flex justify-between items-center">
+<span class="font-caption text-caption text-secondary">Owner</span>
+<div class="flex items-center gap-gap-sm">
+<span class="font-label-bold text-label-bold text-on-surface">Ramesh Singh</span>
+<div class="w-6 h-6 rounded-full overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A small, circular avatar portrait of an Indian man in his late 30s, smiling warmly. He is wearing a simple, clean, dark polo shirt. The background is a soft, out-of-focus light gray office setting, projecting a friendly and trustworthy demeanor." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrCb6HI06cL_Yh7PYQK4bHL0Z9rLdmmX4OVLYx_tTUu2DrZP32tfrTkdL1kRbAjW147XmWjNZ7owVkJT-1S34c-XVihVwFbDI7Gi9jqhnifPVvAOwz9TBvBnTcCUUD10unBcAMbxAEN23qrJz3ETJedwpdhFEHPrSefUCsFLMh03sgGOg2__3Q4yvvnNO_azYbbUOZhU_PdwD4n8CoUzJcx_GvYRUF0zuiKViTrwEhAiFOj83dbJXpfCTlXoeiU2rUIP2xm-A9Eyij"/>
+</div>
+</div>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-caption text-caption text-secondary">Renter</span>
+<div class="flex items-center gap-gap-sm">
+<span class="font-label-bold text-label-bold text-on-surface">Amit Shah</span>
+<div class="w-6 h-6 rounded-full overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A small, circular avatar portrait of an Indian man in his late 20s, looking attentive and professional. He wears a light-colored casual button-down shirt. The background is a muted, plain, soft beige wall, ensuring the focus is entirely on his face, evoking trust." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9DkSVYZ-73e30CZDEqOjWqK0bjRqedy7Z6oHenOXbaofeuuyib1HWDx1lbb3zy2-HvTy0JqdfdhSsAru4dxfQUrUTJLq4Xi2rOXoJ9SyL5fFsnM9R1WjXkoyZx1Vi8slKHs4g3lwvPPa6ebrJsnvXOyICjtDHB-exIhMiYvT_8lBZQ4WTk96S7JUFN8OHspmYg3lCMh0CAudBcFDJUP9zFU-DWl_zeQltECRJb80yoJyTx289Hy0WIBt8KxkpNVRixSTYRTGaixhT"/>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Milestones Progress Timeline -->
+<section class="flex flex-col gap-0 relative">
+<!-- Node 1: Completed -->
+<div class="timeline-item relative flex gap-gap-md pb-gap-xl timeline-line">
+<div class="relative z-10 flex flex-col items-center flex-shrink-0">
+<div class="w-10 h-10 rounded-full bg-tertiary-container flex items-center justify-center border-4 border-app-bg shadow-sm">
+<span class="material-symbols-outlined text-on-tertiary" data-icon="check_circle" data-weight="fill">check_circle</span>
+</div>
+</div>
+<div class="flex flex-col pt-2">
+<h3 class="font-title-md text-[16px] leading-[22px] font-semibold text-on-surface">Request Approved &amp; Terms Signed</h3>
+<p class="font-caption text-caption text-secondary mt-1">Oct 24, 2023 • 10:30 AM</p>
+</div>
+</div>
+<!-- Node 2: Active/Pending -->
+<div class="timeline-item relative flex gap-gap-md pb-gap-xl timeline-line">
+<div class="relative z-10 flex flex-col items-center flex-shrink-0">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center border-4 border-app-bg shadow-sm animate-pulse shadow-primary/20">
+<span class="material-symbols-outlined text-on-primary" data-icon="handshake">handshake</span>
+</div>
+</div>
+<div class="flex flex-col pt-2 w-full">
+<h3 class="font-title-md text-[16px] leading-[22px] font-semibold text-on-surface">Item Handover &amp; Pickup Verification</h3>
+<!-- Actionable Card inside node -->
+<div class="mt-gap-md bg-surface border-2 border-primary-container/20 rounded-xl p-gap-md shadow-sm w-full flex flex-col gap-gap-md relative overflow-hidden">
+<!-- Decorative top accent -->
+<div class="absolute top-0 left-0 w-full h-1 bg-primary"></div>
+<div class="flex items-start gap-gap-sm">
+<span class="material-symbols-outlined text-warning mt-0.5" data-icon="info">info</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+<span class="font-label-bold">Renter: Amit Shah</span> says deposit is sent. Waiting for Ramesh to confirm receipt and item handover.
+                            </p>
+</div>
+<button class="w-full h-touch-target bg-primary hover:bg-primary-container text-on-primary font-label-bold text-label-bold rounded-lg transition-colors duration-200 flex items-center justify-center gap-gap-sm mt-2 shadow-sm">
+<span class="material-symbols-outlined" data-icon="dialpad">dialpad</span>
+                            ENTER PICKUP CODE (RENTER)
+                        </button>
+</div>
+</div>
+</div>
+<!-- Node 3: Locked -->
+<div class="timeline-item relative flex gap-gap-md pb-gap-xl timeline-line opacity-50">
+<div class="relative z-10 flex flex-col items-center flex-shrink-0">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center border-4 border-app-bg">
+<span class="material-symbols-outlined text-secondary" data-icon="lock">lock</span>
+</div>
+</div>
+<div class="flex flex-col pt-2">
+<h3 class="font-title-md text-[16px] leading-[22px] font-semibold text-secondary">Rental Active Period</h3>
+</div>
+</div>
+<!-- Node 4: Locked -->
+<div class="timeline-item relative flex gap-gap-md timeline-line opacity-50">
+<div class="relative z-10 flex flex-col items-center flex-shrink-0">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center border-4 border-app-bg">
+<span class="material-symbols-outlined text-secondary" data-icon="lock">lock</span>
+</div>
+</div>
+<div class="flex flex-col pt-2">
+<h3 class="font-title-md text-[16px] leading-[22px] font-semibold text-secondary">Return Verified &amp; Security Deposit Refund</h3>
+</div>
+</div>
+</section>
+</main>
+<!-- Sticky Bottom Action Area -->
+<div class="fixed bottom-0 left-0 w-full bg-surface/90 backdrop-blur-md border-t border-outline-variant/30 px-margin-mobile py-gap-md pb-safe z-40">
+<button class="w-full h-[52px] bg-primary hover:bg-primary-container text-on-primary font-label-bold text-label-bold rounded-lg transition-colors duration-200 flex items-center justify-center gap-gap-sm shadow-md">
+<svg class="w-5 h-5 fill-current" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"></path>
+</svg>
+            CHAT ON WHATSAPP
+        </button>
+</div>
+</body></html>

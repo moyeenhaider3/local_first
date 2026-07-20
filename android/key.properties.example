@@ -1,0 +1,4 @@
+storePassword=<password_from_previous_step>
+keyPassword=<password_from_previous_step>
+keyAlias=localfirst
+storeFile=../localfirst.jks

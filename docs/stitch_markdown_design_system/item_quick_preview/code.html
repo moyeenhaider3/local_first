@@ -1,0 +1,240 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Quick-Preview Card</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700&amp;family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-tint": "#006a61",
+                      "error": "#ba1a1a",
+                      "surface-bright": "#f9f9ff",
+                      "danger": "#DC2626",
+                      "on-secondary-container": "#5c647a",
+                      "surface-variant": "#d8e3fb",
+                      "on-primary": "#ffffff",
+                      "surface-container-low": "#f0f3ff",
+                      "secondary-fixed-dim": "#bec6e0",
+                      "warning": "#D97706",
+                      "surface-container-high": "#dee8ff",
+                      "on-tertiary-fixed": "#002109",
+                      "outline-variant": "#bcc9c6",
+                      "background": "#f9f9ff",
+                      "on-secondary-fixed-variant": "#3f465c",
+                      "secondary": "#565e74",
+                      "surface-dim": "#cfdaf2",
+                      "on-primary-fixed": "#00201d",
+                      "on-error-container": "#93000a",
+                      "inverse-on-surface": "#ecf1ff",
+                      "primary-fixed-dim": "#6bd8cb",
+                      "on-tertiary-fixed-variant": "#005320",
+                      "primary-container": "#008378",
+                      "surface": "#FFFFFF",
+                      "on-tertiary-container": "#f7fff2",
+                      "primary": "#00685f",
+                      "app-bg": "#F8FAFC",
+                      "on-surface-variant": "#3d4947",
+                      "on-tertiary": "#ffffff",
+                      "secondary-fixed": "#dae2fd",
+                      "tertiary-fixed-dim": "#62df7d",
+                      "text-muted": "#64748B",
+                      "secondary-container": "#dae2fd",
+                      "tertiary": "#006b2c",
+                      "on-primary-fixed-variant": "#005049",
+                      "on-background": "#111c2d",
+                      "tertiary-container": "#00873a",
+                      "error-container": "#ffdad6",
+                      "surface-container-highest": "#d8e3fb",
+                      "tertiary-fixed": "#7ffc97",
+                      "primary-fixed": "#89f5e7",
+                      "on-surface": "#111c2d",
+                      "surface-container": "#e7eeff",
+                      "on-secondary-fixed": "#131b2e",
+                      "surface-container-lowest": "#ffffff",
+                      "on-error": "#ffffff",
+                      "on-secondary": "#ffffff",
+                      "inverse-surface": "#263143",
+                      "inverse-primary": "#6bd8cb",
+                      "on-primary-container": "#f4fffc",
+                      "outline": "#6d7a77"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gap-sm": "8px",
+                      "gap-xl": "24px",
+                      "safe-area-top": "24px",
+                      "gap-md": "12px",
+                      "margin-mobile": "16px",
+                      "gap-lg": "16px",
+                      "base": "8px",
+                      "touch-target": "48px"
+              },
+              "fontFamily": {
+                      "headline-md": [
+                              "manrope"
+                      ],
+                      "caption": [
+                              "inter"
+                      ],
+                      "body-sm": [
+                              "inter"
+                      ],
+                      "body-lg": [
+                              "inter"
+                      ],
+                      "label-bold": [
+                              "inter"
+                      ],
+                      "headline-lg": [
+                              "manrope"
+                      ],
+                      "title-md": [
+                              "manrope"
+                      ]
+              },
+              "fontSize": {
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "caption": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-sm": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-lg": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-bold": [
+                              "14px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "title-md": [
+                              "18px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+</head>
+<body class="bg-app-bg text-on-background h-screen flex flex-col relative overflow-hidden">
+<!-- Mock Map Background -->
+<div class="absolute inset-0 bg-secondary-fixed-dim" data-alt="A detailed map view of a suburban neighborhood, shown from a slightly angled, bird's-eye perspective. The map uses a clean, modern, light-mode color palette with soft grays, whites, and subtle teal accents for parks and water. Small, stylized markers indicate locations. The overall aesthetic is highly polished, professional, and institutional, conveying a sense of secure, organized community mapping. Bright, clear lighting enhances the crisp vector-like shapes." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBych_UZnA7eWUF-cNQCLahfNzil2WKx3-tznfEXr465y5geTS724UkgWemMhMEKs2XK9gr1qO9IWaVACmHo4KFSEmOu65RQMVkK3pgil_WRkoMbE5j0zI4WGtfEVVwTCaBOqg7RFzd-NmZbiFjIKB3-iOVdl4Uki3yjlS9_4bajcoBABccf_fsIxy4J63azQrF8s-EO5xCtg3MdPq6VGnmpVglRna0kvq-Hfr3-VZaJA3K122ZCub49P715u9LHmMjFqoiWmUoSSTV')">
+<!-- Map visual elements (simulated) -->
+<div class="absolute top-[30%] left-[40%] text-primary drop-shadow-md">
+<span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">location_on</span>
+</div>
+<div class="absolute top-[50%] left-[60%] text-secondary drop-shadow-md opacity-50">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">location_on</span>
+</div>
+</div>
+<!-- Top App Bar (Suppressing Bottom Nav as this is a contextual overlay, but keeping Top Nav for context if needed, though usually an overlay might hide it, we'll keep it as per some map views) -->
+<header class="flex justify-between items-center px-margin-mobile h-touch-target w-full bg-surface border-b border-outline-variant relative z-10">
+<button class="text-primary active:scale-95 transition-transform duration-200 hover:bg-surface-container-low p-2 rounded-full flex items-center justify-center h-12 w-12">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">ShieldShare</h1>
+<button class="text-on-surface-variant active:scale-95 transition-transform duration-200 hover:bg-surface-container-low p-2 rounded-full flex items-center justify-center h-12 w-12">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</header>
+<!-- Map Overlay Content Area -->
+<main class="flex-grow relative w-full h-full">
+<!-- The Bottom Sheet Overlay -->
+<div class="absolute bottom-0 left-0 w-full z-40">
+<!-- Overlay Backdrop (optional, subtle) -->
+<div class="absolute inset-0 bg-on-background/10 -top-[884px] pointer-events-none"></div>
+<!-- Bottom Sheet Container -->
+<div class="bg-surface rounded-t-xl shadow-[0_-8px_24px_rgba(0,0,0,0.08)] w-full max-w-2xl mx-auto flex flex-col p-gap-xl pt-gap-md transition-transform duration-300 ease-out translate-y-0 relative">
+<!-- Drag Handle (Visual) -->
+<div class="w-12 h-1.5 bg-outline-variant rounded-full mx-auto mb-gap-lg"></div>
+<!-- Horizontal Card Layout -->
+<div class="flex flex-row gap-gap-lg mb-gap-xl">
+<!-- Left: Thumbnail Image -->
+<div class="w-[100px] h-[100px] flex-shrink-0 rounded-lg overflow-hidden bg-surface-variant relative shadow-sm border border-outline-variant/30">
+<img class="object-cover w-full h-full" data-alt="A professional, well-lit photograph of a heavy-duty power washer sitting on a clean concrete driveway. The image is composed in a square format with a shallow depth of field, focusing on the metallic wand and bright yellow body of the machine. The lighting is bright, natural daylight, reflecting off the clean surfaces, emphasizing a sense of utility, cleanliness, and readiness for service in a secure neighborhood sharing context." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYcF1s4nlnIk_BBmPjV94QtMD76TKjbFWcGgYGKAsIHvQJeEPHMqEjViUQgZkehBdfEwFgG8e95wmXw4cT1F0bzMOShsyG0fuF5mHdU51QRtzNoFw_JW6UniicBXFkShPFwYUEQmtxUs9hZ7fwYdLseEN50Ta5ayp6TFMiWrOiYbhl1eddm6_V8LMBZheLtiSBsRLlLJ9KLqUEdUyzemjSShEN4-kjW7kPjN2Q10uSYhcXTo8ZltF-k7IjK6JT2BzDLtrAdy0nej77">
+<!-- Verification Badge Overlay -->
+<div class="absolute top-2 left-2 bg-surface text-primary rounded-full p-1 shadow-sm border border-outline-variant/20 flex items-center justify-center w-6 h-6">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+</div>
+<!-- Right: Details -->
+<div class="flex flex-col flex-grow justify-between">
+<div>
+<div class="flex justify-between items-start mb-1">
+<h2 class="font-title-md text-title-md text-on-surface line-clamp-1">Heavy-Duty Power Washer</h2>
+<div class="font-label-bold text-label-bold text-primary whitespace-nowrap ml-2">
+                                    $45 <span class="font-caption text-caption text-text-muted font-normal">/ day</span>
+</div>
+</div>
+<!-- Location / Distance -->
+<div class="flex items-center text-text-muted mb-2">
+<span class="material-symbols-outlined text-[16px] mr-1">near_me</span>
+<span class="font-body-sm text-body-sm">0.8 miles away</span>
+</div>
+</div>
+<!-- Owner & Trust -->
+<div class="flex items-center gap-3">
+<img class="w-8 h-8 rounded-full border border-outline-variant object-cover" data-alt="A professional headshot of a friendly, approachable adult male neighbor wearing a casual button-down shirt. The background is slightly blurred and features a generic, well-maintained suburban exterior in bright daylight. The lighting is soft and flattering, conveying trustworthiness and reliability suitable for an institutional community sharing platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTmmO_0TSPJpfhex2Rxz2DFs5S0e6QT6EeufV6u-zQDfGRFIOGOGjLgVGgXbPnPfmu34UgLDlZSS-tDmsqnnTEQqOQQ1c3MdsAOACckluRBDCey7o5Z0c1496nj7-CE53rg9TsEjZ6wyTzTK36t7nUYT0hwDCyDT_nSukeEUa2LNpJ8Y3xUjp6jcC7iVOsvx-bWYLL3yWpo0VlZ8gGKwyD_fWrucHBazXnFxNqdE4WTAJYwnVaZBM6IXbCCNLqtijgGiPJ44rqvWA-">
+<div class="flex flex-col">
+<span class="font-label-bold text-label-bold text-on-surface">Michael R.</span>
+<div class="flex items-center text-primary-container">
+<span class="material-symbols-outlined text-[14px] mr-0.5" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-caption text-caption font-bold">4.9</span>
+<span class="font-caption text-caption text-text-muted ml-1 font-normal">(24 rentals)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom: Action Button -->
+<button class="w-full h-[52px] bg-primary text-on-primary rounded-lg font-label-bold text-label-bold flex items-center justify-center gap-2 hover:bg-on-primary-fixed-variant transition-colors active:scale-[0.98]">
+                    VIEW FULL DETAILS
+                    <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</main>
+<!-- Suppressing BottomNav because this is an overlay on a map, which implies a task-focused or specific browse state, not the top-level neutral 'Home' state, though arguably it could exist behind the map. For clarity of the UI requirement, we focus on the Bottom Sheet component as the primary interaction area. -->
+</body></html>

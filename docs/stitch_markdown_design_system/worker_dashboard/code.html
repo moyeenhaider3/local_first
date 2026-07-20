@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Worker Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=inter:wght@100..900&family=manrope:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#00685f",
+                        "tertiary-fixed": "#7ffc97",
+                        "surface-container-highest": "#d8e3fb",
+                        "on-primary-fixed-variant": "#005049",
+                        "secondary": "#565e74",
+                        "surface-bright": "#f9f9ff",
+                        "on-tertiary": "#ffffff",
+                        "warning": "#D97706",
+                        "app-bg": "#F8FAFC",
+                        "on-surface-variant": "#3d4947",
+                        "secondary-fixed": "#dae2fd",
+                        "on-error": "#ffffff",
+                        "danger": "#DC2626",
+                        "on-secondary-container": "#5c647a",
+                        "tertiary-fixed-dim": "#62df7d",
+                        "surface-dim": "#cfdaf2",
+                        "surface": "#FFFFFF",
+                        "surface-container-high": "#dee8ff",
+                        "text-muted": "#64748B",
+                        "on-tertiary-container": "#f7fff2",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed-variant": "#005320",
+                        "on-error-container": "#93000a",
+                        "surface-container": "#e7eeff",
+                        "on-primary-fixed": "#00201d",
+                        "on-primary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#f4fffc",
+                        "inverse-surface": "#263143",
+                        "inverse-on-surface": "#ecf1ff",
+                        "tertiary-container": "#00873a",
+                        "outline-variant": "#bcc9c6",
+                        "on-background": "#111c2d",
+                        "secondary-container": "#dae2fd",
+                        "primary-fixed-dim": "#6bd8cb",
+                        "outline": "#6d7a77",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "on-tertiary-fixed": "#002109",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "on-surface": "#111c2d",
+                        "on-secondary-fixed": "#131b2e",
+                        "on-secondary": "#ffffff",
+                        "surface-tint": "#006a61",
+                        "background": "#f9f9ff",
+                        "primary-fixed": "#89f5e7",
+                        "tertiary": "#006b2c",
+                        "surface-container-low": "#f0f3ff",
+                        "error-container": "#ffdad6",
+                        "surface-variant": "#d8e3fb",
+                        "primary-container": "#008378",
+                        "inverse-primary": "#6bd8cb"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "safe-area-top": "24px",
+                        "margin-mobile": "16px",
+                        "base": "8px",
+                        "touch-target": "48px",
+                        "gap-xl": "24px",
+                        "gap-sm": "8px",
+                        "gap-md": "12px",
+                        "gap-lg": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["manrope"],
+                        "body-sm": ["inter"],
+                        "body-lg": ["inter"],
+                        "title-md": ["manrope"],
+                        "headline-lg": ["manrope"],
+                        "label-bold": ["inter"],
+                        "caption": ["inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "title-md": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "label-bold": ["14px", { "lineHeight": "16px", "fontWeight": "700" }],
+                        "caption": ["12px", { "lineHeight": "16px", "fontWeight": "500" }]
+                    }
+                },
+            }
+        }
+    </script>
+<style>
+        body { background-color: #F8FAFC; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-app-bg text-on-background min-h-screen font-body-lg pb-[104px]">
+<!-- TopAppBar from JSON -->
+<header class="fixed top-0 w-full z-50 bg-surface dark:bg-background flex justify-between items-center h-16 px-margin-mobile">
+<button aria-label="Menu" class="material-symbols-outlined text-primary dark:text-primary-fixed-dim hover:bg-surface-container-low transition-colors active:opacity-80 transition-opacity w-[48px] h-[48px] flex items-center justify-center rounded-full">
+            shield
+        </button>
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim tracking-tight">
+            ShieldShare
+        </span>
+<button aria-label="Notifications" class="material-symbols-outlined text-primary dark:text-primary-fixed-dim hover:bg-surface-container-low transition-colors active:opacity-80 transition-opacity w-[48px] h-[48px] flex items-center justify-center rounded-full">
+            notifications
+        </button>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-[88px] px-margin-mobile flex flex-col gap-xl max-w-md mx-auto md:max-w-3xl md:px-0">
+<!-- Header & Status -->
+<section class="flex flex-col gap-md">
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Worker Dashboard</h1>
+<div class="bg-surface rounded-xl p-[16px] flex items-center justify-between">
+<div class="flex items-center gap-md">
+<span class="w-3 h-3 rounded-full bg-tertiary-container animate-pulse"></span>
+<span class="font-label-bold text-label-bold text-on-surface">Status: Available Today</span>
+</div>
+<div aria-checked="true" class="w-[48px] h-[24px] bg-tertiary-container rounded-full relative cursor-pointer" role="switch">
+<div class="absolute right-[2px] top-[2px] w-[20px] h-[20px] bg-surface rounded-full shadow-sm"></div>
+</div>
+</div>
+</section>
+<!-- Jobs Grid / Dashboard -->
+<section class="flex flex-col gap-lg">
+<!-- Job Card 1: New Request -->
+<article class="bg-surface rounded-xl p-[16px] flex flex-col gap-[16px] border border-outline-variant/30">
+<div class="flex items-center gap-[12px]">
+<img class="w-[48px] h-[48px] rounded-full object-cover" data-alt="A professional headshot of a middle-aged woman with glasses and a warm smile, well-lit in a modern suburban home environment, conveying trust and reliability for a neighborhood sharing platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAl3jCQzuOOkFbOjqH-TzJ0AaJcnv2zpjpHAoVQXyhS8g3YPfI9Fx8Zfj11apCx-3f7oh_4gYXkuWQQ65mOEweHIiI91AqQYQEHF08MJy8oYTxGtBnuGzpiz3JerJc5FVshvzDH9Zbgx2F5-kFsn1cEM-1RfSeEaJwMFCQxKsLS_7nOpg9H2GpnxlrrAEvNs8oEE07ZRhy_dPvT_p8M37oJyv9dFgJYq5RTpDxG9-KZcZ1n7X-akjfTsxUDQaxfQotQxGf191mL8yVk"/>
+<div class="flex flex-col">
+<span class="font-title-md text-title-md text-on-surface">Sarah Jenkins</span>
+<span class="font-caption text-caption text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">verified</span> Identity Verified
+                        </span>
+</div>
+<div class="ml-auto flex flex-col items-end">
+<span class="font-headline-md text-headline-md text-primary">$35</span>
+<span class="font-caption text-caption text-secondary">Est. Payout</span>
+</div>
+</div>
+<div class="bg-app-bg rounded-lg p-[12px] flex flex-col gap-sm border border-outline-variant/20">
+<div class="flex justify-between items-start">
+<span class="font-label-bold text-label-bold text-on-surface">Pet Sitting & Walk</span>
+<span class="bg-surface-container-highest text-on-surface-variant font-caption text-caption px-2 py-1 rounded-full">New Request</span>
+</div>
+<div class="flex items-center gap-[8px] font-body-sm text-body-sm text-on-surface-variant mt-1">
+<span class="material-symbols-outlined text-[16px]">schedule</span> Today, 4:00 PM - 5:00 PM
+                    </div>
+<div class="flex items-center gap-[8px] font-body-sm text-body-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">location_on</span> 0.8 miles away • Maple St.
+                    </div>
+</div>
+<div class="flex gap-[12px] mt-2">
+<button class="flex-1 h-[52px] bg-surface-container text-on-surface font-label-bold text-label-bold rounded-lg flex items-center justify-center gap-[8px] active:opacity-80 transition-opacity">
+                        Decline
+                    </button>
+<button class="flex-[2] h-[52px] bg-primary text-on-primary font-label-bold text-label-bold rounded-lg flex items-center justify-center active:opacity-80 transition-opacity">
+                        Accept Job
+                    </button>
+</div>
+</article>
+<!-- Job Card 2: Active Job requiring completion code -->
+<article class="bg-surface rounded-xl p-[16px] flex flex-col gap-[16px] border border-primary/20 shadow-sm relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary"></div>
+<div class="flex items-center gap-[12px]">
+<img class="w-[48px] h-[48px] rounded-full object-cover" data-alt="A clear, high-quality portrait of an elderly gentleman standing on his front porch in daylight, looking friendly and approachable, suited for a trusted community service application." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6blHygEjiUCrAOBavLmSMXzXwrRE3ShHkPGq4YPhhKLf4-K3seo2IpJFsEWrFyE17RyvXppv-q3Y2M_oT7HlqVXbQr7DDTyTybFi5Ge1YRRFMPA-mxzfW-1-mCLbojA9ra8rM1BmyCyQFdsmnRukD23wbUCqCxwZdFjwvawWWUM3K9IFF8VhUaZjciBL6RQLS5RRtaK8yUVjwxoYnfg05cC5LpsGeLZRtaXD1RzP-5I7s1fje1oto5-lw-_96qUeh-cIDD2yghYco"/>
+<div class="flex flex-col">
+<span class="font-title-md text-title-md text-on-surface">Robert Davis</span>
+<span class="font-caption text-caption text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span> 5.0 (12 jobs)
+                        </span>
+</div>
+</div>
+<div class="bg-primary/5 rounded-lg p-[12px] flex flex-col gap-sm">
+<div class="flex justify-between items-start">
+<span class="font-label-bold text-label-bold text-on-surface">Yard Maintenance</span>
+<span class="bg-primary text-on-primary font-caption text-caption px-2 py-1 rounded-full">In Progress</span>
+</div>
+<div class="flex items-center gap-[8px] font-body-sm text-body-sm text-on-surface-variant mt-1">
+<span class="material-symbols-outlined text-[16px]">schedule</span> Started at 10:00 AM
+                    </div>
+</div>
+<div class="flex flex-col gap-[12px] mt-2">
+<p class="font-body-sm text-body-sm text-secondary text-center px-4">
+                        Handshake required. Ask the customer for their secure completion code to release payment.
+                    </p>
+<div class="flex gap-[12px]">
+<button aria-label="Chat with Robert" class="w-[52px] h-[52px] bg-surface-container text-on-surface rounded-lg flex items-center justify-center active:opacity-80 transition-opacity">
+<span class="material-symbols-outlined">chat</span>
+</button>
+<button class="flex-1 h-[52px] bg-tertiary-container text-on-tertiary-container font-label-bold text-label-bold rounded-lg flex items-center justify-center gap-[8px] active:opacity-80 transition-opacity">
+<span class="material-symbols-outlined">lock_open</span> Enter Completion Code
+                        </button>
+</div>
+</div>
+</article>
+</section>
+</main>
+<!-- BottomNavBar from JSON (Profile Active) -->
+<nav class="fixed bottom-0 left-0 w-full h-20 flex justify-around items-center px-margin-mobile pb-safe fixed bottom-0 w-full z-50 rounded-t-xl bg-surface dark:bg-background shadow-sm md:hidden">
+<!-- Inactive: Home -->
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim px-4 py-1.5 hover:bg-surface-container-highest dark:hover:bg-on-surface-variant transition-all active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-bold text-label-bold mt-1">Home</span>
+</a>
+<!-- Inactive: Services -->
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim px-4 py-1.5 hover:bg-surface-container-highest dark:hover:bg-on-surface-variant transition-all active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">handyman</span>
+<span class="font-label-bold text-label-bold mt-1">Services</span>
+</a>
+<!-- Inactive: Activity -->
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim px-4 py-1.5 hover:bg-surface-container-highest dark:hover:bg-on-surface-variant transition-all active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-label-bold text-label-bold mt-1">Activity</span>
+</a>
+<!-- Active: Profile -->
+<a class="flex flex-col items-center justify-center bg-primary-container dark:bg-on-primary-fixed-variant text-on-primary-container dark:text-primary-fixed rounded-xl px-4 py-1.5 hover:bg-surface-container-highest dark:hover:bg-on-surface-variant transition-all active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-label-bold text-label-bold mt-1">Profile</span>
+</a>
+</nav>
+</body></html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>ShieldShare - Bosch Hammer Drill</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#006a61",
+                        "error": "#ba1a1a",
+                        "surface-bright": "#f9f9ff",
+                        "danger": "#DC2626",
+                        "on-secondary-container": "#5c647a",
+                        "surface-variant": "#d8e3fb",
+                        "on-primary": "#ffffff",
+                        "surface-container-low": "#f0f3ff",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "warning": "#D97706",
+                        "surface-container-high": "#dee8ff",
+                        "on-tertiary-fixed": "#002109",
+                        "outline-variant": "#bcc9c6",
+                        "background": "#f9f9ff",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "secondary": "#565e74",
+                        "surface-dim": "#cfdaf2",
+                        "on-primary-fixed": "#00201d",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#ecf1ff",
+                        "primary-fixed-dim": "#6bd8cb",
+                        "on-tertiary-fixed-variant": "#005320",
+                        "primary-container": "#008378",
+                        "surface": "#FFFFFF",
+                        "on-tertiary-container": "#f7fff2",
+                        "primary": "#00685f",
+                        "app-bg": "#F8FAFC",
+                        "on-surface-variant": "#3d4947",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed": "#dae2fd",
+                        "tertiary-fixed-dim": "#62df7d",
+                        "text-muted": "#64748B",
+                        "secondary-container": "#dae2fd",
+                        "tertiary": "#006b2c",
+                        "on-primary-fixed-variant": "#005049",
+                        "on-background": "#111c2d",
+                        "tertiary-container": "#00873a",
+                        "error-container": "#ffdad6",
+                        "surface-container-highest": "#d8e3fb",
+                        "tertiary-fixed": "#7ffc97",
+                        "primary-fixed": "#89f5e7",
+                        "on-surface": "#111c2d",
+                        "surface-container": "#e7eeff",
+                        "on-secondary-fixed": "#131b2e",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "inverse-surface": "#263143",
+                        "inverse-primary": "#6bd8cb",
+                        "on-primary-container": "#f4fffc",
+                        "outline": "#6d7a77"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gap-sm": "8px",
+                        "gap-xl": "24px",
+                        "safe-area-top": "24px",
+                        "gap-md": "12px",
+                        "margin-mobile": "16px",
+                        "gap-lg": "16px",
+                        "base": "8px",
+                        "touch-target": "48px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["manrope"],
+                        "caption": ["inter"],
+                        "body-sm": ["inter"],
+                        "body-lg": ["inter"],
+                        "label-bold": ["inter"],
+                        "headline-lg": ["manrope"],
+                        "title-md": ["manrope"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "caption": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-bold": ["14px", { "lineHeight": "16px", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "title-md": ["18px", { "lineHeight": "24px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-app-bg text-on-background min-h-screen pb-24 md:pb-0 font-body-sm relative">
+<!-- Top App Bar (Modified for Details Screen - Back Button & Share) -->
+<header class="bg-surface dark:bg-on-background border-b border-outline-variant dark:border-outline flat no shadows flex justify-between items-center px-margin-mobile h-touch-target w-full docked full-width top-0 sticky z-50">
+<button aria-label="Go back" class="h-touch-target w-touch-target flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-full">
+<span class="material-symbols-outlined text-title-md">arrow_back</span>
+</button>
+<span class="font-headline-md text-headline-md font-bold text-primary truncate mx-4 flex-1 text-center">Item Details</span>
+<button aria-label="Share item" class="h-touch-target w-touch-target flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-full">
+<span class="material-symbols-outlined text-title-md">share</span>
+</button>
+</header>
+<main class="max-w-3xl mx-auto md:px-margin-mobile md:py-gap-xl">
+<!-- Image Carousel -->
+<section class="w-full md:rounded-xl overflow-hidden relative mb-gap-lg">
+<div class="aspect-video w-full bg-surface-container relative">
+<img class="w-full h-full object-cover" data-alt="A high-quality, brightly lit close-up photograph of a professional Bosch power drill resting on a clean, modern workshop workbench. The lighting is crisp and cool, highlighting the industrial design and teal accents of the tool. The background is slightly out of focus, emphasizing the drill's robust build. The overall mood is practical, reliable, and secure, fitting a professional rental platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBhaJbSEoIvzZKVhTLc-wKcCbKivNG_XD3jz_6lrOyfCUOMn01585aleUIIcTZahbslvXvFdrxN-WP0jdd8PgOjz71SvxkAveXCdl-h-TUYoEyJY_Lt_syGJaAmFgTh-u3vckBZ0OMRrM7KLWdhhNBWL-hQERzsREuDMjLnLXmkKn7K7SDXJ7p8pDK5UdrP6bGVoNzemsmvI-XOLu5VDnp1mSynYltePDwAMs3wR94pzMN7HhbQIo36u0pXp8ZCH0wSh52itb2SS-rD">
+</div>
+<!-- Carousel Dots -->
+<div class="absolute bottom-4 left-0 w-full flex justify-center gap-2">
+<div class="w-2 h-2 rounded-full bg-surface"></div>
+<div class="w-2 h-2 rounded-full bg-surface/50"></div>
+<div class="w-2 h-2 rounded-full bg-surface/50"></div>
+</div>
+</section>
+<!-- Item Info -->
+<section class="px-margin-mobile md:px-0 mb-gap-xl">
+<div class="flex justify-between items-start mb-gap-sm">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-background mb-1">Bosch Hammer Drill</h1>
+<span class="font-label-bold text-label-bold text-primary bg-primary-container/20 px-3 py-1 rounded-full">Power Tools</span>
+</div>
+<div class="text-right">
+<span class="font-title-md text-title-md text-primary block">₹300</span>
+<span class="font-caption text-caption text-on-surface-variant">/ day</span>
+</div>
+</div>
+<p class="font-body-lg text-body-lg text-on-secondary-container mt-gap-md">
+                Professional grade 800W hammer drill. Perfect for concrete and masonry drilling. Comes with a standard set of masonry bits. Cleaned and tested after every use.
+            </p>
+</section>
+<!-- Owner Identity Card (Handshake/Trust focused) -->
+<section class="px-margin-mobile md:px-0 mb-gap-xl">
+<h2 class="font-title-md text-title-md text-on-background mb-gap-md">Provided by Neighbor</h2>
+<div class="bg-surface rounded-xl p-gap-lg flex items-center gap-gap-lg border border-surface-container-high">
+<div class="w-[72px] h-[72px] rounded-full overflow-hidden flex-shrink-0 bg-surface-container-low border-2 border-primary-container">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a friendly, approachable man in his 30s. He is smiling warmly, wearing a clean, casual button-down shirt. The background is a soft, blurred bright outdoor setting with natural light, conveying trustworthiness and community spirit. The overall aesthetic is clean, modern, and reliable, suitable for a secure neighborhood platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDc4vFMEKzJHuFGlPps0NCuT4nS8wsEuew2UBzwxF2ZSYSzZxrsDvwunY_DQJrY6xdKyXDVVVCSLrWiUviRylOfiy6MGOo_dYClvuz9M2GegTnG_r9EjvVtEKGQLxgAJ6bEzybzIjMTq58XlDLvmi4pfjuM3ne1PGuZvwv9o1KC_FV8ji-wHFSPbHFwiJ4C6IEDNfLT-zpNAPSsv8AGN10-CvJytmtZzvMVcO1aAmM3PITXOEmfB9J0VxRkE0uoYZrIIsKd5lriTZET">
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-1">
+<span class="font-title-md text-title-md text-on-background">Rajesh Kumar</span>
+<span class="material-symbols-outlined text-primary text-[18px] bg-primary-container/20 rounded-full p-[2px]">verified_user</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-warning text-[16px]">star</span>
+<span class="font-label-bold text-label-bold text-on-surface-variant">4.9</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-tertiary text-[16px]">shield</span>
+<span class="font-caption text-caption text-tertiary">Trust Score: 99</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Location Map Card -->
+<section class="px-margin-mobile md:px-0 mb-gap-xl">
+<h2 class="font-title-md text-title-md text-on-background mb-gap-md">Pick-up Location</h2>
+<div class="bg-surface rounded-xl overflow-hidden border border-surface-container-high">
+<div class="h-48 w-full bg-surface-container relative">
+<img class="w-full h-full object-cover" data-alt="A minimalist, top-down digital map view of a modern suburban neighborhood. The map style is clean, using a light slate and white color palette with subtle teal accents. The streets are clearly defined without clutter. A soft, glowing teal circle highlights a specific residential block, indicating a general pick-up zone while maintaining privacy. The aesthetic is institutional and secure." data-location="Bangalore" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyxm9xqPXRERkQK_SqnutSfUkUtiD8C8TOrGQmrsYXRFIMrRyiqBrQFiFjvfDExyqKoXKz7fqa8Rcc2iA_k3wCB93GuFPs_weAR7h4zz9f3OrMSjJDlTYhn8RbVCDfg7CVemBUjRCXtWFnVugqse-nxs_kkZIRgDOu76_FYZFGIpJUkw9S2djIFvSVScZDmiytb7MgzlFQ0Nu7AutRr_U9IuhykTO38Ds5IKzJH2BQ56u9xYYlAB4lYczUBnJyTzCaVDmaCyPB38gQ">
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<!-- Approximate Zone Marker -->
+<div class="w-24 h-24 rounded-full bg-primary/20 border-2 border-primary/40 flex items-center justify-center">
+<div class="w-3 h-3 rounded-full bg-primary"></div>
+</div>
+</div>
+</div>
+<div class="p-gap-md bg-surface flex items-center gap-gap-sm">
+<span class="material-symbols-outlined text-on-surface-variant">location_on</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Indiranagar, Stage 2 (Approximate area)</span>
+</div>
+</div>
+</section>
+</main>
+<!-- Sticky Bottom Action (Suppressed Global Nav, Focused Action) -->
+<div class="fixed bottom-0 left-0 w-full bg-surface border-t border-surface-container-high p-margin-mobile z-40 md:relative md:bg-transparent md:border-none md:p-0 md:max-w-3xl md:mx-auto md:mb-gap-xl flex justify-center">
+<button class="bg-primary hover:bg-on-primary-fixed-variant active:scale-95 transition-all duration-200 text-on-primary font-label-bold text-label-bold h-[52px] w-full md:w-auto md:px-12 rounded-lg flex items-center justify-center gap-2 shadow-sm">
+<span class="material-symbols-outlined text-[20px]">handshake</span>
+            INITIATE RENTAL REQUEST
+        </button>
+</div>
+</body></html>

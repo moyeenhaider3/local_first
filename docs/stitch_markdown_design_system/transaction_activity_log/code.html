@@ -1,0 +1,196 @@
+<!DOCTYPE html><html lang="en" class="light"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">try{
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error": "#ffffff",
+                        "outline": "#6d7a77",
+                        "primary-container": "#008378",
+                        "tertiary": "#006b2c",
+                        "surface": "#FFFFFF",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#002109",
+                        "surface-container-highest": "#d8e3fb",
+                        "secondary-fixed": "#dae2fd",
+                        "surface-variant": "#d8e3fb",
+                        "on-secondary-fixed": "#131b2e",
+                        "surface-tint": "#006a61",
+                        "tertiary-fixed-dim": "#62df7d",
+                        "secondary": "#565e74",
+                        "surface-container": "#e7eeff",
+                        "tertiary-fixed": "#7ffc97",
+                        "inverse-surface": "#263143",
+                        "on-surface-variant": "#3d4947",
+                        "on-tertiary-container": "#f7fff2",
+                        "danger": "#DC2626",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#111c2d",
+                        "on-primary-fixed": "#00201d",
+                        "on-secondary": "#ffffff",
+                        "warning": "#D97706",
+                        "on-tertiary-fixed-variant": "#005320",
+                        "on-secondary-container": "#5c647a",
+                        "secondary-container": "#dae2fd",
+                        "on-primary-container": "#f4fffc",
+                        "background": "#f9f9ff",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "on-surface": "#111c2d",
+                        "surface-container-high": "#dee8ff",
+                        "on-primary-fixed-variant": "#005049",
+                        "inverse-on-surface": "#ecf1ff",
+                        "error": "#ba1a1a",
+                        "primary-fixed": "#89f5e7",
+                        "outline-variant": "#bcc9c6",
+                        "tertiary-container": "#00873a",
+                        "on-tertiary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "inverse-primary": "#6bd8cb",
+                        "app-bg": "#F8FAFC",
+                        "primary-fixed-dim": "#6bd8cb",
+                        "surface-dim": "#cfdaf2",
+                        "text-muted": "#64748B",
+                        "surface-bright": "#f9f9ff",
+                        "primary": "#00685f",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "on-primary": "#ffffff",
+                        "surface-container-low": "#f0f3ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "safe-area-top": "24px",
+                        "gap-lg": "16px",
+                        "touch-target": "48px",
+                        "base": "8px",
+                        "gap-md": "12px",
+                        "margin-mobile": "16px",
+                        "gap-sm": "8px",
+                        "gap-xl": "24px"
+                    },
+                    "fontFamily": {
+                        "title-md": ["Manrope", "sans-serif"],
+                        "caption": ["Inter", "sans-serif"],
+                        "body-sm": ["Inter", "sans-serif"],
+                        "label-bold": ["Inter", "sans-serif"],
+                        "headline-md": ["Manrope", "sans-serif"],
+                        "headline-lg": ["Manrope", "sans-serif"],
+                        "body-lg": ["Inter", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "title-md": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+                        "caption": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "label-bold": ["14px", { "lineHeight": "16px", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    }catch(_e){}</script><meta charset="utf-8"></head><body class="bg-app-bg text-on-surface min-h-screen flex flex-col pt-safe-area-top pb-[80px]">
+<!-- Header Section -->
+<header class="px-margin-mobile pt-gap-xl pb-gap-lg">
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Your Transactions</h1>
+<!-- Tab Bar -->
+<div class="flex mt-gap-lg border-b border-outline-variant">
+<button class="flex-1 pb-gap-sm border-b-2 border-primary font-label-bold text-label-bold text-primary">
+                ACTIVE TRANSACTIONS
+            </button>
+<button class="flex-1 pb-gap-sm font-label-bold text-label-bold text-secondary hover:text-on-surface transition-colors">
+                COMPLETED HISTORY
+            </button>
+</div>
+</header>
+<!-- Main Content: Transaction Cards -->
+<main class="px-margin-mobile flex-1 flex flex-col gap-gap-lg overflow-y-auto">
+<!-- Card 1: Active -->
+<article class="bg-surface rounded-lg p-gap-md flex gap-gap-md shadow-sm">
+<div class="w-20 h-20 rounded bg-surface-container-low shrink-0 overflow-hidden relative">
+<img alt="Bosch Hammer Drill" class="object-cover w-full h-full" data-alt="A professional product shot of a rugged Bosch hammer drill resting on a clean concrete surface. The lighting is bright and industrial, highlighting the tool's texture and robust design. The color palette features the signature blue of the drill against a neutral grey background, evoking a sense of reliability and heavy-duty performance suitable for a modern neighborhood tool-sharing platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD73OEv7Xn_BYbDaRYdbDS31Hpap6nEs2lSghuT36yxeAJJDJhQ0WqXodQh-6qs8cBUhDYo3ZiwK230_xQ9OON8KEcl2ELjVmwZl5IziSHAhU6F6oMWYiQjODSL0LzanlXJazf7CYWpxZELGGMH6W0tlUTMGQrONpMshSl-z7wMcCV9mhBIFpL2e0jqTZgFNdnf8hmu_csJXevTl-Po6n8uAn67-nB5KBQaeXL7YovtOWtPFQ36rCsbTN3XP_EYa6R_RSwfn9WsRl7w">
+</div>
+<div class="flex-1 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-1">
+<h2 class="font-title-md text-title-md text-on-surface line-clamp-1">Bosch Hammer Drill</h2>
+<span class="bg-warning/10 text-warning px-2 py-1 rounded-full font-caption text-caption whitespace-nowrap ml-2">SIGNED</span>
+</div>
+<p class="font-body-sm text-body-sm text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span> Oct 24 - Oct 26
+                    </p>
+</div>
+<div class="flex justify-between items-end mt-2">
+<p class="font-label-bold text-label-bold text-on-surface">₹600</p>
+<button class="text-primary font-label-bold text-label-bold hover:underline">View details</button>
+</div>
+</div>
+</article>
+<!-- Card 2: Completed -->
+<article class="bg-surface rounded-lg p-gap-md flex gap-gap-md shadow-sm opacity-75">
+<div class="w-20 h-20 rounded bg-surface-container-low shrink-0 overflow-hidden relative">
+<img alt="4-Person Camping Tent" class="object-cover w-full h-full" data-alt="A high-quality image of a modern 4-person camping tent pitched on neatly trimmed grass. The tent is predominantly deep green and grey, illuminated by soft, natural daylight indicative of a clear morning. The scene is calm and inviting, emphasizing outdoor recreation and durable equipment typical of community sharing networks." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCm4q-G_w9NO3j570iwki6g48v8ZcIAFVQ-vYlFLoYIRQaeM0YcsFQETXn3zZk6eMAlDmar3kM9DENmgGX1b7Y3TUHktYNgdYC3QjWcC8vnNE2Bvepfm5oSNxwIe5KphbIAYVqKTQGPzihEEMuzkCxIPbsjKkXVgdHBweMnEcECje4p_N6qV3nTkFLDdJ3YjaPyfG-VtfMlQF23LNThA43RQNaNGRB1YNH-Y6R8EveFJNx_pZ-ON7iI06u-CRglf2LJbHMi_svLWPt4">
+</div>
+<div class="flex-1 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-1">
+<h2 class="font-title-md text-title-md text-on-surface line-clamp-1">4-Person Camping Tent</h2>
+<span class="bg-tertiary-container/10 text-tertiary px-2 py-1 rounded-full font-caption text-caption whitespace-nowrap ml-2">COMPLETED</span>
+</div>
+<p class="font-body-sm text-body-sm text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span> Oct 12 - Oct 14
+                    </p>
+</div>
+<div class="flex justify-between items-end mt-2">
+<p class="font-label-bold text-label-bold text-on-surface">₹300</p>
+<button class="text-secondary font-label-bold text-label-bold hover:underline">Receipt</button>
+</div>
+</div>
+</article>
+<!-- Card 3: Disputed -->
+<article class="bg-surface rounded-lg p-gap-md flex gap-gap-md shadow-sm border border-error-container">
+<div class="w-20 h-20 rounded bg-surface-container-low shrink-0 overflow-hidden relative">
+<img alt="Folding Ladder" class="object-cover w-full h-full" data-alt="A clean, well-lit photo of an aluminum folding ladder standing against a pristine white wall. The ladder casts a soft shadow, highlighting its metallic finish and sturdy construction. The lighting is even and studio-like, maintaining a clinical and secure visual tone that aligns with a professional P2P service platform's inventory." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOGV9MkCItc4RsV-jJRfhhqGkYKoSVcK6TQW1JiJHA2xAZoAybOISNzeGhWrzWCTfyn5stbCXC5mDvTvMS5ojgRZkcFEd_cwvNXe3PEX41vVRadNfB1O-gGpznaXHPO2KFLJCzRgVKKGbNoD9RJ0wXoM34Fi2lm0hd9xKIdO65b_dn33BQBSHiGfe7y-7hnBsuOVlApH6dfjmBTuGlQxxDPbok4KHwcs2JkCPgFbZonN33MfeHYMicZ4ekQn6Sbs00kAvKo-qMaHOH">
+</div>
+<div class="flex-1 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-1">
+<h2 class="font-title-md text-title-md text-on-surface line-clamp-1">Folding Ladder</h2>
+<span class="bg-error-container/30 text-error px-2 py-1 rounded-full font-caption text-caption whitespace-nowrap ml-2">DISPUTED</span>
+</div>
+<p class="font-body-sm text-body-sm text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span> Oct 5 - Oct 6
+                    </p>
+</div>
+<div class="flex justify-between items-end mt-2">
+<p class="font-label-bold text-label-bold text-on-surface">₹100</p>
+<button class="text-error font-label-bold text-label-bold hover:underline">Resolve</button>
+</div>
+</div>
+</article>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 px-margin-mobile bg-surface dark:bg-on-background border-t border-outline-variant dark:border-outline">
+    <a href="#" class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-secondary-container px-4 py-1 hover:text-primary dark:hover:text-primary-fixed active:opacity-80 transition-opacity">
+        <span class="material-symbols-outlined">home</span>
+        <span class="font-label-bold text-label-bold">Home</span>
+    </a>
+    <a href="#" class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-secondary-container px-4 py-1 hover:text-primary dark:hover:text-primary-fixed active:opacity-80 transition-opacity">
+        <span class="material-symbols-outlined">handshake</span>
+        <span class="font-label-bold text-label-bold">Services</span>
+    </a>
+    <a href="#" class="flex flex-col items-center justify-center bg-primary-container dark:bg-on-primary-fixed-variant text-on-primary-container dark:text-primary-fixed rounded-full px-4 py-1 active:opacity-80 transition-opacity">
+        <span class="material-symbols-outlined">history</span>
+        <span class="font-label-bold text-label-bold">Activity</span>
+    </a>
+    <a href="#" class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-secondary-container px-4 py-1 hover:text-primary dark:hover:text-primary-fixed active:opacity-80 transition-opacity">
+        <span class="material-symbols-outlined">person</span>
+        <span class="font-label-bold text-label-bold">Profile</span>
+    </a>
+</nav>
+
+</body></html>

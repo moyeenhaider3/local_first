@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Service Request Form</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&amp;family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary": "#00685f",
+                      "tertiary-fixed": "#7ffc97",
+                      "surface-container-highest": "#d8e3fb",
+                      "on-primary-fixed-variant": "#005049",
+                      "secondary": "#565e74",
+                      "surface-bright": "#f9f9ff",
+                      "on-tertiary": "#ffffff",
+                      "warning": "#D97706",
+                      "app-bg": "#F8FAFC",
+                      "on-surface-variant": "#3d4947",
+                      "secondary-fixed": "#dae2fd",
+                      "on-error": "#ffffff",
+                      "danger": "#DC2626",
+                      "on-secondary-container": "#5c647a",
+                      "tertiary-fixed-dim": "#62df7d",
+                      "surface-dim": "#cfdaf2",
+                      "surface": "#FFFFFF",
+                      "surface-container-high": "#dee8ff",
+                      "text-muted": "#64748B",
+                      "on-tertiary-container": "#f7fff2",
+                      "surface-container-lowest": "#ffffff",
+                      "on-tertiary-fixed-variant": "#005320",
+                      "on-error-container": "#93000a",
+                      "surface-container": "#e7eeff",
+                      "on-primary-fixed": "#00201d",
+                      "on-primary": "#ffffff",
+                      "error": "#ba1a1a",
+                      "on-primary-container": "#f4fffc",
+                      "inverse-surface": "#263143",
+                      "inverse-on-surface": "#ecf1ff",
+                      "tertiary-container": "#00873a",
+                      "outline-variant": "#bcc9c6",
+                      "on-background": "#111c2d",
+                      "secondary-container": "#dae2fd",
+                      "primary-fixed-dim": "#6bd8cb",
+                      "outline": "#6d7a77",
+                      "on-secondary-fixed-variant": "#3f465c",
+                      "on-tertiary-fixed": "#002109",
+                      "secondary-fixed-dim": "#bec6e0",
+                      "on-surface": "#111c2d",
+                      "on-secondary-fixed": "#131b2e",
+                      "on-secondary": "#ffffff",
+                      "surface-tint": "#006a61",
+                      "background": "#f9f9ff",
+                      "primary-fixed": "#89f5e7",
+                      "tertiary": "#006b2c",
+                      "surface-container-low": "#f0f3ff",
+                      "error-container": "#ffdad6",
+                      "surface-variant": "#d8e3fb",
+                      "primary-container": "#008378",
+                      "inverse-primary": "#6bd8cb"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "safe-area-top": "24px",
+                      "margin-mobile": "16px",
+                      "base": "8px",
+                      "touch-target": "48px",
+                      "gap-xl": "24px",
+                      "gap-sm": "8px",
+                      "gap-md": "12px",
+                      "gap-lg": "16px"
+              },
+              "fontFamily": {
+                      "headline-md": [
+                              "manrope"
+                      ],
+                      "body-sm": [
+                              "inter"
+                      ],
+                      "body-lg": [
+                              "inter"
+                      ],
+                      "title-md": [
+                              "manrope"
+                      ],
+                      "headline-lg": [
+                              "manrope"
+                      ],
+                      "label-bold": [
+                              "inter"
+                      ],
+                      "caption": [
+                              "inter"
+                      ]
+              },
+              "fontSize": {
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-sm": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-lg": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "title-md": [
+                              "18px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-bold": [
+                              "14px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "caption": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "500"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-app-bg text-on-surface font-body-lg min-h-screen relative overflow-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-10 bg-surface dark:bg-background flex justify-between items-center h-16 px-margin-mobile">
+<div class="flex items-center gap-sm">
+<button class="h-touch-target w-touch-target flex items-center justify-center text-primary dark:text-primary-fixed-dim hover:bg-surface-container-low transition-colors active:opacity-80 rounded-full">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">shield</span>
+</button>
+<h1 class="text-headline-md font-headline-md font-bold text-primary dark:text-primary-fixed-dim tracking-tight">ShieldShare</h1>
+</div>
+<button class="h-touch-target w-touch-target flex items-center justify-center text-primary dark:text-primary-fixed-dim hover:bg-surface-container-low transition-colors active:opacity-80 rounded-full">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</header>
+<!-- Background Content Mockup (blurred to simulate overlay) -->
+<main class="pt-[88px] pb-[100px] px-margin-mobile flex flex-col gap-xl filter blur-sm opacity-60 pointer-events-none">
+<div class="bg-surface p-4 rounded-xl">
+<div class="flex gap-4 items-center">
+<div class="w-16 h-16 bg-surface-container rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-3xl">plumbing</span>
+</div>
+<div>
+<h2 class="font-title-md text-title-md text-on-surface">Plumbing Repair</h2>
+<p class="font-body-sm text-body-sm text-text-muted">Verified Professional</p>
+</div>
+</div>
+</div>
+<div class="bg-surface p-4 rounded-xl">
+<h3 class="font-title-md text-title-md text-on-surface mb-2">Service Reviews</h3>
+<div class="space-y-4">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-warning text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-bold text-label-bold text-on-surface">5.0</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface">Excellent work fixing the sink leak.</p>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full h-20 flex justify-around items-center px-margin-mobile pb-safe bg-surface dark:bg-background rounded-t-xl shadow-sm z-10 md:hidden">
+<button class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim px-4 py-1.5 hover:bg-surface-container-highest dark:hover:bg-on-surface-variant transition-all active:scale-95 duration-150 rounded-xl">
+<span class="material-symbols-outlined mb-1">home</span>
+<span class="font-label-bold text-label-bold text-xs">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-primary-container dark:bg-on-primary-fixed-variant text-on-primary-container dark:text-primary-fixed rounded-xl px-4 py-1.5 hover:bg-surface-container-highest dark:hover:bg-on-surface-variant transition-all active:scale-95 duration-150">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">handyman</span>
+<span class="font-label-bold text-label-bold text-xs">Services</span>
+</button>
+<button class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim px-4 py-1.5 hover:bg-surface-container-highest dark:hover:bg-on-surface-variant transition-all active:scale-95 duration-150 rounded-xl">
+<span class="material-symbols-outlined mb-1">history</span>
+<span class="font-label-bold text-label-bold text-xs">Activity</span>
+</button>
+<button class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim px-4 py-1.5 hover:bg-surface-container-highest dark:hover:bg-on-surface-variant transition-all active:scale-95 duration-150 rounded-xl">
+<span class="material-symbols-outlined mb-1">person</span>
+<span class="font-label-bold text-label-bold text-xs">Profile</span>
+</button>
+</nav>
+<!-- Scrim / Backdrop -->
+<div aria-hidden="true" class="fixed inset-0 bg-inverse-surface/40 z-40"></div>
+<!-- Bottom Sheet Overlay -->
+<div class="fixed bottom-0 left-0 w-full bg-surface rounded-t-[24px] z-50 flex flex-col max-h-[795px] shadow-[0_-8px_24px_rgba(0,0,0,0.12)]">
+<!-- Drag Handle & Header -->
+<div class="pt-4 pb-2 px-margin-mobile sticky top-0 bg-surface rounded-t-[24px] z-10 flex flex-col items-center border-b border-surface-container-highest">
+<div class="w-12 h-1.5 bg-outline-variant rounded-full mb-4"></div>
+<div class="w-full flex justify-between items-center h-12">
+<h2 class="font-headline-md text-headline-md text-on-surface">Request Service Booking</h2>
+<button class="w-touch-target h-touch-target flex items-center justify-end text-text-muted hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+</div>
+<!-- Scrollable Content Area -->
+<div class="p-margin-mobile overflow-y-auto flex flex-col gap-lg flex-1">
+<!-- Job Details Input -->
+<div class="flex flex-col gap-sm">
+<label class="font-label-bold text-label-bold text-on-surface" for="job-details">Job Scope Details</label>
+<textarea class="w-full p-3 bg-surface-bright border border-outline-variant rounded-lg font-body-lg text-body-lg text-on-surface focus:border-primary focus:ring-1 focus:ring-primary transition-colors resize-none" id="job-details" placeholder="Describe the issue (e.g., pipe leaking under the kitchen sink, needs replacement)." rows="4"></textarea>
+<p class="font-caption text-caption text-text-muted">Be as specific as possible to receive an accurate quote.</p>
+</div>
+<!-- Date Picker -->
+<div class="flex flex-col gap-sm">
+<label class="font-label-bold text-label-bold text-on-surface" for="service-date">Preferred Service Date</label>
+<div class="relative w-full">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-text-muted">
+<span class="material-symbols-outlined">calendar_today</span>
+</div>
+<input class="w-full pl-10 pr-3 py-3 bg-surface-bright border border-outline-variant rounded-lg font-body-lg text-body-lg text-on-surface focus:border-primary focus:ring-1 focus:ring-primary transition-colors appearance-none min-h-[48px]" id="service-date" type="date"/>
+</div>
+</div>
+<!-- Estimated Rate Block -->
+<div class="bg-surface-container-low border border-surface-container-highest rounded-xl p-4 flex flex-col gap-sm mt-2">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-2 text-on-surface">
+<span class="material-symbols-outlined text-primary">payments</span>
+<span class="font-title-md text-title-md">Starting Rate</span>
+</div>
+<span class="font-headline-md text-headline-md text-primary">$45/hr</span>
+</div>
+<div class="flex items-start gap-2 text-text-muted mt-2 p-3 bg-surface rounded-lg">
+<span class="material-symbols-outlined text-sm mt-0.5">info</span>
+<p class="font-caption text-caption flex-1">
+                        This is an estimated starting rate. Final rates, materials, and exact scheduling are negotiated with the worker directly on WhatsApp after confirming availability.
+                    </p>
+</div>
+</div>
+<!-- Verification / Trust Anchor -->
+<div class="flex items-center justify-center gap-2 py-4">
+<span class="material-symbols-outlined text-tertiary-container text-sm" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+<span class="font-caption text-caption text-text-muted">Identity verified via ShieldShare</span>
+</div>
+<!-- Bottom spacer for sticky button -->
+<div class="h-20"></div>
+</div>
+<!-- Sticky Bottom Action -->
+<div class="p-margin-mobile pt-0 sticky bottom-0 bg-gradient-to-t from-surface via-surface to-transparent pb-safe">
+<button class="w-full h-[52px] bg-primary text-on-primary font-label-bold text-label-bold rounded-lg flex items-center justify-center gap-2 hover:bg-primary-container transition-colors active:scale-[0.98]">
+<span>SUBMIT BOOKING REQUEST</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</body></html>

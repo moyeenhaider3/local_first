@@ -1,0 +1,264 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Unified Directory</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700&amp;family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#006a61",
+                        "error": "#ba1a1a",
+                        "surface-bright": "#f9f9ff",
+                        "danger": "#DC2626",
+                        "on-secondary-container": "#5c647a",
+                        "surface-variant": "#d8e3fb",
+                        "on-primary": "#ffffff",
+                        "surface-container-low": "#f0f3ff",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "warning": "#D97706",
+                        "surface-container-high": "#dee8ff",
+                        "on-tertiary-fixed": "#002109",
+                        "outline-variant": "#bcc9c6",
+                        "background": "#f9f9ff",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "secondary": "#565e74",
+                        "surface-dim": "#cfdaf2",
+                        "on-primary-fixed": "#00201d",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#ecf1ff",
+                        "primary-fixed-dim": "#6bd8cb",
+                        "on-tertiary-fixed-variant": "#005320",
+                        "primary-container": "#008378",
+                        "surface": "#FFFFFF",
+                        "on-tertiary-container": "#f7fff2",
+                        "primary": "#00685f",
+                        "app-bg": "#F8FAFC",
+                        "on-surface-variant": "#3d4947",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed": "#dae2fd",
+                        "tertiary-fixed-dim": "#62df7d",
+                        "text-muted": "#64748B",
+                        "secondary-container": "#dae2fd",
+                        "tertiary": "#006b2c",
+                        "on-primary-fixed-variant": "#005049",
+                        "on-background": "#111c2d",
+                        "tertiary-container": "#00873a",
+                        "error-container": "#ffdad6",
+                        "surface-container-highest": "#d8e3fb",
+                        "tertiary-fixed": "#7ffc97",
+                        "primary-fixed": "#89f5e7",
+                        "on-surface": "#111c2d",
+                        "surface-container": "#e7eeff",
+                        "on-secondary-fixed": "#131b2e",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "inverse-surface": "#263143",
+                        "inverse-primary": "#6bd8cb",
+                        "on-primary-container": "#f4fffc",
+                        "outline": "#6d7a77"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gap-sm": "8px",
+                        "gap-xl": "24px",
+                        "safe-area-top": "24px",
+                        "gap-md": "12px",
+                        "margin-mobile": "16px",
+                        "gap-lg": "16px",
+                        "base": "8px",
+                        "touch-target": "48px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Manrope"],
+                        "caption": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-bold": ["Inter"],
+                        "headline-lg": ["Manrope"],
+                        "title-md": ["Manrope"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "caption": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-bold": ["14px", { "lineHeight": "16px", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "title-md": ["18px", { "lineHeight": "24px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-app-bg text-on-background min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="bg-surface border-b border-outline-variant flex justify-between items-center px-margin-mobile h-touch-target w-full sticky top-0 z-40">
+<div class="flex items-center gap-gap-sm">
+<span class="material-symbols-outlined text-primary cursor-pointer active:scale-95 transition-transform duration-200">verified_user</span>
+</div>
+<div class="font-headline-md text-headline-md font-bold text-primary text-center flex-1">ShieldShare</div>
+<div class="flex items-center gap-gap-sm">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer active:scale-95 transition-transform duration-200">notifications</span>
+</div>
+</header>
+<!-- Location Header -->
+<div class="bg-surface px-margin-mobile py-gap-md flex items-center justify-between border-b border-outline-variant">
+<div class="flex items-center gap-base">
+<span class="material-symbols-outlined text-primary">location_on</span>
+<span class="font-body-sm text-body-sm text-on-surface">Sector 4</span>
+<span class="font-caption text-caption text-text-muted">(1.5km)</span>
+</div>
+<button class="font-label-bold text-label-bold text-primary flex items-center gap-1 active:opacity-80 transition-opacity">
+            Change
+            <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 0;">expand_more</span>
+</button>
+</div>
+<main class="p-margin-mobile space-y-gap-xl">
+<!-- Directory Switcher -->
+<div class="flex bg-surface-container-low rounded-lg p-1">
+<button class="flex-1 py-2 font-label-bold text-label-bold bg-surface text-primary rounded shadow-sm text-center">RENT ITEMS</button>
+<button class="flex-1 py-2 font-label-bold text-label-bold text-on-surface-variant rounded text-center">HIRE SERVICES</button>
+</div>
+<!-- Search & Filter -->
+<div class="flex gap-gap-sm">
+<div class="relative flex-1">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full pl-10 pr-4 h-12 bg-surface border border-outline-variant rounded-lg font-body-sm text-body-sm text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="Search items..." type="text">
+</div>
+<button class="w-12 h-12 flex items-center justify-center bg-surface border border-outline-variant rounded-lg text-on-surface-variant active:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined">tune</span>
+</button>
+</div>
+<!-- Grid Listings -->
+<div class="grid grid-cols-2 gap-gap-md">
+<!-- Item Card 1 -->
+<div class="bg-surface rounded-xl overflow-hidden flex flex-col">
+<div class="relative h-32 w-full bg-surface-container-high">
+<img class="w-full h-full object-cover" data-alt="A modern, high-quality photograph of a professional-grade yellow and black hammer drill resting on a clean, bright white surface. The lighting is studio quality, soft and even, highlighting the tool's robust texture and solid build. The overall composition is clean, functional, and consistent with a premium utility service design aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXI1Dl4m3SRX3mTtEhp_QXRi8tlda7QwogVrenC8cwnULjvBE5BQec5IDIapEhT6RVTl8cDBVD-GH76l0sCD5G2Ku0YJOySwBuG-ineO30DrGoWNhHYASdk-04JhCRWE-dU3TbT0IQoBlA7lYkCGhDqfnlcI0-K1jJjriMOGIXn1l6VdAyJbIpuCdK1EdqXJ7tWa6xzhIebPqkOVYaegOGSOTEbW6avNOJfWqU7zDKdM6ro4O2BI5oXrT9ZtFPNi16Nfz7MFtcdXB7">
+<div class="absolute top-2 right-2 bg-surface/90 backdrop-blur px-2 py-1 rounded text-caption font-caption font-bold text-on-surface flex items-center gap-1">
+<span class="material-symbols-outlined text-warning text-xs">star</span>
+                        4.8
+                    </div>
+</div>
+<div class="p-gap-md flex-1 flex flex-col justify-between">
+<div>
+<h3 class="font-label-bold text-label-bold text-on-surface mb-1">Hammer Drill</h3>
+<p class="font-body-sm text-body-sm text-text-muted">Heavy duty</p>
+</div>
+<div class="mt-gap-sm flex items-end justify-between">
+<div class="font-title-md text-title-md text-primary">₹300<span class="font-caption text-caption text-text-muted">/day</span></div>
+<div class="font-caption text-caption text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">near_me</span>
+                            0.8km
+                        </div>
+</div>
+</div>
+</div>
+<!-- Item Card 2 -->
+<div class="bg-surface rounded-xl overflow-hidden flex flex-col">
+<div class="relative h-32 w-full bg-surface-container-high">
+<img class="w-full h-full object-cover" data-alt="A modern, bright photograph of a high-quality green camping tent fully pitched on a pristine white studio background. The lighting is crisp and clear, emphasizing the durable fabric and clean lines of the tent. The mood is adventurous yet presented in a highly institutional, organized manner fitting a reliable rental platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDld4blIuzFnohv1nPIAM8CaDqEnbb3eXXpCiEeL8UsgDA5z-iTg1ddZsfHpzX38E20Y254Lq-ArhTbdDJFJON10mplv0KICUwROTbku8hX7GafDxI9hoD8u4PpGIHv4lzhiaj01nWQ_CYws3A2ph59UDRVTDuAMRXgiTk5SOAHvD-M67kZYj4jFzP3ZH9FW-d5RDa05rAgRnKaC-GZz42CLJxjHbX3XepMpiGjDnYK3QzXyI93nufTZy8Ntey4FN92_198VVBxCygF">
+<div class="absolute top-2 right-2 bg-surface/90 backdrop-blur px-2 py-1 rounded text-caption font-caption font-bold text-on-surface flex items-center gap-1">
+<span class="material-symbols-outlined text-warning text-xs">star</span>
+                        4.9
+                    </div>
+</div>
+<div class="p-gap-md flex-1 flex flex-col justify-between">
+<div>
+<h3 class="font-label-bold text-label-bold text-on-surface mb-1">Camping Tent</h3>
+<p class="font-body-sm text-body-sm text-text-muted">4 Person</p>
+</div>
+<div class="mt-gap-sm flex items-end justify-between">
+<div class="font-title-md text-title-md text-primary">₹150<span class="font-caption text-caption text-text-muted">/day</span></div>
+<div class="font-caption text-caption text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">near_me</span>
+                            1.2km
+                        </div>
+</div>
+</div>
+</div>
+<!-- Item Card 3 -->
+<div class="bg-surface rounded-xl overflow-hidden flex flex-col">
+<div class="relative h-32 w-full bg-surface-container-high">
+<img class="w-full h-full object-cover" data-alt="A crisp, high-resolution image of a sturdy aluminum folding ladder set against a bright, minimalist white background. Soft, directional studio lighting casts subtle shadows, emphasizing the ladder's robust construction and reliable utility. The visual style is clean, modern, and highly dependable." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfm2q2wdHVTmq4Gt3w0GERSocpZ6w5K4mrkFk4qr5ZikMc8oYQb9-Toj8kqdXUdi_yv93kUG_74kRweXpAbKQ00VBk3rvDdCEf9waQrTh2cWyBxCewnEj2feE2k83RX60LAyJDHxloVqn4sMXFnAuvX-vHT-XxO5tnNsZxwUU8PUUBEjpnZg2KP0X8Nohonsr0daLJveFCAfQaklvnh6GvRAQB0pNobPn_qWx8fmA6WDnv74YsZhONa8uiyYYX-umWoGuEUyPt9rzk">
+<div class="absolute top-2 right-2 bg-surface/90 backdrop-blur px-2 py-1 rounded text-caption font-caption font-bold text-on-surface flex items-center gap-1">
+<span class="material-symbols-outlined text-warning text-xs">star</span>
+                        4.5
+                    </div>
+</div>
+<div class="p-gap-md flex-1 flex flex-col justify-between">
+<div>
+<h3 class="font-label-bold text-label-bold text-on-surface mb-1">Folding Ladder</h3>
+<p class="font-body-sm text-body-sm text-text-muted">12 ft Aluminum</p>
+</div>
+<div class="mt-gap-sm flex items-end justify-between">
+<div class="font-title-md text-title-md text-primary">₹100<span class="font-caption text-caption text-text-muted">/day</span></div>
+<div class="font-caption text-caption text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">near_me</span>
+                            2.1km
+                        </div>
+</div>
+</div>
+</div>
+<!-- Item Card 4 -->
+<div class="bg-surface rounded-xl overflow-hidden flex flex-col">
+<div class="relative h-32 w-full bg-surface-container-high">
+<img class="w-full h-full object-cover" data-alt="A detailed, modern studio photograph of a premium portable power station. The device is sleek, with dark grey and teal accents, placed on a spotless light grey surface. The lighting is professional and clear, highlighting the high-tech, reliable nature of the equipment, perfect for a secure community rental service." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBr-P9uToSzvESHTNRfrWHZt8M2mitO6rruh0cg7LTJLAo4JD3ZVtYY415RJTB-Zd4cvjvhU_B_NhyQAYabZEZSkzzDVUR2HI4va8pd4viaByVYkFvX_AzCBhLZ9pZ6qDOusA7R-e4IDEI8nAjrX1YbakwBMe9nDQp4xAIPhqFaIsN41E8dHCGJ3TL6oCmFnahwBqSnT3hXHl4kKiCVT-QhKsD4qlM3OqRl9zZrWMdkN_dC-ZEhng_nq5c6UHAH5syu_z6CZWgyTkgB">
+<div class="absolute top-2 right-2 bg-surface/90 backdrop-blur px-2 py-1 rounded text-caption font-caption font-bold text-on-surface flex items-center gap-1">
+<span class="material-symbols-outlined text-warning text-xs">star</span>
+                        5.0
+                    </div>
+</div>
+<div class="p-gap-md flex-1 flex flex-col justify-between">
+<div>
+<h3 class="font-label-bold text-label-bold text-on-surface mb-1">Power Station</h3>
+<p class="font-body-sm text-body-sm text-text-muted">500W Portable</p>
+</div>
+<div class="mt-gap-sm flex items-end justify-between">
+<div class="font-title-md text-title-md text-primary">₹500<span class="font-caption text-caption text-text-muted">/day</span></div>
+<div class="font-caption text-caption text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">near_me</span>
+                            0.5km
+                        </div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="bg-surface border-t border-outline-variant fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 px-margin-mobile">
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:opacity-80 transition-opacity" href="#">
+<span class="material-symbols-outlined font-label-bold text-label-bold">home</span>
+<span class="font-label-bold text-label-bold text-[10px]">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:text-primary active:opacity-80 transition-opacity" href="#">
+<span class="material-symbols-outlined font-label-bold text-label-bold" style="font-variation-settings: 'FILL' 0;">handshake</span>
+<span class="font-label-bold text-label-bold text-[10px]">Services</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:text-primary active:opacity-80 transition-opacity" href="#">
+<span class="material-symbols-outlined font-label-bold text-label-bold" style="font-variation-settings: 'FILL' 0;">history</span>
+<span class="font-label-bold text-label-bold text-[10px]">Activity</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:text-primary active:opacity-80 transition-opacity" href="#">
+<span class="material-symbols-outlined font-label-bold text-label-bold" style="font-variation-settings: 'FILL' 0;">person</span>
+<span class="font-label-bold text-label-bold text-[10px]">Profile</span>
+</a>
+</nav>
+</body></html>

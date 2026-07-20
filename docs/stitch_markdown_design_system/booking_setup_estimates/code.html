@@ -1,0 +1,193 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Term Picker Bottom Sheet</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-bright": "#f9f9ff",
+                    "tertiary-container": "#00873a",
+                    "tertiary": "#006b2c",
+                    "error-container": "#ffdad6",
+                    "on-surface": "#111c2d",
+                    "warning": "#D97706",
+                    "on-primary-fixed-variant": "#005049",
+                    "on-error-container": "#93000a",
+                    "on-secondary-fixed": "#131b2e",
+                    "inverse-surface": "#263143",
+                    "outline-variant": "#bcc9c6",
+                    "primary": "#00685f",
+                    "secondary": "#565e74",
+                    "danger": "#DC2626",
+                    "surface-container-highest": "#d8e3fb",
+                    "on-primary": "#ffffff",
+                    "surface-container": "#e7eeff",
+                    "inverse-primary": "#6bd8cb",
+                    "primary-fixed-dim": "#6bd8cb",
+                    "on-tertiary-container": "#f7fff2",
+                    "on-background": "#111c2d",
+                    "background": "#f9f9ff",
+                    "surface-container-low": "#f0f3ff",
+                    "inverse-on-surface": "#ecf1ff",
+                    "tertiary-fixed-dim": "#62df7d",
+                    "secondary-fixed": "#dae2fd",
+                    "on-secondary-fixed-variant": "#3f465c",
+                    "surface-container-high": "#dee8ff",
+                    "text-muted": "#64748B",
+                    "tertiary-fixed": "#7ffc97",
+                    "outline": "#6d7a77",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-container": "#5c647a",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-tint": "#006a61",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary-fixed-variant": "#005320",
+                    "on-tertiary-fixed": "#002109",
+                    "surface-variant": "#d8e3fb",
+                    "secondary-container": "#dae2fd",
+                    "app-bg": "#F8FAFC",
+                    "on-surface-variant": "#3d4947",
+                    "on-error": "#ffffff",
+                    "surface": "#FFFFFF",
+                    "primary-container": "#008378",
+                    "on-primary-fixed": "#00201d",
+                    "on-primary-container": "#f4fffc",
+                    "secondary-fixed-dim": "#bec6e0",
+                    "error": "#ba1a1a",
+                    "surface-dim": "#cfdaf2",
+                    "primary-fixed": "#89f5e7"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "safe-area-top": "24px",
+                    "gap-sm": "8px",
+                    "base": "8px",
+                    "gap-md": "12px",
+                    "gap-lg": "16px",
+                    "gap-xl": "24px",
+                    "touch-target": "48px",
+                    "margin-mobile": "16px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Manrope", "sans-serif"],
+                    "body-sm": ["Inter", "sans-serif"],
+                    "title-md": ["Manrope", "sans-serif"],
+                    "headline-md": ["Manrope", "sans-serif"],
+                    "label-bold": ["Inter", "sans-serif"],
+                    "caption": ["Inter", "sans-serif"],
+                    "body-lg": ["Inter", "sans-serif"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                    "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                    "title-md": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+                    "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                    "label-bold": ["14px", { "lineHeight": "16px", "fontWeight": "700" }],
+                    "caption": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                    "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
+            }
+          },
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .slide-up {
+            animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-app-bg h-screen w-full flex flex-col items-center justify-end relative overflow-hidden font-body-sm text-on-surface">
+<!-- Simulated Backdrop -->
+<div class="absolute inset-0 bg-on-surface/40 z-10 transition-opacity"></div>
+<!-- Bottom Sheet Container -->
+<div class="w-full max-w-md bg-surface rounded-t-xl z-20 shadow-[0_-4px_24px_rgba(0,0,0,0.1)] slide-up pb-margin-mobile flex flex-col">
+<!-- Drag Indicator -->
+<div class="w-full flex justify-center py-gap-sm cursor-grab active:cursor-grabbing">
+<div class="w-10 h-1 rounded-full bg-outline-variant"></div>
+</div>
+<!-- Section Title & Price -->
+<div class="px-margin-mobile flex justify-between items-center mb-gap-lg mt-gap-sm">
+<h2 class="font-title-md text-title-md text-on-surface">Setup Booking Dates</h2>
+<div class="flex items-center gap-1">
+<span class="font-label-bold text-label-bold text-primary">$45</span>
+<span class="font-caption text-caption text-on-surface-variant">/ day</span>
+</div>
+</div>
+<!-- Date Picker Row -->
+<div class="px-margin-mobile flex gap-gap-md mb-gap-lg">
+<!-- Start Date -->
+<div class="flex-1 border border-outline rounded-lg p-gap-md bg-surface-container-lowest flex flex-col gap-1 cursor-pointer hover:border-primary transition-colors">
+<span class="font-caption text-caption text-on-surface-variant">Start Date</span>
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-on-surface font-medium">Oct 12, 2023</span>
+<span class="material-symbols-outlined text-outline text-[18px]">calendar_today</span>
+</div>
+</div>
+<!-- End Date -->
+<div class="flex-1 border border-outline-variant rounded-lg p-gap-md bg-surface-container-lowest flex flex-col gap-1 cursor-pointer hover:border-primary transition-colors">
+<span class="font-caption text-caption text-on-surface-variant">End Date</span>
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-text-muted">Select Date</span>
+<span class="material-symbols-outlined text-outline-variant text-[18px]">calendar_today</span>
+</div>
+</div>
+</div>
+<!-- Liability Warning Block -->
+<div class="mx-margin-mobile mb-gap-lg bg-warning/10 border-l-4 border-warning rounded-r-lg p-gap-md flex gap-gap-sm items-start">
+<span class="material-symbols-outlined text-warning flex-shrink-0" style="font-variation-settings: 'FILL' 1;">warning</span>
+<p class="font-caption text-caption text-on-surface leading-relaxed">
+<span class="font-bold">IMPORTANT:</span> You are contractually liable for any damage to this item. Entering handover codes confirms you received it in working condition.
+            </p>
+</div>
+<!-- Summary Balance Card -->
+<div class="mx-margin-mobile mb-gap-xl bg-surface-container-low rounded-lg p-gap-lg flex flex-col gap-gap-sm">
+<div class="flex justify-between items-center">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Duration</span>
+<span class="font-body-sm text-body-sm text-on-surface font-medium">3 days</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Base Rental Charge</span>
+<span class="font-body-sm text-body-sm text-on-surface font-medium">$135.00</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Security Deposit (Refundable)</span>
+<span class="font-body-sm text-body-sm text-on-surface font-medium">$250.00</span>
+</div>
+<div class="h-px w-full bg-outline-variant/50 my-gap-sm"></div>
+<div class="flex justify-between items-center">
+<span class="font-label-bold text-label-bold text-on-surface">Total Payment Due</span>
+<span class="font-label-bold text-label-bold text-on-surface">$385.00</span>
+</div>
+</div>
+<!-- Bottom Action -->
+<div class="px-margin-mobile w-full">
+<button class="w-full h-touch-target bg-primary text-on-primary rounded-lg font-label-bold text-label-bold flex items-center justify-center transition-transform active:scale-[0.98] hover:bg-primary/90">
+                GO TO AGREEMENT SIGNING
+            </button>
+</div>
+</div>
+</body></html>

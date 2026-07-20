@@ -1,0 +1,226 @@
+<!DOCTYPE html><html lang="en" class="light"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>External Contact Handoff</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-bright": "#f9f9ff",
+                      "tertiary-container": "#00873a",
+                      "tertiary": "#006b2c",
+                      "error-container": "#ffdad6",
+                      "on-surface": "#111c2d",
+                      "warning": "#D97706",
+                      "on-primary-fixed-variant": "#005049",
+                      "on-error-container": "#93000a",
+                      "on-secondary-fixed": "#131b2e",
+                      "inverse-surface": "#263143",
+                      "outline-variant": "#bcc9c6",
+                      "primary": "#00685f",
+                      "secondary": "#565e74",
+                      "danger": "#DC2626",
+                      "surface-container-highest": "#d8e3fb",
+                      "on-primary": "#ffffff",
+                      "surface-container": "#e7eeff",
+                      "inverse-primary": "#6bd8cb",
+                      "primary-fixed-dim": "#6bd8cb",
+                      "on-tertiary-container": "#f7fff2",
+                      "on-background": "#111c2d",
+                      "background": "#f9f9ff",
+                      "surface-container-low": "#f0f3ff",
+                      "inverse-on-surface": "#ecf1ff",
+                      "tertiary-fixed-dim": "#62df7d",
+                      "secondary-fixed": "#dae2fd",
+                      "on-secondary-fixed-variant": "#3f465c",
+                      "surface-container-high": "#dee8ff",
+                      "text-muted": "#64748B",
+                      "tertiary-fixed": "#7ffc97",
+                      "outline": "#6d7a77",
+                      "on-tertiary": "#ffffff",
+                      "on-secondary-container": "#5c647a",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-tint": "#006a61",
+                      "on-secondary": "#ffffff",
+                      "on-tertiary-fixed-variant": "#005320",
+                      "on-tertiary-fixed": "#002109",
+                      "surface-variant": "#d8e3fb",
+                      "secondary-container": "#dae2fd",
+                      "app-bg": "#F8FAFC",
+                      "on-surface-variant": "#3d4947",
+                      "on-error": "#ffffff",
+                      "surface": "#FFFFFF",
+                      "primary-container": "#008378",
+                      "on-primary-fixed": "#00201d",
+                      "on-primary-container": "#f4fffc",
+                      "secondary-fixed-dim": "#bec6e0",
+                      "error": "#ba1a1a",
+                      "surface-dim": "#cfdaf2",
+                      "primary-fixed": "#89f5e7"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "safe-area-top": "24px",
+                      "gap-sm": "8px",
+                      "base": "8px",
+                      "gap-md": "12px",
+                      "gap-lg": "16px",
+                      "gap-xl": "24px",
+                      "touch-target": "48px",
+                      "margin-mobile": "16px"
+              },
+              "fontFamily": {
+                      "headline-lg": [
+                              "manrope"
+                      ],
+                      "body-sm": [
+                              "inter"
+                      ],
+                      "title-md": [
+                              "manrope"
+                      ],
+                      "headline-md": [
+                              "manrope"
+                      ],
+                      "label-bold": [
+                              "inter"
+                      ],
+                      "caption": [
+                              "inter"
+                      ],
+                      "body-lg": [
+                              "inter"
+                      ]
+              },
+              "fontSize": {
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-sm": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "title-md": [
+                              "18px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-bold": [
+                              "14px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "caption": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-lg": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Manrope:wght@600;700&display=swap');
+    </style>
+</head>
+<body class="bg-surface-dim font-body-sm text-on-surface h-screen w-full flex flex-col justify-end">
+<!-- Scrim / Backdrop -->
+<div class="fixed inset-0 bg-inverse-surface/40 z-40" aria-hidden="true"></div>
+<!-- Bottom Sheet -->
+<div class="relative bg-surface w-full rounded-t-xl z-50 flex flex-col shadow-lg animate-[slideUp_0.3s_ease-out]">
+<!-- Drag Indicator -->
+<div class="w-full flex justify-center pt-gap-sm pb-gap-md cursor-grab">
+<div class="w-12 h-1 bg-outline-variant rounded-full"></div>
+</div>
+<!-- Content Container -->
+<div class="px-margin-mobile pb-gap-xl flex flex-col gap-gap-xl overflow-y-auto max-h-[707px]">
+<!-- Header Section -->
+<div class="flex flex-col gap-gap-sm items-center text-center">
+<div class="w-touch-target h-touch-target bg-surface-container-high rounded-full flex items-center justify-center mb-gap-sm">
+<span class="material-symbols-outlined text-primary text-[28px]" data-icon="forum" style="font-variation-settings: 'FILL' 1;">forum</span>
+</div>
+<h2 class="font-title-md text-title-md text-on-surface">Redirecting to WhatsApp</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant max-w-[280px]">
+                    Coordinate handover logistics and payments directly with Ramesh over WhatsApp.
+                </p>
+</div>
+<!-- Message Template Card -->
+<div class="flex flex-col gap-gap-md">
+<label class="font-label-bold text-label-bold text-on-surface">Pre-filled Message</label>
+<div class="bg-surface-bright border border-outline-variant rounded-lg p-gap-lg">
+<p class="font-body-sm text-body-sm text-on-surface">
+                        Hi Ramesh, this is Amit. My rental request for your Bosch Drill has been approved. Let's arrange pickup!
+                    </p>
+</div>
+<div class="flex items-center gap-gap-sm text-on-surface-variant bg-surface-container-lowest p-gap-sm rounded border border-surface-container-high">
+<span class="material-symbols-outlined text-[16px]" data-icon="info">info</span>
+<span class="font-caption text-caption">You can edit this message before sending.</span>
+</div>
+</div>
+<!-- Safety Reminder -->
+<div class="flex gap-gap-md bg-surface-container-low p-gap-lg rounded-lg items-start border border-surface-container-high">
+<span class="material-symbols-outlined text-primary mt-1" data-icon="gpp_good" style="font-variation-settings: 'FILL' 1;">gpp_good</span>
+<div class="flex flex-col gap-1">
+<span class="font-label-bold text-label-bold text-on-surface">Safety First</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">We recommend meeting in a public place for the handover. Do not share sensitive personal information.</span>
+</div>
+</div>
+</div>
+<!-- Bottom Action Section (Sticky) -->
+<div class="px-margin-mobile py-gap-lg bg-surface border-t border-outline-variant/30 safe-area-bottom">
+<button class="w-full h-[52px] bg-primary text-on-primary font-label-bold text-label-bold rounded-lg flex items-center justify-center gap-gap-sm active:bg-on-primary-fixed-variant transition-colors shadow-sm">
+<span class="material-symbols-outlined" data-icon="open_in_new">open_in_new</span>
+                OPEN WHATSAPP CHAT
+            </button>
+<button class="w-full h-touch-target mt-gap-sm bg-transparent text-primary font-label-bold text-label-bold rounded-lg flex items-center justify-center active:bg-surface-container-low transition-colors">
+                Cancel
+            </button>
+</div>
+</div>
+<style>
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+        .safe-area-bottom {
+            padding-bottom: max(16px, env(safe-area-inset-bottom));
+        }
+    </style>
+</body></html>

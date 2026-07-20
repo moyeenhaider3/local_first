@@ -1,0 +1,291 @@
+<!DOCTYPE html><html lang="en" class="light"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Rental Agreement Consent</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet">
+    
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-bright": "#f9f9ff",
+                      "tertiary-container": "#00873a",
+                      "tertiary": "#006b2c",
+                      "error-container": "#ffdad6",
+                      "on-surface": "#111c2d",
+                      "warning": "#D97706",
+                      "on-primary-fixed-variant": "#005049",
+                      "on-error-container": "#93000a",
+                      "on-secondary-fixed": "#131b2e",
+                      "inverse-surface": "#263143",
+                      "outline-variant": "#bcc9c6",
+                      "primary": "#00685f",
+                      "secondary": "#565e74",
+                      "danger": "#DC2626",
+                      "surface-container-highest": "#d8e3fb",
+                      "on-primary": "#ffffff",
+                      "surface-container": "#e7eeff",
+                      "inverse-primary": "#6bd8cb",
+                      "primary-fixed-dim": "#6bd8cb",
+                      "on-tertiary-container": "#f7fff2",
+                      "on-background": "#111c2d",
+                      "background": "#f9f9ff",
+                      "surface-container-low": "#f0f3ff",
+                      "inverse-on-surface": "#ecf1ff",
+                      "tertiary-fixed-dim": "#62df7d",
+                      "secondary-fixed": "#dae2fd",
+                      "on-secondary-fixed-variant": "#3f465c",
+                      "surface-container-high": "#dee8ff",
+                      "text-muted": "#64748B",
+                      "tertiary-fixed": "#7ffc97",
+                      "outline": "#6d7a77",
+                      "on-tertiary": "#ffffff",
+                      "on-secondary-container": "#5c647a",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-tint": "#006a61",
+                      "on-secondary": "#ffffff",
+                      "on-tertiary-fixed-variant": "#005320",
+                      "on-tertiary-fixed": "#002109",
+                      "surface-variant": "#d8e3fb",
+                      "secondary-container": "#dae2fd",
+                      "app-bg": "#F8FAFC",
+                      "on-surface-variant": "#3d4947",
+                      "on-error": "#ffffff",
+                      "surface": "#FFFFFF",
+                      "primary-container": "#008378",
+                      "on-primary-fixed": "#00201d",
+                      "on-primary-container": "#f4fffc",
+                      "secondary-fixed-dim": "#bec6e0",
+                      "error": "#ba1a1a",
+                      "surface-dim": "#cfdaf2",
+                      "primary-fixed": "#89f5e7"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "safe-area-top": "24px",
+                      "gap-sm": "8px",
+                      "base": "8px",
+                      "gap-md": "12px",
+                      "gap-lg": "16px",
+                      "gap-xl": "24px",
+                      "touch-target": "48px",
+                      "margin-mobile": "16px"
+              },
+              "fontFamily": {
+                      "headline-lg": [
+                              "manrope"
+                      ],
+                      "body-sm": [
+                              "inter"
+                      ],
+                      "title-md": [
+                              "manrope"
+                      ],
+                      "headline-md": [
+                              "manrope"
+                      ],
+                      "label-bold": [
+                              "inter"
+                      ],
+                      "caption": [
+                              "inter"
+                      ],
+                      "body-lg": [
+                              "inter"
+                      ]
+              },
+              "fontSize": {
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-sm": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "title-md": [
+                              "18px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-bold": [
+                              "14px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "caption": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-lg": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+      <style>
+        body {
+            -webkit-tap-highlight-color: transparent;
+        }
+        /* Custom scrollbar for document viewer */
+        .doc-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .doc-scroll::-webkit-scrollbar-track {
+            background: #f0f3ff;
+            border-radius: 4px;
+        }
+        .doc-scroll::-webkit-scrollbar-thumb {
+            background: #bcc9c6;
+            border-radius: 4px;
+        }
+      </style>
+</head>
+<body class="bg-app-bg text-on-surface font-body-lg min-h-screen flex flex-col relative pb-32">
+<!-- Header Bar -->
+<header class="bg-surface sticky top-0 z-10 pt-safe-area-top border-b border-outline-variant flex items-center h-16 px-margin-mobile">
+<button class="w-10 h-10 flex items-center justify-center -ml-2 active:bg-surface-container-highest rounded-full transition-colors" aria-label="Go back">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="ml-2 font-title-md text-title-md flex-1 text-on-surface truncate">Rental Agreement Consent</h1>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 px-margin-mobile py-gap-lg flex flex-col gap-gap-xl">
+<!-- Document Viewer Section -->
+<section class="flex flex-col gap-gap-sm">
+<h2 class="font-label-bold text-label-bold text-on-surface-variant uppercase tracking-wide text-xs">Standard Legal Terms</h2>
+<div class="bg-surface border border-outline-variant rounded-lg p-4 h-64 overflow-y-auto doc-scroll shadow-sm">
+<article class="font-body-sm text-body-sm text-secondary space-y-4">
+<p class="font-bold text-on-surface">1. Parties and Agreement</p>
+<p>This Rental Agreement ("Agreement") is entered into by and between the verified user ("Renter") and the platform service provider. By accepting these terms, you agree to be bound by the conditions set forth herein.</p>
+<p class="font-bold text-on-surface mt-4">2. Usage and Care</p>
+<p>The Renter agrees to use the rented property/equipment in a careful and proper manner and shall comply with all laws, rules, ordinances, and platform policies relating to the possession, use, or maintenance of the property.</p>
+<p class="font-bold text-on-surface mt-4">3. Liability and Damages</p>
+<p>The Renter is solely responsible for any damage, loss, or theft of the property during the rental period. The Renter agrees to immediately notify the platform and owner of any such incidents.</p>
+<p class="font-bold text-on-surface mt-4">4. Indemnification</p>
+<p>Renter shall indemnify, defend, and hold harmless the platform, its officers, directors, and employees from and against any claims, liabilities, losses, costs, or damages arising out of Renter's use of the property.</p>
+<p class="font-bold text-on-surface mt-4">5. Dispute Resolution</p>
+<p>Any disputes arising under this agreement will be resolved through binding arbitration in accordance with platform policies, and verified identity details may be utilized as required.</p>
+</article>
+</div>
+<div class="flex items-center gap-2 text-text-muted mt-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="info">info</span>
+<span class="font-caption text-caption">Please scroll to read full terms.</span>
+</div>
+</section>
+<!-- Consent Gates -->
+<section class="flex flex-col gap-gap-lg bg-surface p-4 rounded-lg shadow-sm border border-surface-variant">
+<h2 class="font-title-md text-title-md text-on-surface mb-2">Required Consents</h2>
+<label class="flex items-start gap-3 cursor-pointer group">
+<div class="flex items-center h-5 mt-0.5">
+<input type="checkbox" class="form-checkbox h-5 w-5 text-primary border-outline rounded focus:ring-primary focus:ring-2 focus:ring-offset-1 bg-surface-bright transition-all" id="consent1">
+</div>
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm text-on-surface group-hover:text-primary transition-colors">I have read and agree to the rental terms.</span>
+</div>
+</label>
+<div class="h-px w-full bg-outline-variant opacity-50"></div>
+<label class="flex items-start gap-3 cursor-pointer group">
+<div class="flex items-center h-5 mt-0.5">
+<input type="checkbox" class="form-checkbox h-5 w-5 text-primary border-outline rounded focus:ring-primary focus:ring-2 focus:ring-offset-1 bg-surface-bright transition-all" id="consent2">
+</div>
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm text-on-surface group-hover:text-primary transition-colors">I understand I am legally responsible for any damage caused during this rental.</span>
+</div>
+</label>
+<div class="h-px w-full bg-outline-variant opacity-50"></div>
+<label class="flex items-start gap-3 cursor-pointer group">
+<div class="flex items-center h-5 mt-0.5">
+<input type="checkbox" class="form-checkbox h-5 w-5 text-primary border-outline rounded focus:ring-primary focus:ring-2 focus:ring-offset-1 bg-surface-bright transition-all" id="consent3">
+</div>
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm text-on-surface group-hover:text-primary transition-colors">I authorize the platform to release my verified identity details to the owner if damages are disputed.</span>
+</div>
+</label>
+</section>
+<!-- Electronic Signature -->
+<section class="flex flex-col gap-gap-sm">
+<label for="legalName" class="font-label-bold text-label-bold text-on-surface">Electronic Signature</label>
+<p class="font-caption text-caption text-secondary mb-1">Type your full legal name as it appears on your verified ID.</p>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline" data-icon="draw">draw</span>
+</div>
+<input type="text" id="legalName" name="legalName" placeholder="Full Legal Name" class="block w-full pl-10 pr-3 py-3 border border-outline rounded-lg bg-surface text-on-surface focus:ring-primary focus:border-primary sm:text-sm font-body-lg text-body-lg transition-colors placeholder-text-muted">
+</div>
+</section>
+</main>
+<!-- Sticky Bottom Action -->
+<div class="fixed bottom-0 left-0 w-full bg-surface border-t border-outline-variant p-margin-mobile shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-40 pb-safe-area-bottom pb-8">
+<button id="submitBtn" disabled="" class="w-full h-[52px] bg-secondary text-on-secondary font-label-bold text-label-bold rounded-lg flex items-center justify-center gap-2 transition-all opacity-70 cursor-not-allowed">
+<span class="material-symbols-outlined" data-icon="gavel">gavel</span>
+            SIGN &amp; SUBMIT CONSOLIDATED TERMS
+        </button>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkboxes = [
+                document.getElementById('consent1'),
+                document.getElementById('consent2'),
+                document.getElementById('consent3')
+            ];
+            const nameInput = document.getElementById('legalName');
+            const submitBtn = document.getElementById('submitBtn');
+
+            function checkFormValidity() {
+                const allChecked = checkboxes.every(cb => cb.checked);
+                const hasName = nameInput.value.trim().length > 2;
+
+                if (allChecked && hasName) {
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('bg-secondary', 'text-on-secondary', 'opacity-70', 'cursor-not-allowed');
+                    submitBtn.classList.add('bg-primary', 'text-on-primary', 'hover:bg-primary-container', 'active:scale-[0.98]');
+                } else {
+                    submitBtn.disabled = true;
+                    submitBtn.classList.add('bg-secondary', 'text-on-secondary', 'opacity-70', 'cursor-not-allowed');
+                    submitBtn.classList.remove('bg-primary', 'text-on-primary', 'hover:bg-primary-container', 'active:scale-[0.98]');
+                }
+            }
+
+            checkboxes.forEach(cb => cb.addEventListener('change', checkFormValidity));
+            nameInput.addEventListener('input', checkFormValidity);
+        });
+    </script>
+</body></html>
