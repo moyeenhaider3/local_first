@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:local_first/core/di/service_locator.dart';
 import 'package:local_first/core/error/error_handler.dart';
 import 'package:local_first/core/notifications/fcm_service.dart';
@@ -11,12 +13,14 @@ import 'package:local_first/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:local_first/features/listings/data/datasources/mock_data_service.dart';
 import 'package:local_first/features/listings/presentation/cubits/discovery_cubit.dart';
 
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   await Firebase.initializeApp();
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
 
   // Initialize dependency injection service locator
   await initDependencies();
