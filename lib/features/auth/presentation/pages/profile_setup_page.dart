@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
-
 import 'package:local_first/core/error/error_handler.dart';
 import 'package:local_first/core/router/route_names.dart';
 import 'package:local_first/core/theme/app_theme.dart';
@@ -34,12 +33,14 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
     _RoleOption(key: 'renter', label: 'I want to rent items from neighbors'),
     _RoleOption(key: 'owner', label: 'I want to rent out my items to others'),
     _RoleOption(key: 'customer', label: 'I want to hire local service workers'),
-    _RoleOption(key: 'worker', label: 'I want to list my skills as a service worker'),
+    _RoleOption(
+      key: 'worker',
+      label: 'I want to list my skills as a service worker',
+    ),
   ];
 
   bool get _canSubmit =>
-      _nameController.text.trim().isNotEmpty &&
-      _roles.values.any((v) => v);
+      _nameController.text.trim().isNotEmpty && _roles.values.any((v) => v);
 
   @override
   void initState() {
@@ -103,20 +104,23 @@ class _ProfileSetupPageState extends State<ProfileSetupPage> {
                 SizedBox(height: spacing.space16),
                 Text('Create Profile', style: theme.textTheme.displayLarge),
                 SizedBox(height: spacing.space24),
-                _AvatarSelector(
-                  file: _avatarFile,
-                  onTap: _pickAvatar,
-                ),
+                _AvatarSelector(file: _avatarFile, onTap: _pickAvatar),
                 SizedBox(height: spacing.space16),
                 _NameField(controller: _nameController),
                 SizedBox(height: spacing.space16),
-                Text('How do you plan to use this platform?', style: theme.textTheme.bodyLarge),
+                Text(
+                  'How do you plan to use this platform?',
+                  style: theme.textTheme.bodyLarge,
+                ),
                 SizedBox(height: spacing.space8),
-                ..._roleOptions.map((o) => _RoleCard(
-                      option: o,
-                      checked: _roles[o.key]!,
-                      onTap: () => setState(() => _roles[o.key] = !_roles[o.key]!),
-                    )),
+                ..._roleOptions.map(
+                  (o) => _RoleCard(
+                    option: o,
+                    checked: _roles[o.key]!,
+                    onTap: () =>
+                        setState(() => _roles[o.key] = !_roles[o.key]!),
+                  ),
+                ),
                 SizedBox(height: spacing.space24),
                 _StickyButton(
                   label: 'CREATE ACCOUNT',
@@ -157,7 +161,11 @@ class _AvatarSelector extends StatelessWidget {
                 : null,
           ),
           child: file == null
-              ? Icon(Icons.camera_alt, color: theme.colorScheme.primary, size: 32)
+              ? Icon(
+                  Icons.camera_alt,
+                  color: theme.colorScheme.primary,
+                  size: 32,
+                )
               : null,
         ),
       ),
@@ -179,7 +187,7 @@ class _NameField extends StatelessWidget {
       height: 48.0,
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(0),
         border: Border.all(color: theme.colorScheme.primary),
       ),
       child: TextField(
@@ -234,7 +242,9 @@ class _RoleCard extends StatelessWidget {
               color: checked ? theme.colorScheme.primary : mutedColor,
             ),
             SizedBox(width: spacing.space8),
-            Expanded(child: Text(option.label, style: theme.textTheme.bodyLarge)),
+            Expanded(
+              child: Text(option.label, style: theme.textTheme.bodyLarge),
+            ),
           ],
         ),
       ),
@@ -273,8 +283,12 @@ class _StickyButton extends StatelessWidget {
               onPressed: (enabled && !isLoading) ? onPressed : null,
               style: ElevatedButton.styleFrom(
                 backgroundColor: theme.colorScheme.primary,
-                disabledBackgroundColor: theme.colorScheme.primary.withValues(alpha: 0.4),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                disabledBackgroundColor: theme.colorScheme.primary.withValues(
+                  alpha: 0.4,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
               child: isLoading
                   ? SizedBox(
@@ -287,7 +301,9 @@ class _StickyButton extends StatelessWidget {
                     )
                   : Text(
                       label,
-                      style: theme.textTheme.labelLarge?.copyWith(color: theme.colorScheme.surface),
+                      style: theme.textTheme.labelLarge?.copyWith(
+                        color: theme.colorScheme.surface,
+                      ),
                     ),
             );
           },

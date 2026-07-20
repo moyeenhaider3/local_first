@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-
 import 'package:local_first/core/error/error_handler.dart';
 import 'package:local_first/core/router/route_names.dart';
 import 'package:local_first/core/theme/app_theme.dart';
@@ -27,7 +26,9 @@ class _PhoneLoginPageState extends State<PhoneLoginPage> {
   ];
   final int _carouselIndex = 0;
   bool _consentChecked = false;
-  final PageController _carouselController = PageController(viewportFraction: 0.9);
+  final PageController _carouselController = PageController(
+    viewportFraction: 0.9,
+  );
   Timer? _carouselTimer;
 
   bool get _isValidPhone =>
@@ -146,7 +147,11 @@ class _BrandLogo extends StatelessWidget {
             color: theme.colorScheme.primary,
             borderRadius: BorderRadius.circular(8),
           ),
-          child: Icon(Icons.shield_outlined, color: theme.colorScheme.surface, size: 20),
+          child: Icon(
+            Icons.shield_outlined,
+            color: theme.colorScheme.surface,
+            size: 20,
+          ),
         ),
         SizedBox(width: spacing.space8),
         Text('Local First', style: theme.textTheme.titleMedium),
@@ -182,12 +187,16 @@ class _Carousel extends StatelessWidget {
             decoration: BoxDecoration(
               color: theme.colorScheme.surface,
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: theme.colorScheme.primary.withValues(alpha: 0.25)),
+              border: Border.all(
+                color: theme.colorScheme.primary.withValues(alpha: 0.25),
+              ),
             ),
             child: Center(
               child: Text(
                 valueProps[i],
-                style: theme.textTheme.headlineMedium?.copyWith(color: theme.colorScheme.primary),
+                style: theme.textTheme.headlineMedium?.copyWith(
+                  color: theme.colorScheme.primary,
+                ),
               ),
             ),
           );
@@ -211,7 +220,7 @@ class _PhoneField extends StatelessWidget {
       height: 48.0,
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(0),
         border: Border.all(color: theme.colorScheme.primary),
       ),
       child: Row(
@@ -220,7 +229,12 @@ class _PhoneField extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: spacing.space16),
             child: Text('+91', style: theme.textTheme.bodyLarge),
           ),
-          const VerticalDivider(width: 1, thickness: 1, indent: 8, endIndent: 8),
+          const VerticalDivider(
+            width: 1,
+            thickness: 1,
+            indent: 8,
+            endIndent: 8,
+          ),
           Expanded(
             child: TextField(
               controller: controller,
@@ -232,7 +246,9 @@ class _PhoneField extends StatelessWidget {
                 focusedBorder: InputBorder.none,
                 counterText: '',
                 hintText: '10-digit mobile number',
-                contentPadding: EdgeInsets.symmetric(horizontal: spacing.space16),
+                contentPadding: EdgeInsets.symmetric(
+                  horizontal: spacing.space16,
+                ),
               ),
             ),
           ),
@@ -311,7 +327,9 @@ class _StickyButton extends StatelessWidget {
               onPressed: (enabled && !isLoading) ? onPressed : null,
               style: ElevatedButton.styleFrom(
                 backgroundColor: theme.colorScheme.primary,
-                disabledBackgroundColor: theme.colorScheme.primary.withValues(alpha: 0.4),
+                disabledBackgroundColor: theme.colorScheme.primary.withValues(
+                  alpha: 0.4,
+                ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -327,7 +345,9 @@ class _StickyButton extends StatelessWidget {
                     )
                   : Text(
                       label,
-                      style: theme.textTheme.labelLarge?.copyWith(color: theme.colorScheme.surface),
+                      style: theme.textTheme.labelLarge?.copyWith(
+                        color: theme.colorScheme.surface,
+                      ),
                     ),
             );
           },
