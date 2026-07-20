@@ -70,7 +70,10 @@ class _SettingsHubPageState extends State<SettingsHubPage> {
     );
 
     if (confirmed == true && context.mounted) {
-      context.read<AuthCubit>().signOut();
+      await context.read<AuthCubit>().signOut();
+      if (context.mounted) {
+        context.go('/');
+      }
     }
   }
 
