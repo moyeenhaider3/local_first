@@ -11,6 +11,7 @@ import 'package:local_first/features/agreements/presentation/cubits/agreement_ti
 import 'package:local_first/features/agreements/presentation/widgets/status_badge_widget.dart';
 import 'package:local_first/features/agreements/presentation/widgets/timeline_node_widget.dart';
 import 'package:local_first/features/auth/domain/repositories/auth_repository.dart';
+import 'package:local_first/features/agreements/domain/repositories/agreement_repository.dart';
 import 'package:local_first/features/payments/presentation/cubits/payment_cubit.dart';
 import 'package:local_first/features/payments/presentation/cubits/payment_state.dart';
 import 'package:local_first/features/payments/presentation/widgets/escrow_deposit_sheet.dart';
@@ -24,7 +25,7 @@ import 'package:local_first/features/verification/presentation/widgets/return_co
 ///
 /// Functions as the central transaction hub showing real-time chronological progress
 /// of an agreement with dynamic action buttons linking to verification sheets and live payment escrow tracking.
-class ActiveAgreementConsolePage extends StatelessWidget {
+class ActiveAgreementConsolePage extends StatefulWidget {
   /// The agreement ID to load and track in real-time.
   final String agreementId;
 
@@ -35,9 +36,84 @@ class ActiveAgreementConsolePage extends StatelessWidget {
   });
 
   @override
+  State<ActiveAgreementConsolePage> createState() => _ActiveAgreementConsolePageState();
+}
+
+class _ActiveAgreementConsolePageState extends State<ActiveAgreementConsolePage> with WidgetsBindingObserver {
+  bool _whatsappInitiated = false;
+  AgreementEntity? _currentAgreement;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed && _whatsappInitiated && _currentAgreement != null) {
+      if (_currentAgreement!.status == AgreementStatus.confirmed) {
+        _promptWhatsAppCompletion();
+      }
+      _whatsappInitiated = false; // Reset the flag
+    }
+  }
+
+  void _promptWhatsAppCompletion() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Coordination Complete?'),
+          content: const Text('Have you completed your conversation on WhatsApp and finalized the details?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('NOT YET'),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: DesignTokens.colorPrimary),
+              onPressed: () async {
+                Navigator.of(context).pop();
+                try {
+                  await sl<AgreementRepository>().confirmCoordination(widget.agreementId);
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Coordination confirmed! Moving to payment phase.'),
+                        backgroundColor: DesignTokens.colorSuccess,
+                      ),
+                    );
+                  }
+                } catch (e) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Failed to confirm coordination: $e'),
+                        backgroundColor: DesignTokens.colorDanger,
+                      ),
+                    );
+                  }
+                }
+              },
+              child: const Text('YES, COMPLETED', style: TextStyle(color: Colors.white)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocProvider<PaymentCubit>(
-      create: (context) => sl<PaymentCubit>()..watchPayment(agreementId),
+      create: (context) => sl<PaymentCubit>()..watchPayment(widget.agreementId),
       child: Scaffold(
         backgroundColor: DesignTokens.colorBackground,
         appBar: AppBar(
@@ -103,6 +179,9 @@ class ActiveAgreementConsolePage extends StatelessWidget {
             if (state is TimelineUpdated) {
               final agreement = state.agreement;
               final events = state.events;
+              
+              // Cache for lifecycle observer
+              _currentAgreement = agreement;
 
               return Column(
                 children: [
@@ -159,7 +238,8 @@ class ActiveAgreementConsolePage extends StatelessWidget {
                     ),
                   ),
                   // Sticky Bottom WhatsApp Action Button
-                  _buildWhatsAppButton(context, agreement),
+                  if (agreement.status == AgreementStatus.confirmed)
+                    _buildWhatsAppButton(context, agreement),
                 ],
               );
             }
@@ -264,6 +344,9 @@ class ActiveAgreementConsolePage extends StatelessWidget {
             ),
           ),
           onPressed: () async {
+            setState(() {
+              _whatsappInitiated = true;
+            });
             await _launchWhatsAppChat(context, agreement);
           },
           child: Row(

@@ -15,6 +15,7 @@ abstract class AgreementRemoteDatasource {
   Future<AgreementEntity> fetchAgreement(String agreementId);
   Future<List<AgreementEntity>> fetchAgreementsByUser(String userId);
   Future<void> signAgreement(String agreementId, SignatureMetadataEntity signature);
+  Future<void> confirmCoordination(String agreementId);
   Stream<AgreementEntity> listenToAgreement(String agreementId);
 }
 
@@ -161,6 +162,15 @@ class AgreementRemoteDatasourceImpl implements AgreementRemoteDatasource {
         .call({
           'agreementId': agreementId,
           'signature': signature.toJson(),
+        });
+  }
+
+  @override
+  Future<void> confirmCoordination(String agreementId) async {
+    await functions
+        .httpsCallable('confirmCoordination')
+        .call({
+          'agreementId': agreementId,
         });
   }
 

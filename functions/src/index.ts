@@ -9,6 +9,7 @@ export { acceptRequest } from "./booking/acceptRequest";
 export { rejectRequest } from "./booking/rejectRequest";
 export { generateAgreementVersion } from "./booking/generateAgreementVersion";
 export { recordAgreementConsent } from "./booking/recordAgreementConsent";
+export { confirmCoordination } from "./booking/confirmCoordination";
 export { issueMilestoneCode } from "./verification/issueMilestoneCode";
 export { consumeMilestoneCode } from "./verification/consumeMilestoneCode";
 export { createDamageDispute } from "./verification/createDamageDispute";

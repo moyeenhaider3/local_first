@@ -13,5 +13,6 @@ abstract class AgreementRepository {
   Future<Either<Failure, AgreementEntity>> getAgreement(String agreementId);
   Future<Either<Failure, List<AgreementEntity>>> getAgreementsByUser(String userId);
   Future<Either<Failure, void>> signAgreement(String agreementId, SignatureMetadataEntity signature);
+  Future<Either<Failure, void>> confirmCoordination(String agreementId);
   Stream<AgreementEntity> watchAgreement(String agreementId);
 }

@@ -124,8 +124,7 @@ class AgreementTimelineCubit extends Cubit<AgreementTimelineState> {
 
     final isPaymentActive = !isPaymentVerified &&
         isSigned &&
-        (agreement.status == AgreementStatus.confirmed ||
-            agreement.status == AgreementStatus.paymentPending ||
+        (agreement.status == AgreementStatus.paymentPending ||
             agreement.status == AgreementStatus.paymentDeclared ||
             (paymentTask != null &&
                 (paymentTask.status == VerificationStatus.pending ||
@@ -145,8 +144,12 @@ class AgreementTimelineCubit extends Cubit<AgreementTimelineState> {
               : 'Awaiting contract signature'),
       status: paymentStatus,
       completedAt: isPaymentVerified ? (paymentTask?.completedAt ?? agreement.updatedAt) : null,
-      actionLabel: isPaymentActive ? 'Verify Payment' : null,
-      actionRoute: isPaymentActive ? '/home/vfy/payment/${paymentTask?.id ?? agreement.id}' : null,
+      actionLabel: isPaymentActive
+          ? (agreement.status == AgreementStatus.paymentPending ? 'Deposit Escrow' : 'Verify Payment')
+          : null,
+      actionRoute: isPaymentActive
+          ? (agreement.status == AgreementStatus.paymentPending ? '/home/vfy/escrow/${agreement.id}' : '/home/vfy/payment/${paymentTask?.id ?? agreement.id}')
+          : null,
     ));
 
     // 3. Item Handover & Pickup Verification Node

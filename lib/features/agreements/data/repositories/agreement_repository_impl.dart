@@ -116,6 +116,16 @@ class AgreementRepositoryImpl implements AgreementRepository {
   }
 
   @override
+  Future<Either<Failure, void>> confirmCoordination(String agreementId) async {
+    try {
+      await remoteDatasource.confirmCoordination(agreementId);
+      return const Right(null);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
   Stream<AgreementEntity> watchAgreement(String agreementId) {
     return remoteDatasource.listenToAgreement(agreementId);
   }

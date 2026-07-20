@@ -104,6 +104,12 @@ export const holdPaymentEscrow = functions.https.onCall(async (data, context) =>
     resolvedAt: null,
   });
 
+  // Update agreement status to paymentDeclared so counterparty can verify it
+  batch.update(agreementRef, {
+    status: "paymentDeclared",
+    updatedAt: now,
+  });
+
   await batch.commit();
 
   // 7. Send FCM notification to item/service owner

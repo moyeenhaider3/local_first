@@ -142,11 +142,30 @@ export const consumeMilestoneCode = functions.https.onCall(async (data, context)
               listingUpdate = { status: "rented" };
             }
           } else if (taskType === "paymentSettlement") {
-            agreementUpdate.status = "paymentVerified";
+            agreementUpdate.status = "pickupPending";
           } else if (taskType === "itemReturn") {
             agreementUpdate.status = "completed";
             if (listingRef) {
               listingUpdate = { status: "available" };
+            }
+            
+            // Auto payout release
+            const paymentsSnapshot = await transaction.get(
+              db.collection("payments").where("agreementId", "==", taskData.agreementId).limit(1)
+            );
+            if (!paymentsSnapshot.empty) {
+              transaction.update(paymentsSnapshot.docs[0].ref, {
+                status: "payoutReleased",
+                releasedAt: admin.firestore.FieldValue.serverTimestamp(),
+              });
+            }
+            const escrowRef = db.collection("escrows").doc(taskData.agreementId);
+            const escrowDoc = await transaction.get(escrowRef);
+            if (escrowDoc.exists) {
+              transaction.update(escrowRef, {
+                status: "releasedToOwner",
+                resolvedAt: admin.firestore.FieldValue.serverTimestamp(),
+              });
             }
           } else if (taskType === "serviceCompletion") {
             agreementUpdate.status = "completed";
