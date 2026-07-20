@@ -58,7 +58,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCCDshOzlY2MLd0msI0bbBs8kKNYBJ8LTs',
-    appId: '1:733483686093:android:19f3d3d6056799ababf184',
+    appId: '1:733483686093:android:f16b0b77e7c0cae0abf184',
     messagingSenderId: '733483686093',
     projectId: 'local-first-app-7f65c',
     storageBucket: 'local-first-app-7f65c.firebasestorage.app',
@@ -70,6 +70,6 @@ class DefaultFirebaseOptions {
     messagingSenderId: '733483686093',
     projectId: 'local-first-app-7f65c',
     storageBucket: 'local-first-app-7f65c.firebasestorage.app',
-    iosBundleId: 'com.example.localFirst',
+    iosBundleId: 'io.github.moyeenhaider3.localfirst',
   );
 }

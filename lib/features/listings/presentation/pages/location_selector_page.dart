@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -16,13 +18,14 @@ class LocationSelectorPage extends StatefulWidget {
 }
 
 class _LocationSelectorPageState extends State<LocationSelectorPage> {
-  static const String _googleApiKey = 'AIzaSyBHu2qkLnJViGI1WMfzikCIhoLxwAopPM0';
+  String get _googleApiKey => dotenv.env['GOOGLE_MAPS_API_KEY'] ?? '';
 
   late LatLng _selectedLatLng;
   GoogleMapController? _mapController;
   final TextEditingController _searchController = TextEditingController();
+  Timer? _debounce;
 
-  bool _useMockData = true;
+  final bool _useMockData = false;
 
   final List<Map<String, dynamic>> _mockLocations = const [
     {'address': 'Connaught Place, New Delhi', 'lat': 28.6304, 'lng': 77.2177},
@@ -55,22 +58,27 @@ class _LocationSelectorPageState extends State<LocationSelectorPage> {
 
   @override
   void dispose() {
+    _debounce?.cancel();
     _searchController.dispose();
     _mapController?.dispose();
     super.dispose();
   }
 
   Future<void> _onSearchChanged(String text) async {
-    if (text.isEmpty) {
-      setState(() {
-        _suggestions = [];
-      });
-      return;
-    }
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
 
-    final results = await _searchPlaces(text);
-    setState(() {
-      _suggestions = results;
+    _debounce = Timer(const Duration(milliseconds: 2000), () async {
+      if (text.isEmpty) {
+        setState(() {
+          _suggestions = [];
+        });
+        return;
+      }
+
+      final results = await _searchPlaces(text);
+      setState(() {
+        _suggestions = results;
+      });
     });
   }
 
@@ -95,11 +103,13 @@ class _LocationSelectorPageState extends State<LocationSelectorPage> {
       );
       final request = await client.getUrl(uri);
       final response = await request.close();
+
       if (response.statusCode == 200) {
-        final body = await response.transform(utf8.decoder).join();
+        final body = await utf8.decodeStream(response);
         final data = json.decode(body);
         final predictions = data['predictions'] as List?;
         if (predictions != null && predictions.isNotEmpty) {
+          client.close();
           return predictions.map((p) {
             return {
               'address': p['description'] as String,
@@ -108,7 +118,10 @@ class _LocationSelectorPageState extends State<LocationSelectorPage> {
             };
           }).toList();
         }
+      } else {
+        await response.drain();
       }
+      client.close();
     } catch (_) {
       // Fallback to mock data on error
     }
@@ -156,8 +169,9 @@ class _LocationSelectorPageState extends State<LocationSelectorPage> {
       );
       final request = await client.getUrl(uri);
       final response = await request.close();
+
       if (response.statusCode == 200) {
-        final body = await response.transform(utf8.decoder).join();
+        final body = await utf8.decodeStream(response);
         final data = json.decode(body);
         final geometry = data['result']?['geometry'];
         final location = geometry?['location'];
@@ -175,9 +189,13 @@ class _LocationSelectorPageState extends State<LocationSelectorPage> {
           _mapController?.animateCamera(
             CameraUpdate.newLatLngZoom(LatLng(lat, lng), 15.0),
           );
+          client.close();
           return;
         }
+      } else {
+        await response.drain();
       }
+      client.close();
     } catch (_) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -285,25 +303,25 @@ class _LocationSelectorPageState extends State<LocationSelectorPage> {
                       suffixIcon: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          IconButton(
-                            icon: Icon(
-                              _useMockData
-                                  ? Icons.cloud_off
-                                  : Icons.cloud_queue,
-                              color: _useMockData
-                                  ? Colors.orange
-                                  : theme.colorScheme.primary,
-                            ),
-                            tooltip: _useMockData
-                                ? 'Using Mock Data'
-                                : 'Using Google Places API',
-                            onPressed: () {
-                              setState(() {
-                                _useMockData = !_useMockData;
-                              });
-                              _onSearchChanged(_searchController.text);
-                            },
-                          ),
+                          // IconButton(
+                          //   icon: Icon(
+                          //     _useMockData
+                          //         ? Icons.cloud_off
+                          //         : Icons.cloud_queue,
+                          //     color: _useMockData
+                          //         ? Colors.orange
+                          //         : theme.colorScheme.primary,
+                          //   ),
+                          //   tooltip: _useMockData
+                          //       ? 'Using Mock Data'
+                          //       : 'Using Google Places API',
+                          //   onPressed: () {
+                          //     setState(() {
+                          //       _useMockData = !_useMockData;
+                          //     });
+                          //     _onSearchChanged(_searchController.text);
+                          //   },
+                          // ),
                           if (_searchController.text.isNotEmpty)
                             IconButton(
                               icon: const Icon(Icons.clear),

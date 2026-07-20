@@ -1,30 +1,22 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:local_first/core/di/service_locator.dart';
 import 'package:local_first/core/error/error_handler.dart';
+import 'package:local_first/core/notifications/fcm_service.dart';
 import 'package:local_first/core/router/app_router.dart';
 import 'package:local_first/core/theme/app_theme.dart';
-import 'package:local_first/core/notifications/fcm_service.dart';
 import 'package:local_first/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:local_first/features/listings/data/datasources/mock_data_service.dart';
 import 'package:local_first/features/listings/presentation/cubits/discovery_cubit.dart';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
   await Firebase.initializeApp();
-
-  // Point to local Firebase Emulators in debug/development mode
-  // if (kDebugMode) {
-  //   final host = defaultTargetPlatform == TargetPlatform.android
-  //       ? '10.0.2.2'
-  //       : 'localhost';
-  //   FirebaseFirestore.instance.useFirestoreEmulator(host, 8080);
-  //   FirebaseFunctions.instance.useFunctionsEmulator(host, 5001);
-  //   debugPrint('Connecting to Firebase Emulators on host: $host');
-  // }
 
   // Initialize dependency injection service locator
   await initDependencies();
@@ -37,19 +29,10 @@ Future<void> main() async {
 
   // Initialize global error handling hooks
   ErrorHandler.init();
-  if (kDebugMode) {
-    await FirebaseAuth.instance.setSettings(
-      appVerificationDisabledForTesting: true,
-    );
-  }
   // if (kDebugMode) {
-  //   // Use '10.0.2.2' for Android Emulator to connect to host computer's localhost, otherwise 'localhost'
-  //   final host = defaultTargetPlatform == TargetPlatform.android
-  //       ? '10.0.2.2'
-  //       : 'localhost';
-
-  //   FirebaseFirestore.instance.useFirestoreEmulator(host, 8080);
-  //   FirebaseFunctions.instance.useFunctionsEmulator(host, 5001);
+  //   await FirebaseAuth.instance.setSettings(
+  //     appVerificationDisabledForTesting: true,
+  //   );
   // }
 
   runApp(const AppRoot());

@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.localFirst</string>
+	<string>io.github.moyeenhaider3.localfirst</string>
 	<key>PROJECT_ID</key>
 	<string>local-first-app-7f65c</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:733483686093:ios:5a4def041bf0106fabf184</string>
+	<string>1:733483686093:ios:6a3f23a4d8c7225babf184</string>
 </dict>
 </plist>
